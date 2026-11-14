@@ -839,7 +839,6 @@ const OPENBOX_COURSES = [
     description:
       "Master full-funnel digital customer acquisition from search intent to paid conversion. Learn keyword clustering and technical SEO, structure high-ROAS Google and Meta ad campaigns, configure GA4 event tracking, and optimize landing pages for conversion rate lift.",
 
-    // --- VERIFIED VIDEO LECTURES ---
     lectures: [
       {
         id: "mkt-l01",
@@ -883,7 +882,6 @@ const OPENBOX_COURSES = [
       }
     ],
 
-    // --- OFFICIAL GUIDES & TEMPLATES ---
     documents: [
       {
         title: "Google Search Central: Official SEO Starter & Indexing Guide",
@@ -907,7 +905,6 @@ const OPENBOX_COURSES = [
       }
     ],
 
-    // --- GRADED CAMPAIGN ASSIGNMENTS ---
     assignments: [
       {
         title: "Task 01: SEO Keyword Cluster & Technical Page Audit",
@@ -939,7 +936,6 @@ const OPENBOX_COURSES = [
       }
     ],
 
-    // --- VERIFICATION QUIZ (6 QUESTIONS) ---
     quiz: [
       {
         question: "What is the primary goal of classifying keywords by 'Search Intent' before creating SEO content?",
@@ -1020,7 +1016,6 @@ const OPENBOX_COURSES = [
     description:
       "Execute real-world client acquisition sprints over 4 weeks. Conduct live technical SEO & competitor audits, build high-intent search and social ad campaigns, configure GA4 attribution, and deliver a complete 30-day growth playbook.",
 
-    // --- VERIFIED VIDEO LECTURES ---
     lectures: [
       {
         id: "mkt-int-01",
@@ -1064,7 +1059,6 @@ const OPENBOX_COURSES = [
       }
     ],
 
-    // --- OFFICIAL GUIDES & TEMPLATES ---
     documents: [
       {
         title: "Google Campaign URL Builder (UTM Governance Tool)",
@@ -1088,7 +1082,6 @@ const OPENBOX_COURSES = [
       }
     ],
 
-    // --- GRADED INTERNSHIP SPRINT DELIVERABLES ---
     assignments: [
       {
         title: "Sprint 01: Competitor Teardown & 30-Point SEO Audit",
@@ -1120,7 +1113,6 @@ const OPENBOX_COURSES = [
       }
     ],
 
-    // --- VERIFICATION QUIZ (6 QUESTIONS) ---
     quiz: [
       {
         question: "In a paid social campaign, what does a high click-through rate (CTR) paired with a very low landing page conversion rate usually indicate?",
@@ -1208,7 +1200,6 @@ const OPENBOX_COURSES = [
     description:
       "MIT Sloan School of Management (15.450, Fall 2010) graduate-level quantitative finance track taught by Prof. Leonid Kogan. Covers Brownian motion, Ito's Lemma, Black-Scholes-Merton derivatives pricing, Monte Carlo simulation, dynamic programming, mean-variance portfolio optimization, fixed-income term structure modeling, and Value-at-Risk (VaR) risk management.",
 
-    // --- VIDEO LECTURES + OFFICIAL MIT 15.450 LECTURE NOTES ---
     lectures: [
       {
         id: "mit15450-l01",
@@ -1300,7 +1291,6 @@ const OPENBOX_COURSES = [
       }
     ],
 
-    // --- OFFICIAL MIT 15.450 COURSE DOCUMENTS ---
     documents: [
       {
         title: "MIT 15.450 Official Course Home & Overview (Fall 2010)",
@@ -1334,7 +1324,6 @@ const OPENBOX_COURSES = [
       }
     ],
 
-    // --- GRADED QUANTITATIVE MODELING ASSIGNMENTS ---
     assignments: [
       {
         title: "Assignment 01: Binomial Tree & Black-Scholes-Merton Option Pricer",
@@ -1366,7 +1355,6 @@ const OPENBOX_COURSES = [
       }
     ],
 
-    // --- VERIFICATION QUIZ (8 QUANTITATIVE FINANCE QUESTIONS, 75% TO PASS) ---
     quiz: [
       {
         question: "In risk-neutral derivative pricing, what drift rate replaces the physical expected return μ of a non-dividend-paying stock?",
@@ -1457,7 +1445,6 @@ const OPENBOX_COURSES = [
         explanation: "Expected Shortfall averages all losses exceeding the VaR cutoff and satisfies sub-additivity (coherence) for portfolio diversification."
       }
     ]
-    ]
   },
 
   // ==========================================================================
@@ -1475,7 +1462,6 @@ const OPENBOX_COURSES = [
     description:
       "Master end-to-end corporate financial modeling and investment banking valuation techniques in Excel. Covers historical financial statement structuring, common-size benchmarking, growth forecasting, Discounted Cash Flow (DCF) valuation, trading comparables, and Football Field synthesis.",
 
-    // --- VIDEO LECTURES (VERIFIED YOUTUBE IDs FROM PLAYLIST) ---
     lectures: [
       {
         id: "fm-l02",
@@ -1539,7 +1525,6 @@ const OPENBOX_COURSES = [
       }
     ],
 
-    // --- COURSE DOCUMENTS & WORKSHEETS ---
     documents: [
       {
         title: "Launch New Financial Model Workbook (Google Sheets)",
@@ -1558,7 +1543,6 @@ const OPENBOX_COURSES = [
       }
     ],
 
-    // --- GRADED ASSIGNMENTS / TASKS ---
     assignments: [
       {
         title: "Task 01: Historical 3-Statement & Common Size Model",
@@ -1590,7 +1574,6 @@ const OPENBOX_COURSES = [
       }
     ],
 
-    // --- VERIFICATION QUIZ (6 COMPREHENSIVE QUESTIONS) ---
     quiz: [
       {
         question: "In a Common Size Income Statement, how is every line item expressed?",
@@ -1659,5 +1642,5 @@ const OPENBOX_COURSES = [
         explanation: "A Football Field chart summarizes low-to-high implied valuation ranges from different valuation methods on a single horizontal bar chart for executive decision-making."
       }
     ]
-  },
+  }
 ];
