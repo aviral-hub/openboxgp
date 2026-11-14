@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Openbox Growth Partner — Learning &amp; Internship Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -25,6 +26,50 @@
       font-family: 'Plus Jakarta Sans', sans-serif;
       background-color: var(--bg);
       color: var(--text);
+    }
+
+    /* Custom Architectural CSS Course Banners */
+    .course-banner {
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    .course-banner::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+      background-size: 20px 20px;
+      z-index: -1;
+    }
+    .course-banner::after {
+      content: "";
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      right: -30px;
+      bottom: -45px;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.14);
+      filter: blur(2px);
+      z-index: -1;
+    }
+    .banner-internship {
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 55%, #d97706 130%);
+    }
+    .banner-development {
+      background: linear-gradient(135deg, #090d16 0%, #1d4ed8 60%, #0284c7 125%);
+    }
+    .banner-analytics {
+      background: linear-gradient(135deg, #064e3b 0%, #047857 55%, #0f172a 130%);
+    }
+    .banner-marketing {
+      background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 55%, #db2777 130%);
+    }
+    .banner-default {
+      background: linear-gradient(135deg, #0f172a 0%, #2563eb 100%);
     }
   </style>
 </head>
@@ -59,34 +104,66 @@
           Theme
         </button>
       </div>
+
       <nav>
-      <a
-  href="https://wa.me/917020729200?text=Hi%20Aviral,%20I%20have%20a%20question%20about%20the%20Openbox%20curriculum."
-  target="_blank"
-  rel="noopener noreferrer"
-  class="text-emerald-500 hover:text-emerald-400 font-bold flex items-center gap-1.5"
->
-  <i class="fa-brands fa-whatsapp text-sm"></i> WhatsApp Helpline
-</a>
-        <nav>
+        <a
+          href="https://wa.me/917020729200?text=Hi%20Aviral,%20I%20have%20a%20question%20about%20the%20Openbox%20curriculum."
+          target="_blank"
+          rel="noopener noreferrer"
+          class="text-emerald-600 dark:text-emerald-400 hover:opacity-80 text-xs font-extrabold flex items-center gap-1.5"
+        >
+          <i class="fa-brands fa-whatsapp text-sm"></i>
+          <span class="hidden md:inline">WhatsApp Helpline</span>
+        </a>
+      </nav>
     </div>
   </header>
 
+  <!-- REFERRAL WELCOME BANNER (Shown when opened via ?ref= link) -->
+  <div id="referral-welcome-bar" class="hidden bg-blue-600 text-white text-xs font-semibold">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between gap-3">
+      <div class="flex items-center gap-2">
+        <i class="fa-solid fa-gift"></i>
+        <span id="referral-welcome-text">You were invited by a peer to join this Openbox Growth Partner track!</span>
+      </div>
+      <button onclick="document.getElementById('referral-welcome-bar').classList.add('hidden')" class="text-white/80 hover:text-white font-bold cursor-pointer">✕</button>
+    </div>
+  </div>
+
   <!-- MAIN CATALOG VIEW -->
   <main id="catalog-view" class="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-    <div class="max-w-3xl mb-8">
-      <span class="inline-block px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-blue-600/10 text-blue-600 dark:text-blue-400 mb-3">
-        Verified Courses &amp; Task-Based Internships
-      </span>
-      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3">
-        Build Proof-of-Work Skills. Earn Verified Credentials.
-      </h1>
-      <p class="text-sm text-[var(--muted)] leading-relaxed">
-        Complete 100% of video modules, submit all practical assignments, and score at least 75% on the verification quiz to unlock your official Openbox Growth Partner certificate.
-      </p>
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8">
+      <div class="max-w-3xl">
+        <span class="inline-block px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-blue-600/10 text-blue-600 dark:text-blue-400 mb-3">
+          Verified Courses &amp; Task-Based Internships
+        </span>
+        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3">
+          Build Proof-of-Work Skills. Earn Verified Credentials.
+        </h1>
+        <p class="text-sm text-[var(--muted)] leading-relaxed">
+          Complete 100% of video modules, submit all practical assignments, and score at least 75% on the verification quiz to unlock your official Openbox Growth Partner certificate.
+        </p>
+      </div>
+
+      <!-- Refer a Friend Quick Action -->
+      <div class="shrink-0 p-4 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 flex items-center gap-3 shadow-sm">
+        <div class="w-10 h-10 rounded-xl bg-blue-600/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-base shrink-0">
+          <i class="fa-solid fa-user-plus"></i>
+        </div>
+        <div>
+          <p class="text-xs font-extrabold">Learn Together with Peers</p>
+          <p class="text-[11px] text-[var(--muted)]">Share any track link directly with friends</p>
+        </div>
+        <button
+          onclick="openShareModal(null)"
+          class="ml-2 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold cursor-pointer transition shrink-0"
+        >
+          Refer Friend
+        </button>
+      </div>
     </div>
 
-    <!-- CATEGORY FILTERS (Updated with Finance & Analytics Track) -->
+    <!-- CATEGORY FILTERS -->
     <div class="flex flex-wrap gap-2 mb-8">
       <button onclick="setCat('All')" id="cat-All" class="cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-blue-600 text-white cursor-pointer">All Tracks</button>
       <button onclick="setCat('Internship')" id="cat-Internship" class="cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-slate-200 dark:border-white/10 cursor-pointer">Task-Based Internships</button>
@@ -101,24 +178,49 @@
 
   <!-- COURSE WORKSPACE VIEW -->
   <section id="workspace-view" class="hidden max-w-7xl mx-auto px-4 sm:px-6 py-8">
-    <button
-      onclick="closeCourse()"
-      class="mb-6 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-slate-200 dark:border-white/10 hover:border-blue-600 cursor-pointer"
-    >
-      ← Back to All Tracks
-    </button>
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+      <button
+        onclick="closeCourse()"
+        class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-slate-200 dark:border-white/10 hover:border-blue-600 cursor-pointer"
+      >
+        ← Back to All Tracks
+      </button>
 
-    <!-- Course Header Banner + Gate Status -->
-    <div class="p-6 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 mb-6">
-      <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-5">
-        <div class="max-w-3xl">
-          <div class="flex flex-wrap items-center gap-2 mb-2">
-            <span id="ws-badge" class="px-2.5 py-0.5 rounded-lg text-[11px] font-extrabold bg-blue-600/10 text-blue-600 dark:text-blue-400"></span>
-            <span id="ws-duration" class="text-xs font-semibold text-[var(--muted)]"></span>
-            <span id="ws-level" class="text-xs font-semibold text-[var(--muted)]"></span>
+      <button
+        onclick="openShareModal(activeCourse ? activeCourse.id : null)"
+        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-extrabold bg-blue-600/10 text-blue-600 dark:text-blue-400 border border-blue-600/20 hover:bg-blue-600 hover:text-white cursor-pointer transition"
+      >
+        <i class="fa-solid fa-share-nodes"></i> Share &amp; Refer Friend to This Track
+      </button>
+    </div>
+
+    <!-- Custom CSS Course Header Banner + Gate Status -->
+    <div class="rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 overflow-hidden mb-6 shadow-sm">
+      <!-- Top Visual CSS Strip -->
+      <div id="ws-visual-banner" class="course-banner banner-default px-6 py-5 text-white flex flex-wrap items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div id="ws-banner-icon" class="w-11 h-11 rounded-xl bg-white/15 backdrop-blur-sm border border-white/20 flex items-center justify-center text-lg">
+            <i class="fa-solid fa-graduation-cap"></i>
           </div>
+          <div>
+            <span id="ws-badge" class="inline-block px-2.5 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider bg-white/20 text-white"></span>
+            <p class="text-[11px] text-white/80 font-semibold mt-1">
+              <span id="ws-duration"></span> <span id="ws-level"></span>
+            </p>
+          </div>
+        </div>
+        <div class="text-right hidden sm:block">
+          <span class="text-[10px] font-extrabold uppercase tracking-widest text-white/70 block">Openbox Verified Track</span>
+          <span id="ws-code-tag" class="text-xs font-mono font-bold text-white/95"></span>
+        </div>
+      </div>
+
+      <!-- Course Info + Certificate Progress Box -->
+      <div class="p-6 flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
+        <div class="max-w-3xl">
           <h2 id="ws-title" class="text-2xl font-extrabold tracking-tight mb-2"></h2>
-          <p id="ws-desc" class="text-xs sm:text-sm text-[var(--muted)] leading-relaxed"></p>
+          <p id="ws-desc" class="text-xs sm:text-sm text-[var(--muted)] leading-relaxed mb-4"></p>
+          <div id="ws-skills" class="flex flex-wrap gap-1.5"></div>
         </div>
 
         <!-- Certificate Unlock Box -->
@@ -242,6 +344,51 @@
     </div>
   </section>
 
+  <!-- REFER & SHARE COURSE MODAL -->
+  <div id="share-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[var(--card)] text-[var(--text)] max-w-lg w-full rounded-2xl shadow-2xl p-6 border border-slate-200 dark:border-white/10">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-200 dark:border-white/10">
+        <div>
+          <span class="text-[10px] font-extrabold uppercase tracking-widest text-blue-600 dark:text-blue-400">Peer Referral Program</span>
+          <h3 class="text-lg font-extrabold">Share &amp; Refer a Friend</h3>
+        </div>
+        <button onclick="document.getElementById('share-modal').classList.add('hidden')" class="w-8 h-8 rounded-xl bg-slate-100 dark:bg-white/10 text-xs font-bold cursor-pointer">✕</button>
+      </div>
+
+      <div class="space-y-4">
+        <div>
+          <label class="block text-[11px] font-extrabold uppercase tracking-wider text-[var(--muted)] mb-1.5">Select Course / Internship Track</label>
+          <select id="share-course-select" onchange="updateShareLink()" class="w-full px-3.5 py-2.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 focus:outline-none focus:border-blue-600"></select>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-extrabold uppercase tracking-wider text-[var(--muted)] mb-1.5">Your Direct Course Referral Link</label>
+          <div class="flex gap-2">
+            <input id="share-direct-link" type="text" readonly class="flex-1 px-3 py-2 rounded-xl text-xs font-mono bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10" />
+            <button id="copy-ref-link-btn" onclick="copyReferralLink()" class="px-4 py-2 rounded-xl bg-slate-900 dark:bg-blue-600 text-white text-xs font-extrabold cursor-pointer shrink-0">
+              Copy Link
+            </button>
+          </div>
+          <p class="text-[11px] text-[var(--muted)] mt-1">Opening this link redirects your friend directly into this course workspace.</p>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-extrabold uppercase tracking-wider text-[var(--muted)] mb-1.5">Invite Message</label>
+          <textarea id="share-invite-msg" rows="3" readonly class="w-full p-3 rounded-xl text-xs bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 leading-relaxed"></textarea>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 pt-1">
+          <a id="share-wa-btn" href="#" target="_blank" rel="noopener noreferrer" class="py-2.5 px-4 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold flex items-center justify-center gap-2 transition">
+            <i class="fa-brands fa-whatsapp text-sm"></i> Share on WhatsApp
+          </a>
+          <a id="share-li-btn" href="#" target="_blank" rel="noopener noreferrer" class="py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold flex items-center justify-center gap-2 transition">
+            <i class="fa-brands fa-linkedin text-sm"></i> Share on LinkedIn
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- EXECUTIVE WHITE CERTIFICATE MODAL -->
   <div id="certificate-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
     <div class="bg-white text-slate-900 max-w-4xl w-full rounded-2xl shadow-2xl p-6 md:p-8 border border-slate-200 my-auto">
@@ -297,7 +444,7 @@
 
   <script>
     const STORAGE_KEY = "openbox_portal_progress_v1";
-    const PASS_THRESHOLD = 75; // Minimum 75% quiz score required
+    const PASS_THRESHOLD = 75;
 
     let currentCategory = "All";
     let activeCourse = null;
@@ -334,6 +481,16 @@
         };
       }
       return appState.courses[courseId];
+    }
+
+    // Custom CSS Banner Theme Mapper per Course Category / Type
+    function getBannerTheme(course) {
+      if (course.bannerClass) return { cls: course.bannerClass, icon: course.bannerIcon || "fa-solid fa-layer-group" };
+      if (course.isInternship) return { cls: "banner-internship", icon: "fa-solid fa-briefcase" };
+      if (course.category === "Analytics") return { cls: "banner-analytics", icon: "fa-solid fa-chart-line" };
+      if (course.category === "Marketing") return { cls: "banner-marketing", icon: "fa-solid fa-bullhorn" };
+      if (course.category === "Development") return { cls: "banner-development", icon: "fa-solid fa-code" };
+      return { cls: "banner-default", icon: "fa-solid fa-graduation-cap" };
     }
 
     function checkEligibility(course) {
@@ -393,45 +550,76 @@
       grid.innerHTML = filtered
         .map(course => {
           const status = checkEligibility(course);
+          const theme = getBannerTheme(course);
           return `
-        <article class="p-6 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 flex flex-col justify-between hover:border-blue-600 transition shadow-sm">
+        <article class="rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 flex flex-col justify-between overflow-hidden hover:border-blue-600 transition shadow-sm group">
           <div>
-            <div class="flex items-center justify-between gap-2 mb-3">
-              <span class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider ${
-                course.isInternship
-                  ? "bg-amber-500/15 text-amber-700 dark:text-amber-400"
-                  : "bg-blue-600/10 text-blue-600 dark:text-blue-400"
-              }">
-                ${course.typeBadge}
-              </span>
-              ${
-                status.unlocked
-                  ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-500/15 text-emerald-700 dark:text-emerald-400">✓ Certified</span>`
-                  : ""
-              }
+            <!-- Custom CSS Banner Header -->
+            <div class="course-banner ${theme.cls} p-5 text-white">
+              <div class="flex items-center justify-between gap-2 mb-4">
+                <span class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider bg-white/15 backdrop-blur-sm border border-white/15">
+                  ${course.typeBadge}
+                </span>
+                <div class="flex items-center gap-1.5">
+                  ${
+                    status.unlocked
+                      ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-500 text-white">✓ Certified</span>`
+                      : ""
+                  }
+                  <button
+                    onclick="event.stopPropagation(); openShareModal('${course.id}')"
+                    class="w-7 h-7 rounded-lg bg-white/15 hover:bg-white/30 text-white flex items-center justify-center text-xs cursor-pointer transition"
+                    title="Share & Refer Friend"
+                  >
+                    <i class="fa-solid fa-share-nodes"></i>
+                  </button>
+                </div>
+              </div>
+
+              <div class="flex items-end justify-between gap-3">
+                <div class="w-10 h-10 rounded-xl bg-white/15 border border-white/20 flex items-center justify-center text-base shrink-0">
+                  <i class="${theme.icon}"></i>
+                </div>
+                <span class="text-[10px] font-mono uppercase tracking-widest text-white/80">
+                  ${course.category || "Track"} • ${(course.lectures || []).length} Modules
+                </span>
+              </div>
             </div>
-            <h3 class="text-lg font-extrabold tracking-tight mb-2 leading-snug">${course.title}</h3>
-            <p class="text-xs text-[var(--muted)] leading-relaxed mb-4">${course.description}</p>
-            <div class="flex flex-wrap gap-1.5 mb-5">
-              ${(course.techStack || [])
-                .map(
-                  skill =>
-                    `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 dark:bg-white/5 text-[var(--muted)]">${skill}</span>`
-                )
-                .join("")}
+
+            <!-- Card Body -->
+            <div class="p-6 pb-4">
+              <h3 class="text-lg font-extrabold tracking-tight mb-2 leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">${course.title}</h3>
+              <p class="text-xs text-[var(--muted)] leading-relaxed mb-4">${course.description}</p>
+              <div class="flex flex-wrap gap-1.5">
+                ${(course.techStack || [])
+                  .map(
+                    skill =>
+                      `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 dark:bg-white/5 text-[var(--muted)]">${skill}</span>`
+                  )
+                  .join("")}
+              </div>
             </div>
           </div>
 
-          <div class="pt-4 border-t border-slate-200 dark:border-white/10 flex items-center justify-between">
+          <div class="px-6 py-4 border-t border-slate-200 dark:border-white/10 flex items-center justify-between gap-2">
             <span class="text-[11px] font-bold text-[var(--muted)]">
-              ${status.doneLecs}/${status.totalLecs} Modules • ${status.doneAssigns}/${status.totalAssigns} Tasks
+              ${status.doneLecs}/${status.totalLecs} Lecs • ${status.doneAssigns}/${status.totalAssigns} Tasks
             </span>
-            <button
-              onclick="openCourse('${course.id}')"
-              class="px-4 py-2 rounded-xl bg-slate-900 dark:bg-blue-600 hover:opacity-90 text-white text-xs font-extrabold cursor-pointer transition"
-            >
-              ${status.unlocked ? "Review / Certificate →" : "Continue Track →"}
-            </button>
+            <div class="flex items-center gap-1.5">
+              <button
+                onclick="openShareModal('${course.id}')"
+                class="px-2.5 py-2 rounded-xl border border-slate-200 dark:border-white/10 hover:border-blue-600 text-xs font-bold cursor-pointer transition"
+                title="Refer Friend"
+              >
+                Refer
+              </button>
+              <button
+                onclick="openCourse('${course.id}')"
+                class="px-4 py-2 rounded-xl bg-slate-900 dark:bg-blue-600 hover:opacity-90 text-white text-xs font-extrabold cursor-pointer transition"
+              >
+                ${status.unlocked ? "Certificate →" : "Start →"}
+              </button>
+            </div>
           </div>
         </article>
       `;
@@ -439,19 +627,35 @@
         .join("");
     }
 
-    function openCourse(courseId) {
+    function openCourse(courseId, updateUrl = true) {
       activeCourse = OPENBOX_COURSES.find(c => c.id === courseId);
       if (!activeCourse) return;
+
+      if (updateUrl) {
+        const url = new URL(window.location.href);
+        url.searchParams.set("course", courseId);
+        window.history.replaceState({}, "", url);
+      }
 
       document.getElementById("catalog-view").classList.add("hidden");
       document.getElementById("workspace-view").classList.remove("hidden");
       window.scrollTo({ top: 0, behavior: "smooth" });
+
+      // Apply Custom CSS Banner to Workspace Header
+      const theme = getBannerTheme(activeCourse);
+      const bannerEl = document.getElementById("ws-visual-banner");
+      bannerEl.className = `course-banner ${theme.cls} px-6 py-5 text-white flex flex-wrap items-center justify-between gap-4`;
+      document.getElementById("ws-banner-icon").innerHTML = `<i class="${theme.icon}"></i>`;
+      document.getElementById("ws-code-tag").textContent = activeCourse.id.toUpperCase();
 
       document.getElementById("ws-badge").textContent = activeCourse.typeBadge;
       document.getElementById("ws-duration").textContent = activeCourse.duration ? `• ${activeCourse.duration}` : "";
       document.getElementById("ws-level").textContent = activeCourse.level ? `• ${activeCourse.level}` : "";
       document.getElementById("ws-title").textContent = activeCourse.title;
       document.getElementById("ws-desc").textContent = activeCourse.description;
+      document.getElementById("ws-skills").innerHTML = (activeCourse.techStack || [])
+        .map(s => `<span class="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 dark:bg-white/5 text-[var(--muted)]">${s}</span>`)
+        .join("");
 
       selectLecture(0);
       renderDocs();
@@ -461,17 +665,96 @@
     }
 
     function closeCourse() {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("course");
+      window.history.replaceState({}, "", url);
+
       document.getElementById("lecture-player").src = "";
       document.getElementById("workspace-view").classList.add("hidden");
       document.getElementById("catalog-view").classList.remove("hidden");
       renderCatalog();
     }
 
+    // =========================================================================
+    // REFER A FRIEND & DIRECT COURSE SHARE SYSTEM
+    // =========================================================================
+    function buildCourseReferralUrl(courseId) {
+      const baseUrl = window.location.origin + window.location.pathname;
+      const url = new URL(baseUrl);
+      if (courseId) url.searchParams.set("course", courseId);
+      const refName = (appState.studentName || "").trim();
+      if (refName) url.searchParams.set("ref", refName);
+      return url.toString();
+    }
+
+    function openShareModal(preselectedCourseId) {
+      const select = document.getElementById("share-course-select");
+      select.innerHTML = OPENBOX_COURSES.map(
+        c => `<option value="${c.id}">${c.title} (${c.typeBadge})</option>`
+      ).join("");
+
+      if (preselectedCourseId) {
+        select.value = preselectedCourseId;
+      } else if (activeCourse) {
+        select.value = activeCourse.id;
+      }
+
+      updateShareLink();
+      document.getElementById("share-modal").classList.remove("hidden");
+    }
+
+    function updateShareLink() {
+      const courseId = document.getElementById("share-course-select").value;
+      const course = OPENBOX_COURSES.find(c => c.id === courseId) || OPENBOX_COURSES[0];
+      const directUrl = buildCourseReferralUrl(course.id);
+
+      document.getElementById("share-direct-link").value = directUrl;
+
+      const inviteMsg =
+        `Hey! Join me in "${course.title}" on Openbox Growth Partner — complete hands-on tasks, build proof-of-work projects, and earn a verified certificate:\n${directUrl}`;
+      document.getElementById("share-invite-msg").value = inviteMsg;
+
+      document.getElementById("share-wa-btn").href =
+        `https://wa.me/?text=${encodeURIComponent(inviteMsg)}`;
+      document.getElementById("share-li-btn").href =
+        `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(directUrl)}`;
+    }
+
+    function copyReferralLink() {
+      const link = document.getElementById("share-direct-link").value;
+      navigator.clipboard.writeText(link);
+      const btn = document.getElementById("copy-ref-link-btn");
+      btn.textContent = "✓ Copied!";
+      setTimeout(() => { btn.textContent = "Copy Link"; }, 2000);
+    }
+
+    // Handle incoming ?course=<id>&ref=<friendName> deep links
+    function handleIncomingDeepLink() {
+      const params = new URLSearchParams(window.location.search);
+      const sharedCourseId = params.get("course") || params.get("id");
+      const referrer = params.get("ref");
+
+      if (referrer) {
+        appState.referredBy = referrer;
+        saveState();
+        const bar = document.getElementById("referral-welcome-bar");
+        document.getElementById("referral-welcome-text").textContent =
+          `Referred by ${referrer} • Welcome to Openbox Growth Partner! Complete this track to claim your verified certificate.`;
+        bar.classList.remove("hidden");
+      }
+
+      if (sharedCourseId && OPENBOX_COURSES.some(c => c.id === sharedCourseId)) {
+        openCourse(sharedCourseId, false);
+      }
+    }
+
+    // =========================================================================
+    // COMPLETION PROGRESS, LECTURES, DOCS, ASSIGNMENTS, QUIZ & CERTIFICATE
+    // =========================================================================
     function updateCompletionUI() {
       if (!activeCourse) return;
       const status = checkEligibility(activeCourse);
 
-      // Compute weighted completion %
       const lecRatio = status.totalLecs ? status.doneLecs / status.totalLecs : 1;
       const assignRatio = status.totalAssigns ? status.doneAssigns / status.totalAssigns : 1;
       const quizRatio = status.quizDone ? 1 : Math.min(status.quizPercent / PASS_THRESHOLD, 0.9);
@@ -760,11 +1043,9 @@
         day: "numeric"
       });
 
-      // Pure White Paper Background
       ctx.fillStyle = "#FFFFFF";
       ctx.fillRect(0, 0, W, H);
 
-      // Navy & Gold Corner Ribbons
       ctx.fillStyle = "#0F172A";
       ctx.beginPath();
       ctx.moveTo(0, 0);
@@ -797,7 +1078,6 @@
       ctx.closePath();
       ctx.fill();
 
-      // Double Architectural Frame
       ctx.strokeStyle = "#0F172A";
       ctx.lineWidth = 4;
       ctx.strokeRect(48, 48, W - 96, H - 96);
@@ -806,7 +1086,6 @@
       ctx.lineWidth = 1.5;
       ctx.strokeRect(62, 62, W - 124, H - 124);
 
-      // Subtle Center Watermark
       ctx.save();
       ctx.fillStyle = "rgba(15, 23, 42, 0.025)";
       ctx.font = "800 130px 'Plus Jakarta Sans', Arial, sans-serif";
@@ -814,7 +1093,6 @@
       ctx.fillText("OPENBOX", W / 2, H / 2 + 40);
       ctx.restore();
 
-      // Organization Header
       ctx.textAlign = "center";
       ctx.fillStyle = "#0F172A";
       ctx.font = "800 22px 'Plus Jakarta Sans', Arial, sans-serif";
@@ -824,7 +1102,6 @@
       ctx.font = "700 13px 'Plus Jakarta Sans', Arial, sans-serif";
       ctx.fillText("SCHOOL OF TECHNOLOGY, ANALYTICS & DIGITAL GROWTH", W / 2, 166);
 
-      // Certificate Main Title
       const certHeading = activeCourse.isInternship
         ? "CERTIFICATE OF INTERNSHIP"
         : "CERTIFICATE OF COMPLETION";
@@ -840,7 +1117,6 @@
       ctx.lineTo(W / 2 + 140, 272);
       ctx.stroke();
 
-      // Recipient Name
       ctx.fillStyle = "#475569";
       ctx.font = "500 20px 'Plus Jakarta Sans', Arial, sans-serif";
       ctx.fillText("This is proudly presented to", W / 2, 330);
@@ -856,7 +1132,6 @@
       ctx.lineTo(W / 2 + 280, 424);
       ctx.stroke();
 
-      // Course / Internship Description
       const actionLine = activeCourse.isInternship
         ? `for completing 100% of sprint modules, deliverables, and passing with ${prog.quizPercent}% in`
         : `for completing 100% of curriculum modules, assignments, and passing with ${prog.quizPercent}% in`;
@@ -869,16 +1144,13 @@
       ctx.font = "800 30px 'Plus Jakarta Sans', Arial, sans-serif";
       wrapText(ctx, activeCourse.title, W / 2, 526, 1040, 38);
 
-      // Verified Skills Line
       const skillsText = "Verified Competencies: " + (activeCourse.techStack || []).join("  •  ");
       ctx.fillStyle = "#B45309";
       ctx.font = "700 15px 'Plus Jakarta Sans', Arial, sans-serif";
       ctx.fillText(skillsText, W / 2, 616);
 
-      // Footer Columns
       const footerY = 795;
 
-      // Left: Date & Credential ID
       ctx.textAlign = "left";
       ctx.fillStyle = "#0F172A";
       ctx.font = "700 17px 'Plus Jakarta Sans', Arial, sans-serif";
@@ -896,7 +1168,6 @@
       ctx.fillText("DATE OF ISSUE", 140, footerY + 22);
       ctx.fillText(`CREDENTIAL ID: ${prog.credentialId}`, 140, footerY + 44);
 
-      // Center: Gold & Navy Seal
       const sealX = W / 2;
       const sealY = footerY - 5;
 
@@ -925,7 +1196,6 @@
       ctx.font = "700 10px 'Plus Jakarta Sans', Arial, sans-serif";
       ctx.fillText("CREDENTIAL", sealX, sealY + 22);
 
-      // Right: Authorized Signatory
       ctx.textAlign = "right";
       ctx.fillStyle = "#0F172A";
       ctx.font = "italic 700 24px 'Playfair Display', Georgia, serif";
@@ -943,13 +1213,13 @@
       ctx.fillText("AVIRAL PATHAK", W - 140, footerY + 22);
       ctx.fillText("FOUNDER, OPENBOX GROWTH PARTNER", W - 140, footerY + 44);
 
-      // Update LinkedIn Share Caption
+      const directCourseUrl = buildCourseReferralUrl(activeCourse.id);
       const hashtags = (activeCourse.techStack || [])
         .map(t => "#" + t.replace(/[^a-zA-Z0-9]/g, ""))
         .join(" ");
       document.getElementById("cert-social-caption").textContent =
         `Thrilled to share that I have earned my ${certHeading} in "${activeCourse.title}" from Openbox Growth Partner (Assessment Score: ${prog.quizPercent}%)! ` +
-        `Credential ID: ${prog.credentialId}. #OpenboxGrowthPartner #ProofOfWork ${hashtags}`;
+        `Credential ID: ${prog.credentialId}. Join the track here: ${directCourseUrl} #OpenboxGrowthPartner #ProofOfWork ${hashtags}`;
     }
 
     function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
@@ -984,22 +1254,23 @@
     }
 
     renderCatalog();
+    handleIncomingDeepLink();
   </script>
 
   <!-- Floating WhatsApp Support Widget -->
-<a
-  href="https://wa.me/917020729200?text=Hi%20Aviral,%20I%20need%20help%20with%20an%20issue%20in%20my%20Openbox%20course/task."
-  target="_blank"
-  rel="noopener noreferrer"
-  class="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl shadow-xl shadow-emerald-600/30 transition-all duration-300 hover:scale-105 group"
-  title="Chat with Openbox Support on WhatsApp"
->
-  <span class="relative flex h-3 w-3">
-    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-200 opacity-75"></span>
-    <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
-  </span>
-  <i class="fa-brands fa-whatsapp text-lg"></i>
-  <span class="text-xs font-extrabold tracking-wide">Instant Help (WhatsApp)</span>
-</a>
+  <a
+    href="https://wa.me/917020729200?text=Hi%20Aviral,%20I%20need%20help%20with%20an%20issue%20in%20my%20Openbox%20course/task."
+    target="_blank"
+    rel="noopener noreferrer"
+    class="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl shadow-xl shadow-emerald-600/30 transition-all duration-300 hover:scale-105 group"
+    title="Chat with Openbox Support on WhatsApp"
+  >
+    <span class="relative flex h-3 w-3">
+      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-200 opacity-75"></span>
+      <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
+    </span>
+    <i class="fa-brands fa-whatsapp text-lg"></i>
+    <span class="text-xs font-extrabold tracking-wide">Instant Help (WhatsApp)</span>
+  </a>
 </body>
 </html>
