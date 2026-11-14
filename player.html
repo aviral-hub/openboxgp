@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course & Internship Workspace — Openbox</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <script src="shared.js"></script>
+    <style>
+        :root { --background: #f8fafc; --foreground: #0f172a; --muted-bg: #f1f5f9; --muted-text: #475569; --card: #ffffff; }
+        .dark { --background: #0a0a0c; --foreground: #f8fafc; --muted-bg: #111115; --muted-text: #94a3b8; --card: #111115; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--background); color: var(--muted-text); }
+        .heading-font { font-family: 'Space Grotesk', sans-serif; }
+    </style>
+</head>
+<body class="min-h-screen pb-16">
+
+    <header class="max-w-6xl mx-auto mt-4 px-4">
+        <div class="h-16 px-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 flex items-center justify-between">
+            <a href="portal.html" class="text-xs font-bold text-blue-500 hover:underline"><i class="fa-solid fa-arrow-left mr-1"></i> Back to Catalog</a>
+            <div class="flex items-center gap-2.5">
+                <button id="theme-toggle" class="p-2 rounded-xl bg-[var(--muted-bg)] text-xs cursor-pointer"><i class="fa-solid fa-circle-half-stroke"></i></button>
+                <div id="user-pill" class="hidden flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-500/10 text-xs font-bold text-blue-500">
+                    <span id="user-role-badge" class="px-1.5 py-0.5 rounded text-[10px] bg-blue-600 text-white">Student</span>
+                    <span id="user-name-display">User</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 pt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Left (8 cols) -->
+        <div class="lg:col-span-8 space-y-6">
+            <div id="video-box" class="relative w-full aspect-video bg-black rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10"></div>
+
+            <div class="p-6 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3">
+                    <h1 id="lesson-title" class="heading-font text-xl font-bold text-[var(--foreground)]">Loading...</h1>
+                    <button id="complete-btn" onclick="toggleComplete()" class="px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white cursor-pointer">Mark Complete</button>
+                </div>
+                <p id="lesson-desc" class="text-sm leading-relaxed"></p>
+                <div id="resource-box" class="hidden mt-4 p-3 rounded-xl bg-blue-500/10 text-xs text-blue-400"></div>
+            </div>
+
+            <!-- Certificate Banner -->
+            <div id="cert-box" class="hidden p-6 rounded-2xl bg-gradient-to-r from-blue-600/15 to-emerald-500/15 border border-emerald-500/30 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div>
+                    <span class="text-[10px] font-bold uppercase text-emerald-400">Verified Credential Ready</span>
+                    <h3 class="heading-font text-lg font-bold text-[var(--foreground)]">Internship Completion Certificate</h3>
+                </div>
+                <button onclick="openCert()" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-emerald-600 text-white cursor-pointer">
+                    <i class="fa-solid fa-award mr-1"></i> Download Certificate
+                </button>
+            </div>
+
+            <!-- Tasks & Mentor Remarks -->
+            <div id="tasks-box" class="hidden p-6 rounded-2xl bg-[var(--card)] border-2 border-blue-500/30 space-y-5">
+                <h3 class="heading-font text-xl font-bold text-[var(--foreground)]">Practical Internship Tasks</h3>
+                <div id="tasks-list" class="space-y-3"></div>
+
+                <div id="remarks-box" class="hidden p-4 rounded-xl bg-[var(--muted-bg)] space-y-2">
+                    <h4 class="text-xs font-bold text-blue-500 uppercase">Your Submissions & Mentor Remarks</h4>
+                    <div id="remarks-list" class="space-y-2"></div>
+                </div>
+
+                <form onsubmit="submitTask(event)" class="pt-4 border-t border-slate-200 dark:border-white/10 space-y-3">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <select id="task-select" required class="px-3 py-2 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]"></select>
+                        <input type="url" id="task-link" placeholder="https://github.com/username/repo" required class="px-3 py-2 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]" />
+                    </div>
+                    <textarea id="task-notes" rows="2" placeholder="Notes for mentor..." class="w-full px-3 py-2 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]"></textarea>
+                    <button type="submit" id="task-btn" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-blue-600 text-white cursor-pointer">Submit Deliverable</button>
+                    <span id="task-msg" class="text-xs font-semibold ml-3"></span>
+                </form>
+            </div>
+
+            <!-- Quiz -->
+            <div id="quiz-box" class="hidden p-6 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10">
+                <h3 class="heading-font text-lg font-bold text-[var(--foreground)] mb-4">Verification Quiz</h3>
+                <div id="quiz-list" class="space-y-4"></div>
+                <button onclick="gradeQuiz()" class="mt-4 px-5 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white cursor-pointer">Check Answers</button>
+                <span id="quiz-msg" class="text-xs font-bold ml-3"></span>
+            </div>
+        </div>
+
+        <!-- Sidebar (4 cols) -->
+        <aside class="lg:col-span-4 p-6 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 sticky top-6">
+            <h3 id="track-title" class="heading-font text-lg font-bold text-[var(--foreground)] mb-3">Syllabus</h3>
+            <div class="w-full h-2 rounded-full bg-[var(--muted-bg)] overflow-hidden mb-2">
+                <div id="prog-bar" class="h-full bg-emerald-500 transition-all" style="width:0%"></div>
+            </div>
+            <p id="prog-text" class="text-xs mb-4">0% Completed</p>
+            <ul id="lesson-list" class="space-y-2"></ul>
+        </aside>
+    </main>
+
+    <!-- Certificate Modal -->
+    <div id="cert-modal" class="hidden fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4">
+        <div class="w-full max-w-3xl bg-[var(--card)] rounded-2xl p-6 relative">
+            <button onclick="document.getElementById('cert-modal').classList.add('hidden')" class="absolute top-4 right-4 text-lg cursor-pointer">✕</button>
+            <h3 class="heading-font text-lg font-bold text-[var(--foreground)] mb-4">Verified Openbox Certificate</h3>
+            <canvas id="cert-canvas" width="1200" height="850" class="w-full h-auto rounded-xl border border-white/10 mb-4"></canvas>
+            <button onclick="saveCert()" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-emerald-600 text-white cursor-pointer">Download PNG</button>
+        </div>
+    </div>
+
+    <script>
+        if (!currentUser) window.location.href = "login.html";
+
+        let track = null;
+        let lessonIdx = 0;
+
+        document.addEventListener("DOMContentLoaded", async () => {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get("id");
+            const all = await fetchLiveTracks();
+            track = all.find(t => t.id === id) || all[0];
+            if (!track) return;
+
+            document.getElementById("track-title").textContent = track.title;
+            renderSidebar();
+            if (track.lessons.length) loadLesson(0);
+            renderTasks();
+            renderRemarks();
+            renderQuiz();
+            checkCert();
+        });
+
+        function renderSidebar() {
+            const ul = document.getElementById("lesson-list");
+            ul.innerHTML = "";
+            track.lessons.forEach((l, i) => {
+                const done = !!completedLessons[l.id];
+                const li = document.createElement("li");
+                li.onclick = () => loadLesson(i);
+                li.className = `p-3 rounded-xl text-xs flex justify-between cursor-pointer ${i === lessonIdx ? "bg-blue-600/15 font-bold text-[var(--foreground)]" : "bg-[var(--muted-bg)]"}`;
+                li.innerHTML = `<span>${l.title}</span><span>${done ? "✅" : "▶"}</span>`;
+                ul.appendChild(li);
+            });
+            const pct = track.lessons.length ? Math.round((track.lessons.filter(l => completedLessons[l.id]).length / track.lessons.length) * 100) : 0;
+            document.getElementById("prog-bar").style.width = pct + "%";
+            document.getElementById("prog-text").textContent = `${pct}% Completed`;
+        }
+
+        function loadLesson(i) {
+            lessonIdx = i;
+            const l = track.lessons[i];
+            document.getElementById("video-box").innerHTML = `<iframe class="w-full h-full" src="https://www.youtube.com/embed/${l.videoId}" allowfullscreen></iframe>`;
+            document.getElementById("lesson-title").textContent = l.title;
+            document.getElementById("lesson-desc").textContent = l.description;
+            const res = document.getElementById("resource-box");
+            if (l.resourceLink) {
+                res.classList.remove("hidden");
+                res.innerHTML = `<strong>Starter Resource:</strong> <a href="${l.resourceLink}" target="_blank" class="underline">Open Link →</a>`;
+            } else res.classList.add("hidden");
+
+            const btn = document.getElementById("complete-btn");
+            btn.textContent = completedLessons[l.id] ? "Completed ✓" : "Mark Complete";
+            btn.className = completedLessons[l.id] ? "px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 text-white cursor-pointer" : "px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white cursor-pointer";
+            renderSidebar();
+            checkCert();
+        }
+
+        function toggleComplete() {
+            const l = track.lessons[lessonIdx];
+            if (!l) return;
+            const state = !completedLessons[l.id];
+            if (state) completedLessons[l.id] = true; else delete completedLessons[l.id];
+            localStorage.setItem("openbox_progress", JSON.stringify(completedLessons));
+            loadLesson(lessonIdx);
+            fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "progress", email: currentUser.email, courseId: track.id, lessonId: l.id, status: state ? "Completed" : "Incomplete" }) }).catch(() => {});
+        }
+
+        function renderTasks() {
+            if (!track.tasks || !track.tasks.length) return;
+            document.getElementById("tasks-box").classList.remove("hidden");
+            const list = document.getElementById("tasks-list");
+            const sel = document.getElementById("task-select");
+            list.innerHTML = ""; sel.innerHTML = "";
+            track.tasks.forEach(t => {
+                list.innerHTML += `<div class="p-3.5 rounded-xl bg-[var(--muted-bg)] border-l-4 border-blue-500 text-xs"><div class="font-bold text-[var(--foreground)]">${t.title} (${t.deadline})</div><p class="mt-1">${t.instructions}</p></div>`;
+                sel.innerHTML += `<option value="${t.title}">${t.title}</option>`;
+            });
+        }
+
+        function renderRemarks() {
+            const rel = mySubmissions.filter(s => s.courseId === track.id);
+            if (!rel.length) return;
+            document.getElementById("remarks-box").classList.remove("hidden");
+            const list = document.getElementById("remarks-list");
+            list.innerHTML = "";
+            rel.forEach(s => {
+                list.innerHTML += `<div class="p-2.5 rounded-lg bg-[var(--card)] text-xs"><div class="flex justify-between font-bold"><span>${s.taskTitle}</span><span class="text-blue-500">${s.status}</span></div>${s.remark ? `<p class="text-emerald-400 mt-1">Remark: ${s.remark}</p>` : ""}</div>`;
+            });
+        }
+
+        async function submitTask(e) {
+            e.preventDefault();
+            const msg = document.getElementById("task-msg");
+            msg.textContent = "Submitting...";
+            const taskTitle = document.getElementById("task-select").value;
+            const link = document.getElementById("task-link").value.trim();
+            const notes = document.getElementById("task-notes").value.trim();
+
+            await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "submit_task", name: currentUser.name, email: currentUser.email, courseId: track.id, taskTitle, link, notes }) });
+            mySubmissions.push({ courseId: track.id, taskTitle, link, status: "Pending Review", remark: "" });
+            localStorage.setItem("openbox_submissions", JSON.stringify(mySubmissions));
+            renderRemarks();
+            msg.textContent = "✓ Submitted!";
+            e.target.reset();
+        }
+
+        function renderQuiz() {
+            if (!track.quiz || !track.quiz.length) return;
+            document.getElementById("quiz-box").classList.remove("hidden");
+            const list = document.getElementById("quiz-list");
+            list.innerHTML = "";
+            track.quiz.forEach((q, i) => {
+                list.innerHTML += `<div class="text-xs space-y-1"><p class="font-bold text-[var(--foreground)]">${i + 1}. ${q.question}</p>${q.options.map((o, oi) => `<label class="block cursor-pointer"><input type="radio" name="q${i}" value="${oi}"> ${o}</label>`).join("")}</div>`;
+            });
+        }
+
+        function gradeQuiz() {
+            let s = 0;
+            track.quiz.forEach((q, i) => {
+                const c = document.querySelector(`input[name="q${i}"]:checked`);
+                if (c && parseInt(c.value) === q.answer) s++;
+            });
+            document.getElementById("quiz-msg").textContent = `Score: ${s}/${track.quiz.length}`;
+        }
+
+        function checkCert() {
+            if (!track.isInternship) return;
+            const allDone = track.lessons.length > 0 && track.lessons.every(l => completedLessons[l.id]);
+            const approved = approvedCourses.includes(track.id) || isStaff();
+            if (allDone && approved) document.getElementById("cert-box").classList.remove("hidden");
+        }
+
+        function openCert() {
+            document.getElementById("cert-modal").classList.remove("hidden");
+            const ctx = document.getElementById("cert-canvas").getContext("2d");
+            ctx.fillStyle = "#0a0a0c"; ctx.fillRect(0, 0, 1200, 850);
+            ctx.strokeStyle = "#3b82f6"; ctx.lineWidth = 6; ctx.strokeRect(40, 40, 1120, 770);
+            ctx.fillStyle = "#3b82f6"; ctx.font = "bold 24px sans-serif"; ctx.textAlign = "center";
+            ctx.fillText("OPENBOX GROWTH PARTNER", 600, 140);
+            ctx.fillStyle = "#ffffff"; ctx.font = "bold 52px sans-serif";
+            ctx.fillText("CERTIFICATE OF INTERNSHIP", 600, 220);
+            ctx.fillStyle = "#60a5fa"; ctx.font = "bold 56px sans-serif";
+            ctx.fillText(currentUser.name.toUpperCase(), 600, 360);
+            ctx.fillStyle = "#cbd5e1"; ctx.font = "24px sans-serif";
+            ctx.fillText("has successfully completed the practical internship track", 600, 440);
+            ctx.fillStyle = "#ffffff"; ctx.font = "bold 34px sans-serif";
+            ctx.fillText(track.title, 600, 505);
+            ctx.fillStyle = "#94a3b8"; ctx.font = "18px monospace";
+            ctx.fillText(`Issued: ${new Date().toLocaleDateString()} • Verified by Aviral Pathak`, 600, 700);
+        }
+
+        function saveCert() {
+            const a = document.createElement("a");
+            a.download = `Openbox_Certificate_${currentUser.name}.png`;
+            a.href = document.getElementById("cert-canvas").toDataURL();
+            a.click();
+        }
+    </script>
+</body>
+</html>
