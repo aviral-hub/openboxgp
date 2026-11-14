@@ -1003,8 +1003,9 @@ const OPENBOX_COURSES = [
         explanation: "Canonical tags consolidate ranking signals onto a single authoritative URL so duplicate query-string URLs don't dilute SEO equity."
       }
     ]
-  }
-// ==========================================================================
+  },
+
+  // ==========================================================================
   // 6. DIGITAL MARKETING & CLIENT GROWTH TASK-BASED INTERNSHIP
   // ==========================================================================
   {
@@ -1183,5 +1184,5 @@ const OPENBOX_COURSES = [
         explanation: "Isolating variables ensures clean causal learning so winning patterns can be reliably scaled across future campaigns."
       }
     ]
-  } 
+  }
 ];
