@@ -3,11 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Course & Internship Workspace — Openbox</title>
+    <title>Workspace — Openbox Growth Partner</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <script src="shared.js"></script>
+    <script src="courses-data.js"></script>
     <style>
         :root { --background: #f8fafc; --foreground: #0f172a; --muted-bg: #f1f5f9; --muted-text: #475569; --card: #ffffff; }
         .dark { --background: #0a0a0c; --foreground: #f8fafc; --muted-bg: #111115; --muted-text: #94a3b8; --card: #111115; }
@@ -19,7 +20,7 @@
 
     <header class="max-w-6xl mx-auto mt-4 px-4">
         <div class="h-16 px-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 flex items-center justify-between">
-            <a href="portal.html" class="text-xs font-bold text-blue-500 hover:underline"><i class="fa-solid fa-arrow-left mr-1"></i> Back to Catalog</a>
+            <a href="course.html" class="text-xs font-bold text-blue-500 hover:underline"><i class="fa-solid fa-arrow-left mr-1"></i> Back to All Courses</a>
             <div class="flex items-center gap-2.5">
                 <button id="theme-toggle" class="p-2 rounded-xl bg-[var(--muted-bg)] text-xs cursor-pointer"><i class="fa-solid fa-circle-half-stroke"></i></button>
                 <div id="user-pill" class="hidden flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-500/10 text-xs font-bold text-blue-500">
@@ -31,38 +32,38 @@
     </header>
 
     <main class="max-w-6xl mx-auto px-4 pt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        <!-- Left (8 cols) -->
+        <!-- Left Column (8 cols) -->
         <div class="lg:col-span-8 space-y-6">
-            <div id="video-box" class="relative w-full aspect-video bg-black rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10"></div>
+            <div id="video-box" class="relative w-full aspect-video bg-black rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 shadow-xl"></div>
 
-            <!-- Lesson Details & Official MIT/Course Worksheet Link -->
+            <!-- Lecture Info & Official Slides Link -->
             <div class="p-6 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3">
-                    <h1 id="lesson-title" class="heading-font text-xl font-bold text-[var(--foreground)]">Loading...</h1>
+                    <h1 id="lesson-title" class="heading-font text-xl font-bold text-[var(--foreground)]">Lecture Title</h1>
                     <button id="complete-btn" onclick="toggleComplete()" class="px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white cursor-pointer shrink-0">Mark Complete</button>
                 </div>
                 <p id="lesson-desc" class="text-sm leading-relaxed"></p>
                 <div id="resource-box" class="hidden mt-4 p-3.5 rounded-xl bg-blue-500/10 border border-blue-500/20 text-xs text-blue-400"></div>
             </div>
 
-            <!-- Universal Certificate & 1-Click Social Caption Card (Shown when all modules are done) -->
+            <!-- Universal Certificate & 1-Click Share Caption Card -->
             <div id="cert-box" class="hidden p-6 rounded-2xl bg-gradient-to-br from-blue-600/15 via-[var(--card)] to-emerald-500/15 border-2 border-emerald-500/40 space-y-5 shadow-lg">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
                         <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded">✓ 100% Modules Completed</span>
                         <h3 class="heading-font text-xl font-bold text-[var(--foreground)] mt-2">Your Verified Certificate & Share Caption</h3>
-                        <p class="text-xs text-[var(--muted-text)] mt-1">Download your PNG credential and share your achievement on LinkedIn with our verified portal link.</p>
+                        <p class="text-xs text-[var(--muted-text)] mt-1">Download your PNG certificate and copy the LinkedIn caption with hashtags & portal link below.</p>
                     </div>
                     <button onclick="openCert()" class="px-5 py-3 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg cursor-pointer shrink-0">
-                        <i class="fa-solid fa-award mr-1.5"></i> View & Download Certificate
+                        <i class="fa-solid fa-award mr-1.5"></i> Download Certificate
                     </button>
                 </div>
 
-                <!-- Shareable Caption Box with Copy Button -->
+                <!-- Share Caption Box -->
                 <div class="p-4 rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 space-y-3">
                     <div class="flex items-center justify-between">
-                        <span class="text-xs font-bold text-[var(--foreground)]"><i class="fa-brands fa-linkedin text-blue-500 mr-1.5"></i> Ready-to-Post Achievement Caption</span>
-                        <button id="copy-caption-btn" onclick="copyShareCaption()" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white cursor-pointer transition-all">
+                        <span class="text-xs font-bold text-[var(--foreground)]"><i class="fa-brands fa-linkedin text-blue-500 mr-1.5"></i> Achievement Caption + Hashtags + Portal Link</span>
+                        <button id="copy-caption-btn" onclick="copyShareCaption()" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white cursor-pointer">
                             <i class="fa-regular fa-copy mr-1"></i> Copy Caption
                         </button>
                     </div>
@@ -70,15 +71,23 @@
                 </div>
             </div>
 
-            <!-- Problem Sets / Practical Internship Worksheets -->
+            <!-- Documents & Worksheets Section -->
+            <div id="docs-box" class="hidden p-6 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 space-y-4">
+                <h3 class="heading-font text-lg font-bold text-[var(--foreground)]"><i class="fa-solid fa-folder-open text-emerald-500 mr-2"></i>Course Documents & Worksheets</h3>
+                <div id="docs-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
+            </div>
+
+            <!-- Assignments & Internship Task Submission Section -->
             <div id="tasks-box" class="hidden p-6 rounded-2xl bg-[var(--card)] border-2 border-blue-500/30 space-y-5">
                 <div>
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-blue-500 bg-blue-500/10 px-2.5 py-1 rounded">Worksheets & Practical Deliverables</span>
-                    <h3 class="heading-font text-xl font-bold text-[var(--foreground)] mt-2">Problem Sets & Hands-On Tasks</h3>
-                    <p class="text-xs text-[var(--muted-text)] mt-1">Download the worksheet, build your solution, and submit your GitHub repository link below.</p>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-blue-500 bg-blue-500/10 px-2.5 py-1 rounded">Assignments & Sprint Tasks</span>
+                    <h3 class="heading-font text-xl font-bold text-[var(--foreground)] mt-2">Submit Practical Deliverables</h3>
+                    <p class="text-xs text-[var(--muted-text)] mt-1">Complete the assignments/tasks below and submit your GitHub repository or Google Drive link for mentor review.</p>
                 </div>
+
                 <div id="tasks-list" class="space-y-3"></div>
 
+                <!-- Student Remarks History -->
                 <div id="remarks-box" class="hidden p-4 rounded-xl bg-[var(--muted-bg)] space-y-2">
                     <h4 class="text-xs font-bold text-blue-500 uppercase">Your Submissions & Mentor Remarks</h4>
                     <div id="remarks-list" class="space-y-2"></div>
@@ -87,15 +96,15 @@
                 <form onsubmit="submitTask(event)" class="pt-4 border-t border-slate-200 dark:border-white/10 space-y-3">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <select id="task-select" required class="px-3 py-2 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]"></select>
-                        <input type="url" id="task-link" placeholder="https://github.com/username/solution" required class="px-3 py-2 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]" />
+                        <input type="url" id="task-link" placeholder="https://github.com/username/repo" required class="px-3 py-2 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]" />
                     </div>
-                    <textarea id="task-notes" rows="2" placeholder="Notes or summary of your solution..." class="w-full px-3 py-2 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]"></textarea>
-                    <button type="submit" id="task-btn" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-blue-600 text-white cursor-pointer">Submit Worksheet Solution</button>
+                    <textarea id="task-notes" rows="2" placeholder="Summary of your solution or notes for mentor..." class="w-full px-3 py-2 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]"></textarea>
+                    <button type="submit" id="task-btn" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-blue-600 text-white cursor-pointer">Submit Assignment / Task</button>
                     <span id="task-msg" class="text-xs font-semibold ml-3"></span>
                 </form>
             </div>
 
-            <!-- Quiz -->
+            <!-- Quiz Section -->
             <div id="quiz-box" class="hidden p-6 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10">
                 <h3 class="heading-font text-lg font-bold text-[var(--foreground)] mb-4">Verification Quiz</h3>
                 <div id="quiz-list" class="space-y-4"></div>
@@ -123,7 +132,7 @@
             <canvas id="cert-canvas" width="1200" height="850" class="w-full h-auto rounded-xl border border-white/10 mb-4"></canvas>
             <div class="flex flex-wrap items-center justify-between gap-3">
                 <button onclick="copyShareCaption()" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white cursor-pointer">
-                    <i class="fa-regular fa-copy mr-1"></i> Copy LinkedIn Caption + Hashtags
+                    <i class="fa-regular fa-copy mr-1"></i> Copy Caption + Hashtags
                 </button>
                 <button onclick="saveCert()" class="px-6 py-2.5 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white cursor-pointer">
                     <i class="fa-solid fa-download mr-1"></i> Download High-Res PNG
@@ -138,17 +147,16 @@
         let track = null;
         let lessonIdx = 0;
 
-        document.addEventListener("DOMContentLoaded", async () => {
+        document.addEventListener("DOMContentLoaded", () => {
             const params = new URLSearchParams(window.location.search);
             const id = params.get("id");
-            const all = await fetchLiveTracks();
-            track = all.find(t => t.id === id) || all[0];
-            if (!track) return;
+            track = OPENBOX_COURSES.find(c => c.id === id) || OPENBOX_COURSES[0];
 
             document.getElementById("track-title").textContent = track.title;
             renderSidebar();
-            if (track.lessons.length) loadLesson(0);
-            renderTasks();
+            if (track.lectures.length) loadLesson(0);
+            renderDocuments();
+            renderAssignments();
             renderRemarks();
             renderQuiz();
             checkCert();
@@ -157,7 +165,7 @@
         function renderSidebar() {
             const ul = document.getElementById("lesson-list");
             ul.innerHTML = "";
-            track.lessons.forEach((l, i) => {
+            track.lectures.forEach((l, i) => {
                 const done = !!completedLessons[l.id];
                 const li = document.createElement("li");
                 li.onclick = () => loadLesson(i);
@@ -165,22 +173,25 @@
                 li.innerHTML = `<span>${l.title}</span><span class="shrink-0">${done ? "✅" : "▶"}</span>`;
                 ul.appendChild(li);
             });
-            const pct = track.lessons.length ? Math.round((track.lessons.filter(l => completedLessons[l.id]).length / track.lessons.length) * 100) : 0;
+            const pct = track.lectures.length ? Math.round((track.lectures.filter(l => completedLessons[l.id]).length / track.lectures.length) * 100) : 0;
             document.getElementById("prog-bar").style.width = pct + "%";
-            document.getElementById("prog-text").textContent = `${pct}% Completed (${track.lessons.filter(l => completedLessons[l.id]).length}/${track.lessons.length} lectures)`;
+            document.getElementById("prog-text").textContent = `${pct}% Completed (${track.lectures.filter(l => completedLessons[l.id]).length}/${track.lectures.length} lectures)`;
         }
 
         function loadLesson(i) {
             lessonIdx = i;
-            const l = track.lessons[i];
+            const l = track.lectures[i];
             document.getElementById("video-box").innerHTML = `<iframe class="w-full h-full" src="https://www.youtube.com/embed/${l.videoId}" allowfullscreen></iframe>`;
             document.getElementById("lesson-title").textContent = l.title;
             document.getElementById("lesson-desc").textContent = l.description;
+
             const res = document.getElementById("resource-box");
-            if (l.resourceLink) {
+            if (l.documentUrl) {
                 res.classList.remove("hidden");
-                res.innerHTML = `<i class="fa-solid fa-file-code mr-1.5"></i> <strong>Lecture Slides & Code Worksheet:</strong> <a href="${l.resourceLink}" target="_blank" class="underline font-bold">Open Official Resource →</a>`;
-            } else res.classList.add("hidden");
+                res.innerHTML = `<i class="fa-solid fa-file-code mr-1.5"></i> <strong>${l.documentLabel || "Lecture Resource"}:</strong> <a href="${l.documentUrl}" target="_blank" class="underline font-bold">Open Document / Slides →</a>`;
+            } else {
+                res.classList.add("hidden");
+            }
 
             const btn = document.getElementById("complete-btn");
             btn.textContent = completedLessons[l.id] ? "Completed ✓" : "Mark Complete";
@@ -190,28 +201,43 @@
         }
 
         function toggleComplete() {
-            const l = track.lessons[lessonIdx];
+            const l = track.lectures[lessonIdx];
             if (!l) return;
             const state = !completedLessons[l.id];
             if (state) completedLessons[l.id] = true; else delete completedLessons[l.id];
             localStorage.setItem("openbox_progress", JSON.stringify(completedLessons));
             loadLesson(lessonIdx);
-            fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "progress", email: currentUser.email, courseId: track.id, lessonId: l.id, status: state ? "Completed" : "Incomplete" }) }).catch(() => {});
+            fetch(APPS_SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "progress", email: currentUser.email, courseId: track.id, lessonId: l.id, status: state ? "Completed" : "Incomplete" })
+            }).catch(() => {});
         }
 
-        // Linkify URLs inside worksheet instructions automatically
-        function linkify(text) {
-            return text.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank" class="text-blue-500 underline font-bold">Download Worksheet ↗</a>');
+        function renderDocuments() {
+            if (!track.documents || !track.documents.length) return;
+            document.getElementById("docs-box").classList.remove("hidden");
+            const list = document.getElementById("docs-list");
+            list.innerHTML = "";
+            track.documents.forEach(d => {
+                list.innerHTML += `
+                    <a href="${d.url}" target="_blank" class="p-3.5 rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/5 hover:border-emerald-500/40 flex items-center justify-between gap-2 text-xs transition-all">
+                        <div>
+                            <span class="text-[10px] font-bold uppercase text-emerald-500 block">${d.type}</span>
+                            <span class="font-bold text-[var(--foreground)]">${d.title}</span>
+                        </div>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-slate-400"></i>
+                    </a>`;
+            });
         }
 
-        function renderTasks() {
-            if (!track.tasks || !track.tasks.length) return;
+        function renderAssignments() {
+            if (!track.assignments || !track.assignments.length) return;
             document.getElementById("tasks-box").classList.remove("hidden");
             const list = document.getElementById("tasks-list");
             const sel = document.getElementById("task-select");
             list.innerHTML = ""; sel.innerHTML = "";
-            track.tasks.forEach(t => {
-                list.innerHTML += `<div class="p-4 rounded-xl bg-[var(--muted-bg)] border-l-4 border-blue-500 text-xs"><div class="flex justify-between font-bold text-[var(--foreground)] mb-1"><span>${t.title}</span><span class="text-blue-500 font-mono">${t.deadline}</span></div><p class="leading-relaxed">${linkify(t.instructions)}</p></div>`;
+            track.assignments.forEach(t => {
+                list.innerHTML += `<div class="p-4 rounded-xl bg-[var(--muted-bg)] border-l-4 border-blue-500 text-xs"><div class="flex justify-between font-bold text-[var(--foreground)] mb-1"><span>${t.title}</span><span class="text-blue-500 font-mono">${t.deadline}</span></div><p class="leading-relaxed">${t.instructions}</p></div>`;
                 sel.innerHTML += `<option value="${t.title}">${t.title}</option>`;
             });
         }
@@ -223,7 +249,7 @@
             const list = document.getElementById("remarks-list");
             list.innerHTML = "";
             rel.forEach(s => {
-                list.innerHTML += `<div class="p-2.5 rounded-lg bg-[var(--card)] text-xs"><div class="flex justify-between font-bold"><span>${s.taskTitle}</span><span class="text-blue-500">${s.status}</span></div>${s.remark ? `<p class="text-emerald-400 mt-1">Remark: ${s.remark}</p>` : ""}</div>`;
+                list.innerHTML += `<div class="p-2.5 rounded-lg bg-[var(--card)] text-xs"><div class="flex justify-between font-bold"><span>${s.taskTitle}</span><span class="text-blue-500">${s.status}</span></div>${s.remark ? `<p class="text-emerald-400 mt-1">Mentor Remark: ${s.remark}</p>` : ""}</div>`;
             });
         }
 
@@ -235,11 +261,14 @@
             const link = document.getElementById("task-link").value.trim();
             const notes = document.getElementById("task-notes").value.trim();
 
-            await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "submit_task", name: currentUser.name, email: currentUser.email, courseId: track.id, taskTitle, link, notes }) });
+            await fetch(APPS_SCRIPT_URL, {
+                method: "POST",
+                body: JSON.stringify({ action: "submit_task", name: currentUser.name, email: currentUser.email, courseId: track.id, taskTitle, link, notes })
+            });
             mySubmissions.push({ courseId: track.id, taskTitle, link, status: "Pending Review", remark: "" });
             localStorage.setItem("openbox_submissions", JSON.stringify(mySubmissions));
             renderRemarks();
-            msg.textContent = "✓ Submitted!";
+            msg.textContent = "✓ Submitted to Mentor!";
             e.target.reset();
         }
 
@@ -268,14 +297,13 @@
 
         function buildShareCaption() {
             const certId = getCredentialId();
-            const portalUrl = "https://aviral-hub.github.io/openboxgrowthpartner/";
+            const portalUrl = "https://aviral-hub.github.io/openboxgrowthpartner/course.html";
             const techTags = track.techStack.map(t => "#" + t.replace(/[^a-zA-Z0-9]/g, "")).join(" ");
-            return `Thrilled to share that I have successfully completed "${track.title}" through Openbox Growth Partner!\n\nCredential ID: ${certId}\nEarn your verified certificate & explore hands-on tracks here: ${portalUrl}\n\n#OpenboxGrowthPartner #ProofOfWork #SoftwareEngineering #Internship #LearningInPublic ${techTags}`;
+            return `Thrilled to share that I have successfully completed "${track.title}" with Openbox Growth Partner!\n\nCredential ID: ${certId}\nEarn your verified certificate & explore hands-on courses and internships here: ${portalUrl}\n\n#OpenboxGrowthPartner #ProofOfWork #SoftwareEngineering #Internship #LearningInPublic ${techTags}`;
         }
 
         function checkCert() {
-            // Unlocks Certificate + Share Caption at the end of EVERY course & internship once all lessons are completed
-            const allDone = track.lessons.length > 0 && track.lessons.every(l => completedLessons[l.id]);
+            const allDone = track.lectures.length > 0 && track.lectures.every(l => completedLessons[l.id]);
             const box = document.getElementById("cert-box");
             if (allDone) {
                 box.classList.remove("hidden");
@@ -286,8 +314,7 @@
         }
 
         function copyShareCaption() {
-            const text = buildShareCaption();
-            navigator.clipboard.writeText(text).then(() => {
+            navigator.clipboard.writeText(buildShareCaption()).then(() => {
                 const btn = document.getElementById("copy-caption-btn");
                 btn.innerHTML = `<i class="fa-solid fa-check mr-1"></i> Copied!`;
                 setTimeout(() => { btn.innerHTML = `<i class="fa-regular fa-copy mr-1"></i> Copy Caption`; }, 2000);
@@ -297,8 +324,7 @@
         function openCert() {
             document.getElementById("cert-modal").classList.remove("hidden");
             const ctx = document.getElementById("cert-canvas").getContext("2d");
-            const isIntern = track.category.toLowerCase() === "internship";
-            const certHeading = isIntern ? "CERTIFICATE OF INTERNSHIP" : "CERTIFICATE OF COMPLETION";
+            const certHeading = track.isInternship ? "CERTIFICATE OF INTERNSHIP" : "CERTIFICATE OF COMPLETION";
             const certId = getCredentialId();
 
             ctx.fillStyle = "#0a0a0c"; ctx.fillRect(0, 0, 1200, 850);
@@ -320,7 +346,6 @@
             ctx.fillStyle = "#cbd5e1"; ctx.font = "22px sans-serif";
             ctx.fillText("has successfully completed all modules and practical assessments for", 600, 440);
 
-            // Wrap long course titles neatly
             ctx.fillStyle = "#ffffff"; ctx.font = "bold 30px sans-serif";
             if (track.title.length > 48) {
                 const mid = track.title.lastIndexOf(" ", 48);
@@ -334,7 +359,7 @@
             ctx.fillStyle = "#94a3b8"; ctx.font = "17px monospace";
             ctx.fillText(`ISSUED: ${new Date().toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}`, 110, 695);
             ctx.fillText(`CREDENTIAL ID: ${certId}`, 110, 725);
-            ctx.fillText(`VERIFY AT: aviral-hub.github.io/openboxgrowthpartner`, 110, 755);
+            ctx.fillText(`VERIFY AT: aviral-hub.github.io/openboxgrowthpartner/course.html`, 110, 755);
 
             ctx.textAlign = "right";
             ctx.fillStyle = "#ffffff"; ctx.font = "bold 22px sans-serif";
