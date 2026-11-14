@@ -1004,4 +1004,184 @@ const OPENBOX_COURSES = [
       }
     ]
   }
+// ==========================================================================
+  // 6. DIGITAL MARKETING & CLIENT GROWTH TASK-BASED INTERNSHIP
+  // ==========================================================================
+  {
+    id: "digital-marketing-growth-internship",
+    title: "Digital Marketing & Client Growth Internship",
+    category: "Marketing",
+    typeBadge: "4-Week Marketing Internship • Verified Campaign Portfolio",
+    isInternship: true,
+    duration: "4 Weeks • 4 Client Growth Sprints",
+    level: "Beginner to Intermediate",
+    techStack: ["SEO Audits", "Google Ads", "Meta Ads", "GA4 & UTMs", "Copywriting", "Email Automation"],
+    description:
+      "Execute real-world client acquisition sprints over 4 weeks. Conduct live technical SEO & competitor audits, build high-intent search and social ad campaigns, configure GA4 attribution, and deliver a complete 30-day growth playbook.",
+
+    // --- VERIFIED VIDEO LECTURES ---
+    lectures: [
+      {
+        id: "mkt-int-01",
+        title: "01. Client Acquisition Strategy, ICP Positioning & Offer Design",
+        videoId: "xsVTqzratPs",
+        duration: "32 mins",
+        description:
+          "Define Ideal Customer Profiles (ICPs), map search and social demand capture channels, and structure high-converting agency/startup acquisition offers.",
+        documentUrl: "https://developers.google.com/search/docs/fundamentals/seo-starter-guide",
+        documentLabel: "Google Search Central SEO Starter Guide"
+      },
+      {
+        id: "mkt-int-02",
+        title: "02. Search Campaign Execution, Keyword Bidding & Negative Pruning",
+        videoId: "16X5a0Ii7kg",
+        duration: "1 hr 12 mins",
+        description:
+          "Launch and optimize Google Search campaigns for real client budgets: match-type control, Responsive Search Ad copy testing, search term reports, and CPA reduction.",
+        documentUrl: "https://support.google.com/google-ads/answer/6146252",
+        documentLabel: "Google Ads Campaign Architecture Docs"
+      },
+      {
+        id: "mkt-int-03",
+        title: "03. Paid Social Creative Testing & Retargeting Pipelines",
+        videoId: "dAJyqo6wnq4",
+        duration: "52 mins",
+        description:
+          "Design thumb-stopping Meta ad creatives, structure cold prospecting vs. warm retargeting ad sets, and diagnose CTR, CPM, and hook-rate bottlenecks.",
+        documentUrl: "https://www.facebook.com/business/help/112061095610075",
+        documentLabel: "Meta Business Ads Manager Guide"
+      },
+      {
+        id: "mkt-int-04",
+        title: "04. GA4 Attribution, UTM Governance & Client Reporting",
+        videoId: "pRKpaZJJRxk",
+        duration: "46 mins",
+        description:
+          "Track end-to-end lead and revenue attribution in Google Analytics 4, enforce clean UTM naming conventions, and build weekly executive ROAS/CAC scorecards.",
+        documentUrl: "https://support.google.com/analytics/answer/9304153",
+        documentLabel: "GA4 Conversion Tracking Reference"
+      }
+    ],
+
+    // --- OFFICIAL GUIDES & TEMPLATES ---
+    documents: [
+      {
+        title: "Google Campaign URL Builder (UTM Governance Tool)",
+        type: "Template",
+        url: "https://ga-dev-tools.google/campaign-url-builder/"
+      },
+      {
+        title: "Google Search Central: Technical SEO & Indexing Checklist",
+        type: "Guide",
+        url: "https://developers.google.com/search/docs/fundamentals/seo-starter-guide"
+      },
+      {
+        title: "GA4 Events & Conversion Attribution Setup Guide",
+        type: "Guide",
+        url: "https://support.google.com/analytics/answer/9304153"
+      },
+      {
+        title: "Client ROAS, CPA & Funnel Pacing Tracker (Google Sheets)",
+        type: "Template",
+        url: "https://sheets.new"
+      }
+    ],
+
+    // --- GRADED INTERNSHIP SPRINT DELIVERABLES ---
+    assignments: [
+      {
+        title: "Sprint 01: Competitor Teardown & 30-Point SEO Audit",
+        deadline: "Week 1 Milestone",
+        deliverable: "Shared Google Doc + Keyword Sheet",
+        instructions:
+          "Audit an active business website against 2 direct competitors. Deliver a 30-point on-page/technical SEO checklist, 15 high-intent target keywords, and rewritten H1/meta tags."
+      },
+      {
+        title: "Sprint 02: Full-Funnel Google & Meta Ad Launch Pack",
+        deadline: "Week 2 Milestone",
+        deliverable: "Shared Google Sheet (Ad Copy + UTMs)",
+        instructions:
+          "Build a ready-to-upload campaign sheet containing 2 Google Search ad groups (6 headlines, 4 descriptions each), 3 Meta ad creative scripts, and standardized UTM tracking links for every ad."
+      },
+      {
+        title: "Sprint 03: 5-Email Lead Nurture & Conversion Sequence",
+        deadline: "Week 3 Milestone",
+        deliverable: "Shared Google Doc (Email Copy Deck)",
+        instructions:
+          "Write a 5-part automated follow-up sequence (Welcome/Lead Magnet, Pain-Point Story, Case Study Proof, Objection Handling, Urgency CTA) with 2 subject-line A/B variants per email."
+      },
+      {
+        title: "Sprint 04: Capstone 30-Day Client Growth & ROAS Playbook",
+        deadline: "Week 4 Final Evaluation",
+        deliverable: "Executive Slide Deck / Google Sheet Model",
+        instructions:
+          "Present a unified ₹50,000/month media allocation plan across Search, Meta, and CRO experiments, projecting clicks, leads, CAC, and 90-day ROAS targets for mentor sign-off."
+      }
+    ],
+
+    // --- VERIFICATION QUIZ (6 QUESTIONS) ---
+    quiz: [
+      {
+        question: "In a paid social campaign, what does a high click-through rate (CTR) paired with a very low landing page conversion rate usually indicate?",
+        options: [
+          "The ad creative is compelling, but there is friction, slow load speed, or poor message match on the landing page",
+          "The daily budget is too high",
+          "UTM parameters are slowing down the checkout server",
+          "The target audience has never seen the ad"
+        ],
+        answer: 0,
+        explanation: "High CTR proves the ad hook works; low post-click conversion points directly to landing page offer mismatch, UX friction, or slow mobile speed."
+      },
+      {
+        question: "Why should agencies enforce a strict lowercase UTM naming convention (e.g., `utm_source=meta` instead of `Meta` or `META`)?",
+        options: [
+          "Uppercase letters break SSL certificates",
+          "GA4 treats `meta`, `Meta`, and `META` as separate traffic sources, fragmenting campaign attribution reports",
+          "Google Ads rejects URLs with lowercase letters",
+          "UTMs only work on desktop browsers"
+        ],
+        answer: 1,
+        explanation: "GA4 is case-sensitive for UTM parameters; inconsistent casing splits identical channel traffic across multiple rows."
+      },
+      {
+        question: "If a campaign generates 50 leads from ₹25,000 in ad spend and 10 of those leads become paying customers, what is the Customer Acquisition Cost (CAC)?",
+        options: ["₹500", "₹1,250", "₹2,500", "₹5,000"],
+        answer: 2,
+        explanation: "CAC = Total Ad Spend / Paying Customers Acquired = ₹25,000 / 10 = ₹2,500 (whereas Cost Per Lead is ₹500)."
+      },
+      {
+        question: "What is the primary purpose of a retargeting ad set in a full-funnel growth strategy?",
+        options: [
+          "To reach cold audiences who have never heard of the brand",
+          "To re-engage high-intent visitors (pricing page viewers, cart abandoners) with social proof or objection-handling offers",
+          "To block existing customers from seeing any ads",
+          "To replace technical SEO completely"
+        ],
+        answer: 1,
+        explanation: "Retargeting warms up users who already showed intent, typically delivering higher conversion rates and lower CPA than cold prospecting."
+      },
+      {
+        question: "Which metric best measures the top-of-funnel stopping power of a short-form video ad on Meta?",
+        options: [
+          "3-Second Video Plays / Impressions (Hook Rate)",
+          "Domain Authority",
+          "Database Query Latency",
+          "Unsubscribe Rate"
+        ],
+        answer: 0,
+        explanation: "Hook Rate (3-second video views divided by total impressions) isolates whether your opening visual/headline captures attention before users scroll past."
+      },
+      {
+        question: "When running an A/B test on a client landing page, why should you test one major hypothesis at a time?",
+        options: [
+          "Browsers cannot load two CSS files simultaneously",
+          "Changing multiple unrelated elements at once makes it impossible to attribute which change caused the conversion lift or drop",
+          "Google Search penalizes pages with two buttons",
+          "A/B tests only run for 10 minutes"
+        ],
+        answer: 1,
+        explanation: "Isolating variables ensures clean causal learning so winning patterns can be reliably scaled across future campaigns."
+      }
+    ]
+  } 
 ];
