@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning & Internship Hub — Openbox</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <script src="shared.js"></script>
+    <style>
+        :root { --background: #f8fafc; --foreground: #0f172a; --muted-bg: #f1f5f9; --muted-text: #475569; --card: #ffffff; }
+        .dark { --background: #0a0a0c; --foreground: #f8fafc; --muted-bg: #111115; --muted-text: #94a3b8; --card: #111115; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--background); color: var(--muted-text); }
+        .heading-font { font-family: 'Space Grotesk', sans-serif; }
+    </style>
+</head>
+<body class="min-h-screen pb-16">
+
+    <!-- Subpage Navbar -->
+    <header class="max-w-6xl mx-auto mt-4 px-4">
+        <div class="h-16 px-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <a href="index.html" class="heading-font font-bold text-[var(--foreground)] text-lg">Openbox<span class="text-blue-500">.</span></a>
+                <span class="text-xs text-slate-500">/</span>
+                <span class="text-xs font-bold text-blue-500">Learning Hub</span>
+            </div>
+            <div class="flex items-center gap-2.5">
+                <a id="nav-studio-link" href="studio.html" class="hidden text-xs font-bold text-amber-500 px-3 py-2 rounded-xl bg-amber-500/10">Studio</a>
+                <button id="theme-toggle" class="p-2 rounded-xl bg-[var(--muted-bg)] text-xs cursor-pointer"><i class="fa-solid fa-circle-half-stroke"></i></button>
+                <div id="user-pill" class="hidden flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-500/10 text-xs font-bold text-blue-500">
+                    <span id="user-role-badge" class="px-1.5 py-0.5 rounded text-[10px] bg-blue-600 text-white">Student</span>
+                    <span id="user-name-display">User</span>
+                    <button onclick="logoutUser()" class="text-red-400 ml-1 cursor-pointer"><i class="fa-solid fa-right-from-bracket"></i></button>
+                </div>
+                <a id="header-login-btn" href="login.html" class="px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white">Login</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 pt-10">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 pb-6 border-b border-slate-200 dark:border-white/10">
+            <div>
+                <h1 class="heading-font text-3xl font-bold text-[var(--foreground)]">Courses & Task-Based Internships</h1>
+                <p class="text-xs text-emerald-500 font-semibold mt-1">✓ All tracks unlocked for open testing • Select any track to enter player.html</p>
+            </div>
+            <input type="text" id="search-box" oninput="render()" placeholder="Search tracks..." class="w-full md:w-64 px-4 py-2 text-sm rounded-xl bg-[var(--card)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]" />
+        </div>
+
+        <div id="loader" class="text-center py-12 text-xs text-blue-500 font-bold"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Fetching live tracks from Google Sheet...</div>
+        <div id="grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </main>
+
+    <script>
+        let tracks = [];
+        document.addEventListener("DOMContentLoaded", async () => {
+            tracks = await fetchLiveTracks();
+            document.getElementById("loader").classList.add("hidden");
+            render();
+        });
+
+        function render() {
+            const q = document.getElementById("search-box").value.toLowerCase();
+            const grid = document.getElementById("grid");
+            grid.innerHTML = "";
+
+            tracks.filter(t => t.title.toLowerCase().includes(q) || t.description.toLowerCase().includes(q)).forEach(t => {
+                const total = t.lessons.length;
+                const done = t.lessons.filter(l => completedLessons[l.id]).length;
+                const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+                const card = document.createElement("div");
+                card.className = "flex flex-col justify-between p-6 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 hover:border-blue-500/40 transition-all";
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-3">
+                            <span class="text-[10px] font-bold uppercase px-2.5 py-1 rounded bg-blue-500/10 text-blue-500">${t.category} • Open</span>
+                            <span class="text-xs font-bold text-emerald-500">${pct}% Done</span>
+                        </div>
+                        <h3 class="heading-font text-lg font-bold text-[var(--foreground)] mb-2">${t.title}</h3>
+                        <p class="text-xs text-[var(--muted-text)] mb-4">${t.description}</p>
+                        <div class="flex flex-wrap gap-1.5 mb-6">
+                            ${t.techStack.map(s => `<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-[var(--muted-bg)]">${s}</span>`).join("")}
+                        </div>
+                    </div>
+                    <a href="player.html?id=${encodeURIComponent(t.id)}" class="w-full py-2.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white text-center block">
+                        ${t.isInternship ? "Enter Internship Sprint →" : "Start Course →"}
+                    </a>
+                `;
+                grid.appendChild(card);
+            });
+        }
+    </script>
+</body>
+</html>
