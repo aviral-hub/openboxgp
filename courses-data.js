@@ -1457,9 +1457,11 @@ const OPENBOX_COURSES = [
         explanation: "Expected Shortfall averages all losses exceeding the VaR cutoff and satisfies sub-additivity (coherence) for portfolio diversification."
       }
     ]
-  }
+    ]
+  },
+
   // ==========================================================================
-  // 4. FINANCIAL MODELLING & VALUATION (THE VALUATION SCHOOL CURRICULUM)
+  // 8. FINANCIAL MODELLING & VALUATION (THE VALUATION SCHOOL CURRICULUM)
   // ==========================================================================
   {
     id: "financial-modelling-valuation",
