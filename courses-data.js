@@ -12,24 +12,28 @@
  *    - typeBadge: Label shown on card (e.g., "Task-Based Internship", "MIT OCW Track").
  *    - isInternship: `true` for Internships (issues "CERTIFICATE OF INTERNSHIP"),
  *                    `false` for Courses (issues "CERTIFICATE OF COMPLETION").
+ *    - duration: Estimated completion time (e.g., "6 Weeks • Self-Paced").
+ *    - level: "Beginner" | "Intermediate" | "Advanced"
  *    - techStack: Array of skills/tools shown as tags & hashtags on certificate.
- *    - description: 1–2 sentence overview.
+ *    - description: Concise overview of outcomes and curriculum scope.
  *    - lectures: Array of video modules:
  *        * id: Unique lecture ID (e.g., "py-l1").
  *        * title: Lecture title.
- *        * videoId: YouTube Video ID only (e.g., "ytBb333b114").
- *        * description: Summary of the lecture.
- *        * documentUrl: (Optional) Link to slides, PDF, GitHub repo, or worksheet.
- *        * documentLabel: (Optional) Button text for the document link.
+ *        * videoId: Verified YouTube Video ID only (e.g., "nykOeWgQcHM").
+ *        * duration: Video length (e.g., "48 mins").
+ *        * description: Detailed summary of concepts covered.
+ *        * documentUrl: Link to official slides, PDF, GitHub repo, or docs.
+ *        * documentLabel: Button text for the document link.
  *    - documents: Array of downloadable study guides, PDFs, or reference sheets:
  *        * title: Document name.
- *        * type: "PDF" | "Slides" | "GitHub Repo" | "Worksheet"
- *        * url: Direct link to Google Drive, GitHub, or MIT OCW resource.
+ *        * type: "Syllabus" | "Worksheet" | "Guide" | "Cheat Sheet" | "Template"
+ *        * url: Verified direct URL to MIT OCW, GitHub, MDN, or Google Sheets.
  *    - assignments: Array of practical tasks/assignments students submit:
  *        * title: Assignment or task title.
- *        * deadline: e.g., "Week 1 Milestone" or "Module 2 Assignment".
- *        * instructions: Clear requirements + worksheet link if applicable.
- *    - quiz: (Optional) Verification quiz questions (`answer` is 0-indexed).
+ *        * deadline: Milestone label (e.g., "Week 1 Milestone").
+ *        * deliverable: Expected submission format (e.g., "GitHub Repository URL").
+ *        * instructions: Clear step-by-step requirements & acceptance criteria.
+ *    - quiz: Verification quiz questions (`answer` is 0-indexed, includes `explanation`).
  * ============================================================================
  */
 
@@ -43,160 +47,305 @@ const OPENBOX_COURSES = [
     category: "Development",
     typeBadge: "MIT OCW Curriculum • Certificate",
     isInternship: false,
-    techStack: ["Python 3", "Algorithms", "OOP", "Complexity", "Data Structures"],
-    description: "Complete MIT OpenCourseWare (Fall 2016) curriculum featuring all 12 video lectures, lecture slides, and official Problem Set assignments.",
+    duration: "6–8 Weeks • 12 Lectures + 6 Problem Sets",
+    level: "Beginner to Intermediate",
+    techStack: ["Python 3", "Algorithms", "OOP", "Big-O Complexity", "Data Structures", "Recursion"],
+    description:
+      "Complete MIT OpenCourseWare (Fall 2016) computer science curriculum taught by Dr. Ana Bell and Prof. Eric Grimson. Covers computational thinking, Python 3 fundamentals, recursion, object-oriented design, asymptotic complexity, and classic sorting/searching algorithms with all 12 official lectures, slides, and problem sets.",
 
-    // --- VIDEO LECTURES ---
+    // --- VIDEO LECTURES (ALL 12 YOUTUBE IDs & OCW LINKS VERIFIED) ---
     lectures: [
       {
         id: "mit-l01",
         title: "Lecture 1: What is Computation?",
-        videoId: "ytBb333b114",
-        description: "Introduction to computer science, declarative vs imperative knowledge, and Python basics.",
-        documentUrl: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-1-what-is-computation/",
+        videoId: "nykOeWgQcHM",
+        duration: "48 mins",
+        description:
+          "Covers the fundamentals of computation, declarative vs. imperative knowledge, stored-program computer architecture, syntax vs. semantics, scalar objects (int, float, bool), expressions, and variable bindings in Python.",
+        documentUrl:
+          "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-1-what-is-computation/",
         documentLabel: "Lecture 1 Slides & Python Code"
       },
       {
         id: "mit-l02",
         title: "Lecture 2: Branching and Iteration",
         videoId: "0jljZRnHwOI",
-        description: "Strings, input/output, comparison operators, branching (if/elif/else), and while/for loops.",
-        documentUrl: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-2-branching-and-iteration/",
+        duration: "44 mins",
+        description:
+          "Explores string concatenation and type casting, console input/output, comparison and boolean logic operators, indentation-based control flow (if/elif/else), and bounded vs. unbounded iteration using for and while loops.",
+        documentUrl:
+          "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-2-branching-and-iteration/",
         documentLabel: "Lecture 2 Slides & Code"
       },
       {
         id: "mit-l03",
         title: "Lecture 3: String Manipulation, Guess & Check, Bisection",
         videoId: "SE4P7IVCunE",
-        description: "String slicing, exhaustive enumeration, approximate solutions, and bisection search.",
-        documentUrl: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-3-string-manipulation-guess-and-check-approximations-bisection/",
+        duration: "50 mins",
+        description:
+          "Deep dive into string indexing, slicing, and immutability, followed by three core numerical problem-solving paradigms: exhaustive enumeration (guess-and-check), epsilon-based approximations, and logarithmic bisection search.",
+        documentUrl:
+          "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-3-string-manipulation-guess-and-check-approximations-bisection/",
         documentLabel: "Lecture 3 Slides & Code"
       },
       {
         id: "mit-l04",
         title: "Lecture 4: Decomposition, Abstractions, Functions",
         videoId: "MjbuarJ7SE0",
-        description: "Structuring programs with functions, variable scope, keyword arguments, and specifications.",
-        documentUrl: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-4-decomposition-abstractions-functions/",
+        duration: "53 mins",
+        description:
+          "Introduces modular program design through decomposition and abstraction, defining functions with formal parameters, docstrings/specifications, return vs. print behavior, call frames, and lexical variable scoping.",
+        documentUrl:
+          "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-4-decomposition-abstractions-functions/",
         documentLabel: "Lecture 4 Slides & Code"
       },
       {
         id: "mit-l05",
         title: "Lecture 5: Tuples, Lists, Aliasing, Mutability, Cloning",
         videoId: "RvRKT-jQgko",
-        description: "Compound data types, list operations, aliasing side-effects, and cloning lists safely.",
-        documentUrl: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-5-tuples-lists-aliasing-mutability-cloning/",
+        duration: "46 mins",
+        description:
+          "Contrasts immutable tuples against mutable lists in memory. Demonstrates how reference aliasing causes unintended side effects during iteration and how to safely clone sequences.",
+        documentUrl:
+          "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-5-tuples-lists-aliasing-mutability-cloning/",
         documentLabel: "Lecture 5 Slides & Code"
       },
       {
         id: "mit-l06",
         title: "Lecture 6: Recursion, Dictionaries",
         videoId: "WPSeyjX1-4s",
-        description: "Inductive reasoning, recursive algorithms (Towers of Hanoi, Fibonacci), and Python dictionaries.",
-        documentUrl: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-6-recursion-dictionaries/",
+        duration: "42 mins",
+        description:
+          "Breaks down divide-and-conquer recursion using base cases and inductive steps (multiplication, factorial, Towers of Hanoi, Fibonacci) and introduces hash-based Python dictionaries for O(1) memoization.",
+        documentUrl:
+          "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-6-recursion-dictionaries/",
         documentLabel: "Lecture 6 Slides & Code"
       },
       {
         id: "mit-l07",
         title: "Lecture 7: Testing, Debugging, Exceptions, Assertions",
         videoId: "9H6muyznWU0",
-        description: "Black-box and glass-box testing, systematic debugging, try/except blocks, and assertions.",
-        documentUrl: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-7-testing-debugging-exceptions-assertions/",
+        duration: "46 mins",
+        description:
+          "Covers defensive programming practices: unit/integration testing, black-box boundary conditions vs. glass-box path coverage, binary-search debugging, try/except/else/finally blocks, and precondition assertions.",
+        documentUrl:
+          "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-7-testing-debugging-exceptions-assertions/",
         documentLabel: "Lecture 7 Slides & Code"
       },
       {
         id: "mit-l08",
         title: "Lecture 8: Object Oriented Programming",
         videoId: "-DP1i2ZU9gk",
-        description: "Creating custom data types with Python classes, attributes, methods, and dunder operators.",
-        documentUrl: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-8-object-oriented-programming/",
+        duration: "47 mins",
+        description:
+          "Introduces data abstraction with custom Python classes, __init__ constructors, instance attributes, methods, self binding, and operator overloading with special dunder methods (__str__, __add__, __eq__).",
+        documentUrl:
+          "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-8-object-oriented-programming/",
         documentLabel: "Lecture 8 Slides & Code"
       },
       {
         id: "mit-l09",
         title: "Lecture 9: Python Classes and Inheritance",
         videoId: "FlGjISF3l78",
-        description: "Getters/setters, class variables, subclasses, inheritance hierarchies, and OOP design.",
-        documentUrl: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-9-python-classes-and-inheritance/",
+        duration: "44 mins",
+        description:
+          "Explores information hiding via getters and setters, class-level shared variables vs. instance variables, parent-child inheritance hierarchies, method overriding, and polymorphic design.",
+        documentUrl:
+          "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-9-python-classes-and-inheritance/",
         documentLabel: "Lecture 9 Slides & Code"
       },
       {
         id: "mit-l10",
         title: "Lecture 10: Understanding Program Efficiency, Part 1",
         videoId: "o9nW0uBqvEo",
-        description: "Measuring algorithmic efficiency, orders of growth, and Big-O asymptotic notation.",
-        documentUrl: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-10-understanding-program-efficiency-part-1/",
+        duration: "49 mins",
+        description:
+          "Explains why wall-clock timing and operation counting are machine-dependent, introducing worst-case asymptotic analysis and Big-O notation to measure algorithmic scalability.",
+        documentUrl:
+          "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-10-understanding-program-efficiency-part-1/",
         documentLabel: "Lecture 10 Slides & Code"
       },
       {
         id: "mit-l11",
         title: "Lecture 11: Understanding Program Efficiency, Part 2",
         videoId: "7lbeVoqPs_E",
-        description: "Analyzing logarithmic, polynomial, and exponential complexity classes with worked examples.",
-        documentUrl: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-11-understanding-program-efficiency-part-2/",
+        duration: "49 mins",
+        description:
+          "Walks through formal complexity classes—O(1), O(log n), O(n), O(n log n), O(n^c), and O(c^n)—by analyzing iterative loops, bisection search, subset generation, and recursive functions.",
+        documentUrl:
+          "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-11-understanding-program-efficiency-part-2/",
         documentLabel: "Lecture 11 Slides & Code"
       },
       {
         id: "mit-l12",
         title: "Lecture 12: Searching and Sorting",
         videoId: "6LOwPhPDwcg",
-        description: "Linear search, binary search, selection sort, bubble sort, and divide-and-conquer merge sort.",
-        documentUrl: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-12-searching-and-sorting/",
+        duration: "51 mins",
+        description:
+          "Compares linear search on unsorted lists vs. O(log n) binary search on sorted lists, then analyzes monkey sort, O(n^2) bubble/selection sort, and O(n log n) divide-and-conquer merge sort.",
+        documentUrl:
+          "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/lecture-12-searching-and-sorting/",
         documentLabel: "Lecture 12 Slides & Code"
       }
     ],
 
     // --- COURSE DOCUMENTS & WORKSHEETS ---
     documents: [
-      { title: "MIT 6.0001 Official Syllabus & Reading Guide", type: "Syllabus", url: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/pages/syllabus/" },
-      { title: "Problem Set 0 Worksheet & Starter Files", type: "Worksheet", url: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/ps0/" },
-      { title: "Problem Set 1 Worksheet (House Hunting & Bisection)", type: "Worksheet", url: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/ps1/" },
-      { title: "Problem Set 2 Worksheet (Hangman Game)", type: "Worksheet", url: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/ps2/" },
-      { title: "Problem Set 3 Worksheet (6.0001 Word Game)", type: "Worksheet", url: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/ps3/" },
-      { title: "Problem Set 4 Worksheet (Recursion & Caesar Cipher)", type: "Worksheet", url: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/ps4/" },
-      { title: "Problem Set 5 Worksheet (RSS Feed Filter OOP)", type: "Worksheet", url: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/ps5/" }
+      {
+        title: "MIT 6.0001 Official Syllabus & Reading Guide",
+        type: "Syllabus",
+        url: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/pages/syllabus/"
+      },
+      {
+        title: "Problem Set 0 Worksheet & Starter Files",
+        type: "Worksheet",
+        url: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/ps0/"
+      },
+      {
+        title: "Problem Set 1 Worksheet (House Hunting & Bisection)",
+        type: "Worksheet",
+        url: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/ps1/"
+      },
+      {
+        title: "Problem Set 2 Worksheet (Hangman Game)",
+        type: "Worksheet",
+        url: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/ps2/"
+      },
+      {
+        title: "Problem Set 3 Worksheet (6.0001 Word Game)",
+        type: "Worksheet",
+        url: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/ps3/"
+      },
+      {
+        title: "Problem Set 4 Worksheet (Recursion & Caesar Cipher)",
+        type: "Worksheet",
+        url: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/ps4/"
+      },
+      {
+        title: "Problem Set 5 Worksheet (RSS Feed Filter OOP)",
+        type: "Worksheet",
+        url: "https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/resources/ps5/"
+      },
+      {
+        title: "Official Python 3 Standard Library & Language Reference",
+        type: "Guide",
+        url: "https://docs.python.org/3/tutorial/index.html"
+      }
     ],
 
     // --- GRADED ASSIGNMENTS / TASKS ---
     assignments: [
       {
-        title: "Problem Set 0: Python Setup & Arithmetic Expressions",
-        deadline: "Assignment 01",
-        instructions: "Write ps0.py computing x**y and log2(x). Push your code to GitHub and submit the repository URL."
+        title: "Problem Set 0: Python Environment Setup & Arithmetic Expressions",
+        deadline: "Module 1 Milestone",
+        deliverable: "GitHub Repository URL (ps0.py)",
+        instructions:
+          "Configure Python 3 locally, prompt the user for integers x and y, compute x**y and math.log2(x), and format clean console output. Commit ps0.py to a public GitHub repository and submit the link."
       },
       {
         title: "Problem Set 1: House Hunting & Savings Bisection Search",
-        deadline: "Assignment 02",
-        instructions: "Implement Part A, Part B (semi-annual raise), and Part C (bisection search for optimal savings rate)."
+        deadline: "Module 2 Milestone",
+        deliverable: "GitHub Repository URL (ps1a.py, ps1b.py, ps1c.py)",
+        instructions:
+          "Solve three progressive financial modeling tasks: (Part A) calculate months required to save for a down payment with compound returns; (Part B) factor in semi-annual salary raises; (Part C) implement bisection search to find the exact optimal savings rate within $100 accuracy in 36 months."
       },
       {
-        title: "Problem Set 2: Hangman Game with Wildcard Hints",
-        deadline: "Assignment 03",
-        instructions: "Build interactive Hangman supporting wildcard pattern matching using words.txt."
+        title: "Problem Set 2: Interactive Hangman with Wildcard Hints",
+        deadline: "Module 3 Milestone",
+        deliverable: "GitHub Repository URL (hangman.py)",
+        instructions:
+          "Build a terminal-based Hangman game loading words.txt. Enforce guess limits, penalize vowel vs. consonant misses accurately, track guessed letters, and implement the '*' wildcard hint command to display all matching candidate words."
       },
       {
-        title: "Problem Set 5: RSS Feed Filter & Trigger Engine (OOP)",
+        title: "Problem Set 4: Recursive Permutations & Caesar Cipher OOP",
+        deadline: "Module 4 Milestone",
+        deliverable: "GitHub Repository URL (ps4a.py, ps4b.py, ps4c.py)",
+        instructions:
+          "Write a recursive function generating all permutations of a string, then design Message, PlaintextMessage, and CiphertextMessage classes to encrypt and automatically decrypt Caesar-shifted text using dictionary validation."
+      },
+      {
+        title: "Problem Set 5: Real-Time RSS Feed Filter & Trigger Engine (OOP)",
         deadline: "Capstone Assignment",
-        instructions: "Implement class inheritance for PhraseTrigger, TimeTrigger, and composite AND/OR/NOT news filters."
+        deliverable: "GitHub Repository URL (ps5.py)",
+        instructions:
+          "Architect an object-oriented news alert system. Implement abstract Trigger base classes, TitleTrigger/DescriptionTrigger phrase matching, BeforeTrigger/AfterTrigger timestamp comparisons, and composite NotTrigger, AndTrigger, and OrTrigger logic."
       }
     ],
 
-    // --- VERIFICATION QUIZ ---
+    // --- VERIFICATION QUIZ (8 COMPREHENSIVE QUESTIONS) ---
     quiz: [
       {
-        question: "Which Python data structure is immutable?",
-        options: ["List", "Dictionary", "Tuple"],
-        answer: 2
+        question: "Which Python built-in sequence type is immutable once created?",
+        options: ["List", "Dictionary", "Tuple", "Set"],
+        answer: 2,
+        explanation: "Tuples are immutable sequences in Python; attempting to reassign an element raises a TypeError."
       },
       {
-        question: "What is the time complexity of Binary Search on a sorted list of length n?",
-        options: ["O(n)", "O(log n)", "O(n^2)"],
-        answer: 1
+        question: "If `L1 = [1, 2, 3]` and `L2 = L1`, what happens after `L2.append(4)`?",
+        options: [
+          "Only L2 becomes [1, 2, 3, 4]; L1 remains [1, 2, 3]",
+          "Both L1 and L2 evaluate to [1, 2, 3, 4] due to aliasing",
+          "Python raises a MemoryAliasError",
+          "L1 becomes [4, 1, 2, 3]"
+        ],
+        answer: 1,
+        explanation: "Assigning `L2 = L1` binds both names to the same mutable list object in memory rather than cloning it."
       },
       {
-        question: "What is the worst-case time complexity of Merge Sort?",
-        options: ["O(n log n)", "O(n)", "O(2^n)"],
-        answer: 0
+        question: "Why does bisection search fail if applied to an unsorted list?",
+        options: [
+          "Bisection search requires elements to be integers",
+          "It relies on monotonic ordering to safely discard half the search space each step",
+          "Python's // operator only works on sorted arrays",
+          "Unsorted lists cannot be indexed in O(1) time"
+        ],
+        answer: 1,
+        explanation: "Discarding the left or right half at the midpoint is only valid when all elements on one side are guaranteed to be smaller or larger."
+      },
+      {
+        question: "What are the two essential components of every valid recursive function?",
+        options: [
+          "A for-loop and a global counter",
+          "One or more base cases and a recursive step that moves toward a base case",
+          "A try/except block and a class constructor",
+          "A dictionary cache and a lambda expression"
+        ],
+        answer: 1,
+        explanation: "Without a reachable base case and a strictly smaller subproblem in the recursive step, recursion triggers a RecursionError."
+      },
+      {
+        question: "In Python OOP, what is the primary purpose of the `__init__` method?",
+        options: [
+          "To destroy an object when it goes out of scope",
+          "To initialize a newly created instance's attributes",
+          "To convert an object into a printable string",
+          "To import external modules into a class"
+        ],
+        answer: 1,
+        explanation: "`__init__` is Python's instance initializer, automatically invoked when instantiating a class to bind initial state to `self`."
+      },
+      {
+        question: "What is the worst-case asymptotic time complexity of Binary Search on a sorted list of length n?",
+        options: ["O(1)", "O(log n)", "O(n)", "O(n log n)"],
+        answer: 1,
+        explanation: "Each comparison halves the remaining search interval, taking at most log2(n) steps."
+      },
+      {
+        question: "Which sorting algorithm divides a list recursively into halves and merges them in O(n log n) worst-case time?",
+        options: ["Bubble Sort", "Selection Sort", "Merge Sort", "Monkey Sort"],
+        answer: 2,
+        explanation: "Merge Sort splits the array log2(n) times and performs O(n) linear merges at each level, yielding O(n log n) complexity."
+      },
+      {
+        question: "What distinguishes glass-box testing from black-box testing?",
+        options: [
+          "Glass-box tests are written without seeing the source code",
+          "Glass-box tests are designed using knowledge of internal code paths, branches, and loops",
+          "Glass-box testing only checks UI styling",
+          "Black-box testing requires modifying production functions"
+        ],
+        answer: 1,
+        explanation: "Glass-box (white-box) test suites inspect the implementation directly to exercise every conditional branch and loop boundary."
       }
     ]
   },
@@ -208,48 +357,146 @@ const OPENBOX_COURSES = [
     id: "swe-internship-sprint",
     title: "Full-Stack Software Engineering Internship",
     category: "Internship",
-    typeBadge: "4-Week Task Internship",
+    typeBadge: "4-Week Task Internship • Verified GitHub Portfolio",
     isInternship: true,
-    techStack: ["React", "Node.js", "Git", "REST APIs"],
-    description: "Ship real production features, pass mentor code reviews, and build verifiable GitHub commits in a 4-week sprint.",
+    duration: "4 Weeks • 4 Production Sprints",
+    level: "Intermediate",
+    techStack: ["React", "Node.js", "Express", "Git & GitHub", "REST APIs", "JSON"],
+    description:
+      "Simulate an industry engineering sprint over 4 weeks. Master professional Git workflows, build responsive React interfaces, design resilient Node.js/Express REST APIs, and pass mentor code reviews with verifiable GitHub pull requests.",
+
     lectures: [
       {
         id: "swe-1",
-        title: "01. Git Workflow & Production Code Standards",
-        videoId: "W6NZfCO5SIk",
-        description: "Learn branch naming, atomic commits, pull request hygiene, and how internship tasks are evaluated.",
+        title: "01. Git Workflow, Branching & Production Code Standards",
+        videoId: "mAFoROnOfHs",
+        duration: "1 hr 21 mins",
+        description:
+          "Master end-to-end Git and GitHub collaboration: staging, atomic commits, feature branching, resolving merge conflicts, stashing, rebasing, and opening clean Pull Requests for code review.",
         documentUrl: "https://github.com/aviral-hub/openboxgrowthpartner",
         documentLabel: "Openbox Starter Repository"
       },
       {
         id: "swe-2",
-        title: "02. Building High-Throughput APIs & State",
-        videoId: "R8rmfD9Y5-c",
-        description: "Structuring clean backend routes, error handling, and asynchronous state management.",
-        documentUrl: "",
-        documentLabel: ""
-      }
-    ],
-    documents: [
-      { title: "Openbox Git & Pull Request Guidelines", type: "Guide", url: "https://github.com/aviral-hub/openboxgrowthpartner" }
-    ],
-    assignments: [
-      {
-        title: "Task 01: Distributed Task Manager UI & State",
-        deadline: "Week 1 Milestone",
-        instructions: "Build a responsive task board with filtering and localStorage persistence. Push to GitHub and submit the link."
+        title: "02. Building RESTful APIs with Node.js & Express",
+        videoId: "pKd0Rpw7O48",
+        duration: "56 mins",
+        description:
+          "Architect production-ready REST endpoints using Express.js. Covers HTTP methods (GET, POST, PUT, DELETE), route parameters, request payload validation, middleware, and proper HTTP status codes.",
+        documentUrl: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Status",
+        documentLabel: "MDN HTTP Status Codes Reference"
       },
       {
-        title: "Task 02: REST API Integration & Error Handling",
-        deadline: "Week 2 Milestone",
-        instructions: "Connect your frontend to a live JSON API with loading skeletons and retry states."
+        id: "swe-3",
+        title: "03. Modern JavaScript & Asynchronous State Fundamentals",
+        videoId: "W6NZfCO5SIk",
+        duration: "48 mins",
+        description:
+          "Solidify core JavaScript patterns required for React and Node.js: closures, objects, array transformations, ES6 modules, and clean state updates.",
+        documentUrl: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide",
+        documentLabel: "MDN JavaScript Developer Guide"
       }
     ],
+
+    documents: [
+      {
+        title: "Openbox Official Starter Repository & Contribution Setup",
+        type: "GitHub Repo",
+        url: "https://github.com/aviral-hub/openboxgrowthpartner"
+      },
+      {
+        title: "GitHub Pull Request & Code Review Best Practices",
+        type: "Guide",
+        url: "https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/about-pull-requests"
+      },
+      {
+        title: "MDN Web Docs: HTTP Request Methods & REST Semantics",
+        type: "Guide",
+        url: "https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods"
+      },
+      {
+        title: "Express.js Official Routing & Error Handling Documentation",
+        type: "Guide",
+        url: "https://expressjs.com/en/guide/routing.html"
+      }
+    ],
+
+    assignments: [
+      {
+        title: "Task 01: Distributed Task Board UI & Local State Persistence",
+        deadline: "Week 1 Milestone",
+        deliverable: "GitHub PR Link + Live Preview URL",
+        instructions:
+          "Fork the Openbox repository, create a `feat/task-board` branch, and build a responsive Kanban/task manager supporting status filters (All, Active, Completed), priority badges, and localStorage persistence. Submit a Pull Request with atomic commits."
+      },
+      {
+        title: "Task 02: RESTful Backend API & Schema Validation",
+        deadline: "Week 2 Milestone",
+        deliverable: "GitHub PR Link (server/ directory)",
+        instructions:
+          "Build an Express.js REST API supporting CRUD operations (`/api/tasks`), input validation returning 400 Bad Request on malformed payloads, and centralized error-handling middleware."
+      },
+      {
+        title: "Task 03: Full-Stack Integration, Loading Skeletons & Retry States",
+        deadline: "Week 3 Milestone",
+        deliverable: "GitHub PR Link",
+        instructions:
+          "Connect your React frontend to your Express backend. Implement optimistic UI updates, shimmer loading skeletons, and graceful error banners with retry actions when network calls fail."
+      },
+      {
+        title: "Task 04: Capstone Feature Delivery & Production README",
+        deadline: "Week 4 Final Evaluation",
+        deliverable: "Complete Repository + Architecture README.md",
+        instructions:
+          "Add search/debounce filtering and authentication middleware (JWT or API key), write comprehensive setup and API endpoint documentation in README.md, and pass final mentor code review."
+      }
+    ],
+
     quiz: [
       {
-        question: "Which Git command creates and switches to a new feature branch immediately?",
-        options: ["git branch new-feature", "git checkout -b new-feature", "git merge new-feature"],
-        answer: 1
+        question: "Which Git command creates a new branch and immediately switches your working tree to it?",
+        options: [
+          "git branch feat/api",
+          "git checkout -b feat/api",
+          "git merge feat/api",
+          "git init feat/api"
+        ],
+        answer: 1,
+        explanation: "`git checkout -b <branch>` (or `git switch -c <branch>`) creates the branch and checks it out in a single step."
+      },
+      {
+        question: "Which HTTP status code should a REST API return when a client submits invalid JSON payload fields?",
+        options: ["200 OK", "201 Created", "400 Bad Request", "502 Bad Gateway"],
+        answer: 2,
+        explanation: "400 Bad Request indicates a client-side validation or syntax error in the request payload."
+      },
+      {
+        question: "What is the key difference between `git fetch` and `git pull`?",
+        options: [
+          "`git fetch` deletes local branches, while `git pull` creates new ones",
+          "`git fetch` downloads remote commits without modifying working files, while `git pull` fetches and merges/rebases immediately",
+          "`git pull` only works on private repositories",
+          "There is no difference; they are exact aliases"
+        ],
+        answer: 1,
+        explanation: "`git fetch` updates remote-tracking branches safely so you can inspect changes before merging."
+      },
+      {
+        question: "Which HTTP method is idempotent and typically used to completely replace an existing resource?",
+        options: ["POST", "PUT", "CONNECT", "TRACE"],
+        answer: 1,
+        explanation: "PUT replaces the target resource with the request payload and produces the same server state if repeated."
+      },
+      {
+        question: "Why should React state updates never mutate arrays or objects directly (e.g., `items.push(x)`)?",
+        options: [
+          "JavaScript arrays do not support `.push()` inside functions",
+          "React relies on shallow reference comparison to detect state changes and trigger re-renders",
+          "Mutating state automatically deletes localStorage",
+          "Node.js blocks in-place array mutations"
+        ],
+        answer: 1,
+        explanation: "Because React compares object references (`Object.is`), in-place mutation leaves the reference unchanged and skips re-rendering."
       }
     ]
   },
@@ -261,39 +508,136 @@ const OPENBOX_COURSES = [
     id: "business-analytics-internship",
     title: "Business Analytics & Growth Pipeline Internship",
     category: "Internship",
-    typeBadge: "4-Week Analytics Internship",
+    typeBadge: "4-Week Analytics Internship • Executive Case Portfolio",
     isInternship: true,
-    techStack: ["SQL", "Excel", "Funnel Metrics", "Python"],
-    description: "Analyze real startup funnel datasets, build cohort retention dashboards, and deliver executive growth memos.",
+    duration: "4 Weeks • 4 Case Deliverables",
+    level: "Beginner to Intermediate",
+    techStack: ["SQL", "Google Sheets / Excel", "SaaS Unit Economics", "Cohort Analysis", "Funnel Attribution"],
+    description:
+      "Analyze real-world B2B/B2C startup funnel datasets, write analytical SQL queries, build dynamic cohort retention spreadsheets, and deliver executive growth memos backed by unit economics.",
+
     lectures: [
       {
         id: "ba-1",
-        title: "01. SaaS Metrics, CAC, LTV & Cohort Retention",
-        videoId: "ysz5S6PUM-U",
-        description: "How growth partners diagnose conversion bottlenecks using unit economics and cohort tables.",
-        documentUrl: "",
-        documentLabel: ""
+        title: "01. SaaS Metrics, CAC, LTV, Churn & Unit Economics",
+        videoId: "hyC9WOKzUMc",
+        duration: "14 mins",
+        description:
+          "Understand the core metrics every growth operator and investor tracks: MRR, ARR, gross vs. net logo churn, Customer Acquisition Cost (CAC), Lifetime Value (LTV), and CAC payback period.",
+        documentUrl: "https://sheets.new",
+        documentLabel: "Launch Blank Google Sheet Workspace"
+      },
+      {
+        id: "ba-2",
+        title: "02. SQL for Data Analytics: Aggregations, Joins & CTEs",
+        videoId: "7mz73uXD9DA",
+        duration: "4 hrs 05 mins",
+        description:
+          "Hands-on analytical SQL training covering SELECT filtering, GROUP BY/HAVING aggregations, multi-table JOINs, CASE WHEN segmentation, and Common Table Expressions (CTEs) for funnel reporting.",
+        documentUrl: "https://www.postgresql.org/docs/current/tutorial-sql.html",
+        documentLabel: "PostgreSQL Analytical SQL Reference"
       }
     ],
+
     documents: [
-      { title: "SaaS Funnel & Cohort Analysis Template", type: "Sheet Guide", url: "https://sheets.new" }
+      {
+        title: "Create New Cohort & Funnel Model (Google Sheets)",
+        type: "Template",
+        url: "https://sheets.new"
+      },
+      {
+        title: "PostgreSQL Official SQL Query & Window Functions Guide",
+        type: "Guide",
+        url: "https://www.postgresql.org/docs/current/tutorial-window.html"
+      },
+      {
+        title: "Google Sheets QUERY & Pivot Table Function Reference",
+        type: "Cheat Sheet",
+        url: "https://support.google.com/docs/answer/3093343"
+      }
     ],
+
     assignments: [
       {
-        title: "Task 01: E-Commerce Funnel Drop-Off Audit",
+        title: "Task 01: 4-Stage E-Commerce Funnel Drop-Off & Channel Audit",
         deadline: "Week 1 Milestone",
-        instructions: "Create a Google Sheet dashboard calculating conversion rates across 4 funnel stages and submit the link."
+        deliverable: "Shared Google Sheet Link (View Access)",
+        instructions:
+          "Build a dynamic funnel conversion model tracking Visitor -> Signup -> Activation -> Paid Conversion across 4 acquisition channels (Organic, Paid Search, LinkedIn, Referral). Identify the highest-leakage stage and quantify revenue upside from a 5% conversion lift."
+      },
+      {
+        title: "Task 02: SQL Revenue & Customer Segmentation Queries",
+        deadline: "Week 2 Milestone",
+        deliverable: "SQL Script (.sql) or GitHub Gist URL",
+        instructions:
+          "Write clean, commented SQL queries using CTEs and JOINs to compute monthly recurring revenue (MRR), top 10% revenue-generating accounts, and 30-day inactive churn risk flags."
+      },
+      {
+        title: "Task 03: Monthly Logo & Net Dollar Retention Cohort Matrix",
+        deadline: "Week 3 Milestone",
+        deliverable: "Shared Google Sheet Link (Cohort Tab)",
+        instructions:
+          "Construct a 6-month triangular retention heatmap cohort table using dynamic formulas (`INDEX/MATCH` or `SUMIFS`). Highlight Month-1 vs. Month-3 retention stabilization."
+      },
+      {
+        title: "Task 04: Executive Growth Strategy Memo (LTV:CAC Optimization)",
+        deadline: "Week 4 Capstone",
+        deliverable: "1-Page Executive Memo + Sensitivity Table",
+        instructions:
+          "Synthesize your funnel and cohort findings into an executive recommendation memo. Include a sensitivity table modeling how reducing CAC by 15% or cutting monthly churn by 1.5% impacts LTV:CAC and payback months."
       }
     ],
+
     quiz: [
       {
-        question: "What does a high LTV:CAC ratio (e.g., 4:1) indicate?",
+        question: "What does an LTV:CAC ratio of 4:1 generally indicate for a SaaS business?",
         options: [
-          "Customer acquisition is unprofitable",
-          "Customer lifetime value strongly outweighs acquisition cost",
-          "Churn rate is 100%"
+          "Customer acquisition is unprofitable and losing cash on every signup",
+          "Customer lifetime gross profit strongly outweighs acquisition cost with healthy unit economics",
+          "Monthly customer churn is 100%",
+          "The company has zero marketing spend"
         ],
-        answer: 1
+        answer: 1,
+        explanation: "A benchmark LTV:CAC ratio of 3:1 to 4:1 indicates strong unit economics where generated customer value comfortably exceeds acquisition expense."
+      },
+      {
+        question: "How is Customer Acquisition Cost (CAC) calculated for a given period?",
+        options: [
+          "Total Revenue / Total Active Users",
+          "(Total Sales + Marketing Spend) / Number of New Customers Acquired",
+          "Average Order Value × Gross Margin %",
+          "Churned Customers / Starting Customers"
+        ],
+        answer: 1,
+        explanation: "CAC divides total go-to-market sales and marketing expenses by the exact count of new paying customers acquired in that timeframe."
+      },
+      {
+        question: "In SQL, what is the difference between `WHERE` and `HAVING`?",
+        options: [
+          "`WHERE` filters rows before `GROUP BY` aggregation; `HAVING` filters grouped results after aggregation",
+          "`HAVING` runs before `FROM`",
+          "`WHERE` can only be used with `LEFT JOIN`",
+          "They are interchangeable in all SQL dialects"
+        ],
+        answer: 0,
+        explanation: "`WHERE` filters individual raw records prior to grouping, whereas `HAVING` filters aggregated group metrics such as `COUNT(*) > 5`."
+      },
+      {
+        question: "Why is cohort retention analysis superior to looking only at blended total active users?",
+        options: [
+          "Cohort analysis hides churn in older user groups",
+          "Rapid top-of-funnel acquisition can mask severe early churn unless users are tracked by signup month",
+          "Blended totals cannot be calculated in SQL or spreadsheets",
+          "Cohort tables only measure website pageviews"
+        ],
+        answer: 1,
+        explanation: "High new-user acquisition can make overall user counts grow even while older cohorts churn rapidly; cohort tables isolate true retention."
+      },
+      {
+        question: "If a subscription product has a 5% monthly customer churn rate, what is its implied average customer lifetime?",
+        options: ["5 months", "10 months", "20 months", "50 months"],
+        answer: 2,
+        explanation: "Implied average lifetime equals `1 / Monthly Churn Rate` = `1 / 0.05` = 20 months."
       }
     ]
   }
