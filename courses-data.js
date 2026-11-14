@@ -690,11 +690,11 @@ const OPENBOX_COURSES = [
       },
       {
         id: "ai-l04",
-        title: "04. AI Agents, Tool Calling & Workflow Automation",
-        videoId: "sal78ACtGTc",
-        duration: "18 mins",
+        title: "04. Prompt Evaluation Pipelines & LLM Guardrails",
+        videoId: "8hW-OjwpwMk",
+        duration: "16 mins",
         description:
-          "Connect LLMs to external APIs, webhooks, and databases using function/tool calling loops to automate lead qualification, document extraction, and support triage.",
+          "Design automated evaluation benchmarks, schema validation checks, and input/output guardrails to ship reliable LLM workflows in production.",
         documentUrl: "https://docs.n8n.io/advanced-ai/",
         documentLabel: "n8n LangChain & AI Agent Nodes Docs"
       }
@@ -854,18 +854,18 @@ const OPENBOX_COURSES = [
       {
         id: "mkt-l02",
         title: "02. Google Ads & Paid Search Campaign Architecture",
-        videoId: "l4m2_8_120s",
-        duration: "1 hr 15 mins",
+        videoId: "16X5a0Ii7kg",
+        duration: "1 hr 12 mins",
         description:
-          "Step-by-step paid search setup: campaign bidding strategies (Target CPA & Maximize Conversions), SKAG/STAG ad group structuring, match types, negative keyword pruning, and Quality Score optimization.",
+          "Step-by-step paid search setup: campaign bidding strategies (Target CPA & Maximize Conversions), ad group structuring, match types, negative keyword pruning, and Quality Score optimization.",
         documentUrl: "https://support.google.com/google-ads/answer/6146252",
         documentLabel: "Google Ads Campaign Structure Documentation"
       },
       {
         id: "mkt-l03",
         title: "03. Meta Ads (Facebook & Instagram) Creative Testing & Retargeting",
-        videoId: "wQ6p5-vA7kI",
-        duration: "54 mins",
+        videoId: "dAJyqo6wnq4",
+        duration: "52 mins",
         description:
           "Build full-funnel social acquisition campaigns using Advantage+ audiences, hook-body-CTA ad creative frameworks, custom retargeting windows, and pixel/CAPI conversion event verification.",
         documentUrl: "https://www.facebook.com/business/help/112061095610075",
@@ -874,7 +874,7 @@ const OPENBOX_COURSES = [
       {
         id: "mkt-l04",
         title: "04. Google Analytics 4 (GA4), UTM Tracking & Conversion Rate Optimization",
-        videoId: "u7V0f5o885Q",
+        videoId: "pRKpaZJJRxk",
         duration: "46 mins",
         description:
           "Configure custom conversion events in GA4, enforce strict UTM taxonomy across paid and organic links, diagnose landing page drop-offs, and design A/B split tests to maximize checkout/lead conversion rates.",
