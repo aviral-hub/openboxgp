@@ -1,7 +1,7 @@
 // ============================================================================
 // PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL BELOW:
 // ============================================================================
-const APPS_SCRIPT_URL = "YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwj82z7wQTsWVUHjZhXjaAquyhBWh-M4kqAADiGnAU7GRZyc5hS4LNIVTR30faPjvwLYA/exec";
 
 // State Management
 let currentUser = JSON.parse(localStorage.getItem("openbox_user")) || null;
