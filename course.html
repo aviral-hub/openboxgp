@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Openbox Growth Partner — Learning & Internship Portal</title>
+  <title>Openbox Growth Partner — Learning &amp; Internship Portal</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -48,6 +48,7 @@
           id="student-name-input"
           type="text"
           placeholder="Your Full Name (for Certificate)"
+          oninput="saveStudentName(this.value)"
           class="hidden sm:block px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 focus:outline-none focus:border-blue-600 w-60"
         />
         <button
@@ -65,13 +66,13 @@
   <main id="catalog-view" class="max-w-7xl mx-auto px-4 sm:px-6 py-10">
     <div class="max-w-3xl mb-8">
       <span class="inline-block px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-blue-600/10 text-blue-600 dark:text-blue-400 mb-3">
-        Verified Courses & Task-Based Internships
+        Verified Courses &amp; Task-Based Internships
       </span>
       <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3">
         Build Proof-of-Work Skills. Earn Verified Credentials.
       </h1>
       <p class="text-sm text-[var(--muted)] leading-relaxed">
-        Complete structured video modules, submit real GitHub &amp; analytics deliverables, pass the verification assessment, and download your official Openbox Growth Partner certificate.
+        Complete 100% of video modules, submit all practical assignments, and score at least 75% on the verification quiz to unlock your official Openbox Growth Partner certificate.
       </p>
     </div>
 
@@ -88,7 +89,7 @@
     <div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
   </main>
 
-  <!-- COURSE WORKSPACE VIEW (HIDDEN UNTIL A TRACK IS OPENED) -->
+  <!-- COURSE WORKSPACE VIEW -->
   <section id="workspace-view" class="hidden max-w-7xl mx-auto px-4 sm:px-6 py-8">
     <button
       onclick="closeCourse()"
@@ -97,25 +98,40 @@
       ← Back to All Tracks
     </button>
 
-    <!-- Course Header Banner -->
-    <div class="p-6 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 mb-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-      <div>
-        <div class="flex flex-wrap items-center gap-2 mb-2">
-          <span id="ws-badge" class="px-2.5 py-0.5 rounded-lg text-[11px] font-extrabold bg-blue-600/10 text-blue-600 dark:text-blue-400"></span>
-          <span id="ws-duration" class="text-xs font-semibold text-[var(--muted)]"></span>
-          <span id="ws-level" class="text-xs font-semibold text-[var(--muted)]"></span>
+    <!-- Course Header Banner + Gate Status -->
+    <div class="p-6 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 mb-6">
+      <div class="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-5">
+        <div class="max-w-3xl">
+          <div class="flex flex-wrap items-center gap-2 mb-2">
+            <span id="ws-badge" class="px-2.5 py-0.5 rounded-lg text-[11px] font-extrabold bg-blue-600/10 text-blue-600 dark:text-blue-400"></span>
+            <span id="ws-duration" class="text-xs font-semibold text-[var(--muted)]"></span>
+            <span id="ws-level" class="text-xs font-semibold text-[var(--muted)]"></span>
+          </div>
+          <h2 id="ws-title" class="text-2xl font-extrabold tracking-tight mb-2"></h2>
+          <p id="ws-desc" class="text-xs sm:text-sm text-[var(--muted)] leading-relaxed"></p>
         </div>
-        <h2 id="ws-title" class="text-2xl font-extrabold tracking-tight mb-2"></h2>
-        <p id="ws-desc" class="text-xs sm:text-sm text-[var(--muted)] max-w-3xl leading-relaxed"></p>
-      </div>
 
-      <div class="shrink-0">
-        <button
-          onclick="openCertificateModal()"
-          class="w-full lg:w-auto px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold tracking-wide shadow-lg shadow-emerald-600/20 cursor-pointer transition"
-        >
-          Generate Official Certificate
-        </button>
+        <!-- Certificate Unlock Box -->
+        <div class="shrink-0 lg:w-80 p-4 rounded-xl bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/10">
+          <div class="flex items-center justify-between text-[11px] font-extrabold uppercase tracking-wider mb-2">
+            <span class="text-[var(--muted)]">Completion Progress</span>
+            <span id="overall-pct-label" class="text-blue-600 dark:text-blue-400">0%</span>
+          </div>
+          <div class="w-full h-2 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden mb-3">
+            <div id="overall-progress-bar" class="h-full bg-blue-600 transition-all duration-300" style="width: 0%"></div>
+          </div>
+
+          <ul id="gate-checklist" class="space-y-1 text-[11px] font-semibold mb-3.5"></ul>
+
+          <button
+            id="cert-unlock-btn"
+            onclick="openCertificateModal()"
+            disabled
+            class="w-full py-2.5 px-4 rounded-xl text-xs font-extrabold tracking-wide transition bg-slate-200 dark:bg-white/10 text-slate-500 cursor-not-allowed"
+          >
+            Locked • Complete Requirements
+          </button>
+        </div>
       </div>
     </div>
 
@@ -142,6 +158,13 @@
             <p id="active-lec-desc" class="text-xs text-[var(--muted)] leading-relaxed"></p>
           </div>
           <div class="flex flex-wrap items-center gap-2 shrink-0">
+            <button
+              id="mark-lec-btn"
+              onclick="toggleCurrentLectureDone()"
+              class="px-3.5 py-2 rounded-xl text-xs font-extrabold bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer transition"
+            >
+              ✓ Mark Module Complete
+            </button>
             <a
               id="active-lec-yt-fallback"
               href="#"
@@ -149,7 +172,7 @@
               rel="noopener noreferrer"
               class="px-3.5 py-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-white/5"
             >
-              Watch on YouTube ↗
+              YouTube ↗
             </a>
             <a
               id="active-lec-doc"
@@ -158,15 +181,18 @@
               rel="noopener noreferrer"
               class="hidden px-3.5 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white hover:bg-blue-700"
             >
-              Lecture Notes ↗
+              Slides ↗
             </a>
           </div>
         </div>
       </div>
 
       <!-- Right Col: Lecture Playlist -->
-      <div class="p-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 flex flex-col max-h-[540px]">
-        <h3 class="text-sm font-extrabold uppercase tracking-wider mb-3">Curriculum Modules</h3>
+      <div class="p-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 flex flex-col max-h-[560px]">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-sm font-extrabold uppercase tracking-wider">Curriculum Modules</h3>
+          <span id="lec-count-badge" class="text-[11px] font-bold text-[var(--muted)]"></span>
+        </div>
         <div id="lecture-list" class="space-y-2 overflow-y-auto pr-1"></div>
       </div>
     </div>
@@ -179,18 +205,22 @@
         <div id="docs-list" class="space-y-2.5"></div>
       </div>
 
-      <!-- Practical Assignments -->
+      <!-- Practical Assignments with Deliverable Verification -->
       <div class="p-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10">
-        <h3 class="text-sm font-extrabold uppercase tracking-wider mb-4">Assignments &amp; Deliverables</h3>
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-sm font-extrabold uppercase tracking-wider">Assignments &amp; Tasks</h3>
+          <span id="assign-count-badge" class="text-[11px] font-bold text-[var(--muted)]"></span>
+        </div>
         <div id="assignments-list" class="space-y-3"></div>
       </div>
 
-      <!-- Verification Quiz -->
+      <!-- Verification Quiz (75% Passing Gate) -->
       <div class="p-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10">
-        <div class="flex items-center justify-between mb-4">
+        <div class="flex items-center justify-between mb-1">
           <h3 class="text-sm font-extrabold uppercase tracking-wider">Verification Quiz</h3>
-          <span id="quiz-score-badge" class="text-xs font-bold text-blue-600 dark:text-blue-400"></span>
+          <span id="quiz-score-badge" class="text-xs font-extrabold text-blue-600 dark:text-blue-400"></span>
         </div>
+        <p class="text-[11px] text-[var(--muted)] mb-4">Minimum <strong>75% score</strong> required to unlock your certificate.</p>
         <div id="quiz-container" class="space-y-4"></div>
         <button
           onclick="gradeQuiz()"
@@ -256,10 +286,73 @@
   <script src="courses-data.js"></script>
 
   <script>
+    const STORAGE_KEY = "openbox_portal_progress_v1";
+    const PASS_THRESHOLD = 75; // Minimum 75% quiz score required
+
     let currentCategory = "All";
     let activeCourse = null;
     let activeLectureIndex = 0;
-    let activeCredentialId = "";
+
+    // Load persisted learner progress
+    let appState = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+    if (!appState.courses) appState.courses = {};
+    if (appState.studentName) {
+      document.getElementById("student-name-input").value = appState.studentName;
+    }
+
+    function saveState() {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+    }
+
+    function saveStudentName(val) {
+      appState.studentName = val;
+      saveState();
+    }
+
+    function getCourseProgress(courseId) {
+      if (!appState.courses[courseId]) {
+        appState.courses[courseId] = {
+          completedLectures: [],
+          submittedAssignments: {},
+          quizPercent: 0,
+          quizPassed: false,
+          credentialId:
+            "OB-" +
+            new Date().getFullYear() +
+            "-" +
+            Math.random().toString(36).substring(2, 8).toUpperCase()
+        };
+      }
+      return appState.courses[courseId];
+    }
+
+    function checkEligibility(course) {
+      const prog = getCourseProgress(course.id);
+      const totalLecs = (course.lectures || []).length;
+      const doneLecs = prog.completedLectures.length;
+      const lecsDone = totalLecs === 0 || doneLecs >= totalLecs;
+
+      const totalAssigns = (course.assignments || []).length;
+      const doneAssigns = Object.keys(prog.submittedAssignments).filter(
+        k => prog.submittedAssignments[k] && prog.submittedAssignments[k].trim().length > 0
+      ).length;
+      const assignsDone = totalAssigns === 0 || doneAssigns >= totalAssigns;
+
+      const hasQuiz = (course.quiz || []).length > 0;
+      const quizDone = !hasQuiz || (prog.quizPassed && prog.quizPercent >= PASS_THRESHOLD);
+
+      return {
+        lecsDone,
+        doneLecs,
+        totalLecs,
+        assignsDone,
+        doneAssigns,
+        totalAssigns,
+        quizDone,
+        quizPercent: prog.quizPercent,
+        unlocked: lecsDone && assignsDone && quizDone
+      };
+    }
 
     function toggleTheme() {
       document.documentElement.classList.toggle("dark");
@@ -281,14 +374,16 @@
 
     function renderCatalog() {
       const grid = document.getElementById("courses-grid");
-      const filtered =
-        currentCategory === "All"
-          ? OPENBOX_COURSES
-          : OPENBOX_COURSES.filter(c => c.category === currentCategory);
+      const filtered = OPENBOX_COURSES.filter(c => {
+        if (currentCategory === "All") return true;
+        if (currentCategory === "Internship") return Boolean(c.isInternship);
+        return c.category === currentCategory;
+      });
 
       grid.innerHTML = filtered
-        .map(
-          course => `
+        .map(course => {
+          const status = checkEligibility(course);
+          return `
         <article class="p-6 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 flex flex-col justify-between hover:border-blue-600 transition shadow-sm">
           <div>
             <div class="flex items-center justify-between gap-2 mb-3">
@@ -299,6 +394,11 @@
               }">
                 ${course.typeBadge}
               </span>
+              ${
+                status.unlocked
+                  ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-500/15 text-emerald-700 dark:text-emerald-400">✓ Certified</span>`
+                  : ""
+              }
             </div>
             <h3 class="text-lg font-extrabold tracking-tight mb-2 leading-snug">${course.title}</h3>
             <p class="text-xs text-[var(--muted)] leading-relaxed mb-4">${course.description}</p>
@@ -314,18 +414,18 @@
 
           <div class="pt-4 border-t border-slate-200 dark:border-white/10 flex items-center justify-between">
             <span class="text-[11px] font-bold text-[var(--muted)]">
-              ${course.lectures.length} Modules • ${(course.quiz || []).length} Quiz Qs
+              ${status.doneLecs}/${status.totalLecs} Modules • ${status.doneAssigns}/${status.totalAssigns} Tasks
             </span>
             <button
               onclick="openCourse('${course.id}')"
               class="px-4 py-2 rounded-xl bg-slate-900 dark:bg-blue-600 hover:opacity-90 text-white text-xs font-extrabold cursor-pointer transition"
             >
-              Start Track →
+              ${status.unlocked ? "Review / Certificate →" : "Continue Track →"}
             </button>
           </div>
         </article>
-      `
-        )
+      `;
+        })
         .join("");
     }
 
@@ -347,12 +447,57 @@
       renderDocs();
       renderAssignments();
       renderQuiz();
+      updateCompletionUI();
     }
 
     function closeCourse() {
       document.getElementById("lecture-player").src = "";
       document.getElementById("workspace-view").classList.add("hidden");
       document.getElementById("catalog-view").classList.remove("hidden");
+      renderCatalog();
+    }
+
+    function updateCompletionUI() {
+      if (!activeCourse) return;
+      const status = checkEligibility(activeCourse);
+
+      // Compute weighted completion %
+      const lecRatio = status.totalLecs ? status.doneLecs / status.totalLecs : 1;
+      const assignRatio = status.totalAssigns ? status.doneAssigns / status.totalAssigns : 1;
+      const quizRatio = status.quizDone ? 1 : Math.min(status.quizPercent / PASS_THRESHOLD, 0.9);
+      const overallPct = Math.round(((lecRatio + assignRatio + quizRatio) / 3) * 100);
+
+      document.getElementById("overall-pct-label").textContent = `${overallPct}%`;
+      document.getElementById("overall-progress-bar").style.width = `${overallPct}%`;
+
+      document.getElementById("lec-count-badge").textContent = `${status.doneLecs}/${status.totalLecs} Done`;
+      document.getElementById("assign-count-badge").textContent = `${status.doneAssigns}/${status.totalAssigns} Submitted`;
+
+      const checklistEl = document.getElementById("gate-checklist");
+      checklistEl.innerHTML = `
+        <li class="${status.lecsDone ? "text-emerald-600 dark:text-emerald-400" : "text-[var(--muted)]"}">
+          ${status.lecsDone ? "✓" : "○"} Complete all modules (${status.doneLecs}/${status.totalLecs})
+        </li>
+        <li class="${status.assignsDone ? "text-emerald-600 dark:text-emerald-400" : "text-[var(--muted)]"}">
+          ${status.assignsDone ? "✓" : "○"} Submit all assignments (${status.doneAssigns}/${status.totalAssigns})
+        </li>
+        <li class="${status.quizDone ? "text-emerald-600 dark:text-emerald-400" : "text-[var(--muted)]"}">
+          ${status.quizDone ? "✓" : "○"} Pass verification quiz ≥75% (Current: ${status.quizPercent}%)
+        </li>
+      `;
+
+      const certBtn = document.getElementById("cert-unlock-btn");
+      if (status.unlocked) {
+        certBtn.disabled = false;
+        certBtn.className =
+          "w-full py-2.5 px-4 rounded-xl text-xs font-extrabold tracking-wide transition bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/20 cursor-pointer";
+        certBtn.textContent = "Download Official Certificate →";
+      } else {
+        certBtn.disabled = true;
+        certBtn.className =
+          "w-full py-2.5 px-4 rounded-xl text-xs font-extrabold tracking-wide transition bg-slate-200 dark:bg-white/10 text-slate-500 cursor-not-allowed";
+        certBtn.textContent = "Locked • Complete All & Pass 75% Quiz";
+      }
     }
 
     function selectLecture(idx) {
@@ -360,12 +505,26 @@
       const lec = activeCourse.lectures[idx];
       if (!lec) return;
 
+      const prog = getCourseProgress(activeCourse.id);
+      const isDone = prog.completedLectures.includes(lec.id);
+
       const player = document.getElementById("lecture-player");
       player.src = `https://www.youtube-nocookie.com/embed/${lec.videoId}?rel=0`;
 
       document.getElementById("active-lec-title").textContent = lec.title;
       document.getElementById("active-lec-desc").textContent = lec.description;
       document.getElementById("active-lec-yt-fallback").href = `https://www.youtube.com/watch?v=${lec.videoId}`;
+
+      const markBtn = document.getElementById("mark-lec-btn");
+      if (isDone) {
+        markBtn.className =
+          "px-3.5 py-2 rounded-xl text-xs font-extrabold bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 cursor-pointer transition";
+        markBtn.textContent = "✓ Completed (Undo)";
+      } else {
+        markBtn.className =
+          "px-3.5 py-2 rounded-xl text-xs font-extrabold bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer transition";
+        markBtn.textContent = "✓ Mark Module Complete";
+      }
 
       const docBtn = document.getElementById("active-lec-doc");
       if (lec.documentUrl) {
@@ -378,8 +537,9 @@
 
       const list = document.getElementById("lecture-list");
       list.innerHTML = activeCourse.lectures
-        .map(
-          (item, i) => `
+        .map((item, i) => {
+          const itemDone = prog.completedLectures.includes(item.id);
+          return `
         <button
           onclick="selectLecture(${i})"
           class="w-full text-left p-3 rounded-xl border text-xs transition cursor-pointer ${
@@ -389,13 +549,33 @@
           }"
         >
           <div class="flex items-center justify-between gap-2">
-            <span class="line-clamp-1">${item.title}</span>
+            <span class="line-clamp-1">
+              <span class="${itemDone ? "text-emerald-600 dark:text-emerald-400 font-extrabold" : "text-[var(--muted)]"} mr-1.5">
+                ${itemDone ? "✓" : "○"}
+              </span>
+              ${item.title}
+            </span>
             <span class="text-[10px] text-[var(--muted)] shrink-0">${item.duration || ""}</span>
           </div>
         </button>
-      `
-        )
+      `;
+        })
         .join("");
+    }
+
+    function toggleCurrentLectureDone() {
+      const lec = activeCourse.lectures[activeLectureIndex];
+      if (!lec) return;
+      const prog = getCourseProgress(activeCourse.id);
+      const pos = prog.completedLectures.indexOf(lec.id);
+      if (pos === -1) {
+        prog.completedLectures.push(lec.id);
+      } else {
+        prog.completedLectures.splice(pos, 1);
+      }
+      saveState();
+      selectLecture(activeLectureIndex);
+      updateCompletionUI();
     }
 
     function renderDocs() {
@@ -418,29 +598,58 @@
     }
 
     function renderAssignments() {
+      const prog = getCourseProgress(activeCourse.id);
       const container = document.getElementById("assignments-list");
       container.innerHTML = (activeCourse.assignments || [])
-        .map(
-          task => `
-        <div class="p-3.5 rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50/50 dark:bg-white/[0.02]">
+        .map((task, idx) => {
+          const savedLink = prog.submittedAssignments[idx] || "";
+          const isSubmitted = savedLink.trim().length > 0;
+          return `
+        <div class="p-3.5 rounded-xl border ${
+          isSubmitted
+            ? "border-emerald-500/40 bg-emerald-500/[0.03]"
+            : "border-slate-200 dark:border-white/10 bg-slate-50/50 dark:bg-white/[0.02]"
+        }">
           <div class="flex flex-wrap items-center justify-between gap-1 mb-1">
             <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-700 dark:text-amber-400">${task.deadline}</span>
-            ${
-              task.deliverable
-                ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-200/70 dark:bg-white/10">${task.deliverable}</span>`
-                : ""
-            }
+            <span class="text-[10px] font-extrabold ${
+              isSubmitted ? "text-emerald-600 dark:text-emerald-400" : "text-[var(--muted)]"
+            }">
+              ${isSubmitted ? "✓ Deliverable Logged" : task.deliverable || "Required"}
+            </span>
           </div>
           <h4 class="text-xs font-extrabold mb-1">${task.title}</h4>
-          <p class="text-[11px] text-[var(--muted)] leading-relaxed">${task.instructions}</p>
+          <p class="text-[11px] text-[var(--muted)] leading-relaxed mb-2.5">${task.instructions}</p>
+          <input
+            type="url"
+            value="${savedLink.replace(/"/g, "&quot;")}"
+            onchange="saveAssignmentLink(${idx}, this.value)"
+            placeholder="Paste GitHub / Google Doc / Sheet link..."
+            class="w-full px-2.5 py-1.5 rounded-lg text-[11px] font-medium bg-[var(--card)] border border-slate-200 dark:border-white/10 focus:outline-none focus:border-blue-600"
+          />
         </div>
-      `
-        )
+      `;
+        })
         .join("");
     }
 
+    function saveAssignmentLink(idx, url) {
+      const prog = getCourseProgress(activeCourse.id);
+      prog.submittedAssignments[idx] = url.trim();
+      saveState();
+      renderAssignments();
+      updateCompletionUI();
+    }
+
     function renderQuiz() {
-      document.getElementById("quiz-score-badge").textContent = "";
+      const prog = getCourseProgress(activeCourse.id);
+      const badge = document.getElementById("quiz-score-badge");
+      if (prog.quizPercent > 0) {
+        badge.textContent = `${prog.quizPercent}% (${prog.quizPassed ? "Passed" : "Need 75%"})`;
+      } else {
+        badge.textContent = "Pass: 75%";
+      }
+
       const container = document.getElementById("quiz-container");
       container.innerHTML = (activeCourse.quiz || [])
         .map(
@@ -486,32 +695,51 @@
         }
       });
 
-      document.getElementById("quiz-score-badge").textContent = `Score: ${score}/${questions.length}`;
+      const pct = questions.length ? Math.round((score / questions.length) * 100) : 100;
+      const passed = pct >= PASS_THRESHOLD;
+
+      const prog = getCourseProgress(activeCourse.id);
+      prog.quizPercent = pct;
+      prog.quizPassed = passed;
+      saveState();
+
+      const badge = document.getElementById("quiz-score-badge");
+      badge.textContent = `${score}/${questions.length} (${pct}% • ${passed ? "PASSED" : "FAILED — Need 75%"})`;
+      badge.className = passed
+        ? "text-xs font-extrabold text-emerald-600 dark:text-emerald-400"
+        : "text-xs font-extrabold text-rose-600 dark:text-rose-400";
+
+      updateCompletionUI();
     }
 
     function openCertificateModal() {
+      const status = checkEligibility(activeCourse);
+      if (!status.unlocked) {
+        alert(
+          `Certificate Locked!\n\nTo unlock your certificate, you must:\n` +
+            `• Complete all modules (${status.doneLecs}/${status.totalLecs})\n` +
+            `• Submit all assignments (${status.doneAssigns}/${status.totalAssigns})\n` +
+            `• Score at least 75% on the quiz (Current: ${status.quizPercent}%)`
+        );
+        return;
+      }
+
       const topName = document.getElementById("student-name-input").value.trim();
       const modalInput = document.getElementById("modal-student-name");
       if (topName && !modalInput.value) modalInput.value = topName;
 
-      if (!activeCredentialId) {
-        activeCredentialId =
-          "OB-" +
-          new Date().getFullYear() +
-          "-" +
-          Math.random().toString(36).substring(2, 8).toUpperCase();
-      }
-
       document.getElementById("certificate-modal").classList.remove("hidden");
-      drawWhiteCertificate(modalInput.value.trim() || "Aviral Pathak");
+      drawWhiteCertificate(modalInput.value.trim() || appState.studentName || "Aviral Pathak");
     }
 
     function refreshCertificateName(val) {
       document.getElementById("student-name-input").value = val;
+      saveStudentName(val);
       drawWhiteCertificate(val.trim() || "Learner Name");
     }
 
     function drawWhiteCertificate(studentName) {
+      const prog = getCourseProgress(activeCourse.id);
       const canvas = document.getElementById("certificate-canvas");
       const ctx = canvas.getContext("2d");
       const W = canvas.width;
@@ -620,8 +848,8 @@
 
       // Course / Internship Description
       const actionLine = activeCourse.isInternship
-        ? "for successfully completing all industry sprint tasks, deliverables, and assessments in"
-        : "for successfully completing the verified curriculum, practical assignments, and evaluation in";
+        ? `for completing 100% of sprint modules, deliverables, and passing with ${prog.quizPercent}% in`
+        : `for completing 100% of curriculum modules, assignments, and passing with ${prog.quizPercent}% in`;
 
       ctx.fillStyle = "#475569";
       ctx.font = "500 19px 'Plus Jakarta Sans', Arial, sans-serif";
@@ -656,7 +884,7 @@
       ctx.fillStyle = "#64748B";
       ctx.font = "600 13px 'Plus Jakarta Sans', Arial, sans-serif";
       ctx.fillText("DATE OF ISSUE", 140, footerY + 22);
-      ctx.fillText(`CREDENTIAL ID: ${activeCredentialId}`, 140, footerY + 44);
+      ctx.fillText(`CREDENTIAL ID: ${prog.credentialId}`, 140, footerY + 44);
 
       // Center: Gold & Navy Seal
       const sealX = W / 2;
@@ -710,8 +938,8 @@
         .map(t => "#" + t.replace(/[^a-zA-Z0-9]/g, ""))
         .join(" ");
       document.getElementById("cert-social-caption").textContent =
-        `Thrilled to share that I have earned my ${certHeading} in "${activeCourse.title}" from Openbox Growth Partner! ` +
-        `Credential ID: ${activeCredentialId}. #OpenboxGrowthPartner #ProofOfWork ${hashtags}`;
+        `Thrilled to share that I have earned my ${certHeading} in "${activeCourse.title}" from Openbox Growth Partner (Assessment Score: ${prog.quizPercent}%)! ` +
+        `Credential ID: ${prog.credentialId}. #OpenboxGrowthPartner #ProofOfWork ${hashtags}`;
     }
 
     function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
