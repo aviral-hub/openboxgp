@@ -1458,4 +1458,204 @@ const OPENBOX_COURSES = [
       }
     ]
   }
+  // ==========================================================================
+  // 4. FINANCIAL MODELLING & VALUATION (THE VALUATION SCHOOL CURRICULUM)
+  // ==========================================================================
+  {
+    id: "financial-modelling-valuation",
+    title: "Financial Modelling & Corporate Valuation: Step-by-Step in Excel",
+    category: "Analytics",
+    typeBadge: "Investment Banking Track • Certificate",
+    isInternship: false,
+    duration: "4–6 Weeks • Self-Paced",
+    level: "Beginner to Intermediate",
+    techStack: ["Financial Modeling", "Microsoft Excel", "DCF Valuation", "Relative Valuation", "3-Statement Modeling", "Football Field Analysis"],
+    description:
+      "Master end-to-end corporate financial modeling and investment banking valuation techniques in Excel. Covers historical financial statement structuring, common-size benchmarking, growth forecasting, Discounted Cash Flow (DCF) valuation, trading comparables, and Football Field synthesis.",
+
+    // --- VIDEO LECTURES (VERIFIED YOUTUBE IDs FROM PLAYLIST) ---
+    lectures: [
+      {
+        id: "fm-l02",
+        title: "Session 02: Historical Financial Statements & Model Architecture",
+        videoId: "9vAqWaRnfsU",
+        duration: "1 hr 38 mins",
+        description:
+          "Covers Excel modeling best practices, dynamic cell linking, and extracting and structuring historical Income Statements, Balance Sheets, and Cash Flow Statements from company annual reports.",
+        documentUrl: "https://sheets.new",
+        documentLabel: "Launch Blank Spreadsheet Workspace"
+      },
+      {
+        id: "fm-l11",
+        title: "Session 11: Common Size Statement & Vertical Analysis",
+        videoId: "csv-QJTubG8",
+        duration: "25 mins",
+        description:
+          "Demonstrates how to normalize Income Statements as a percentage of revenue and Balance Sheets as a percentage of total assets to spot margin trends and benchmark against industry peers.",
+        documentUrl: "https://sheets.new",
+        documentLabel: "Open Common Size Template Workspace"
+      },
+      {
+        id: "fm-l12",
+        title: "Session 12: Revenue Forecasting & Growth Rate Modeling",
+        videoId: "0N3zIEhaq1c",
+        duration: "49 mins",
+        description:
+          "Walks through historical CAGR calculations, top-down vs. bottom-up revenue drivers, expense ratio projections, and building dynamic forecast schedules.",
+        documentUrl: "https://sheets.new",
+        documentLabel: "Open Forecasting Workspace"
+      },
+      {
+        id: "fm-l13",
+        title: "Session 13: Discounted Cash Flow (DCF) Valuation & WACC",
+        videoId: "h-rO3pNHHuw",
+        duration: "35 mins",
+        description:
+          "Builds an intrinsic valuation model from scratch: computing Free Cash Flow to Firm (FCFF), estimating Cost of Equity (CAPM) and WACC, calculating Terminal Value, and arriving at implied share price.",
+        documentUrl: "https://sheets.new",
+        documentLabel: "Open DCF Model Workspace"
+      },
+      {
+        id: "fm-l15",
+        title: "Session 15: Relative Valuation & Trading Comparables",
+        videoId: "DpKdORBG224",
+        duration: "40 mins",
+        description:
+          "Explains peer group selection, Enterprise Value vs. Equity Value bridges, and applying valuation multiples (EV/EBITDA, EV/Sales, P/E) to derive market-relative valuation ranges.",
+        documentUrl: "https://sheets.new",
+        documentLabel: "Open Comps Sheet Workspace"
+      },
+      {
+        id: "fm-l17",
+        title: "Session 17: Football Field Valuation Chart & Synthesis",
+        videoId: "O-SzKtazG-g",
+        duration: "16 mins",
+        description:
+          "Synthesizes valuation outputs across DCF, Relative Valuation, and 52-week trading ranges into an executive-ready Football Field bar chart in Excel.",
+        documentUrl: "https://sheets.new",
+        documentLabel: "Open Football Field Workspace"
+      }
+    ],
+
+    // --- COURSE DOCUMENTS & WORKSHEETS ---
+    documents: [
+      {
+        title: "Launch New Financial Model Workbook (Google Sheets)",
+        type: "Template",
+        url: "https://sheets.new"
+      },
+      {
+        title: "Corporate Finance Institute: Financial Modeling Best Practices Guide",
+        type: "Guide",
+        url: "https://corporatefinanceinstitute.com/resources/financial-modeling/financial-modeling-best-practices/"
+      },
+      {
+        title: "Aswath Damodaran: Valuation & Corporate Finance Reference Datasets",
+        type: "Cheat Sheet",
+        url: "https://pages.stern.nyu.edu/~adamodar/"
+      }
+    ],
+
+    // --- GRADED ASSIGNMENTS / TASKS ---
+    assignments: [
+      {
+        title: "Task 01: Historical 3-Statement & Common Size Model",
+        deadline: "Module 1 Milestone",
+        deliverable: "Shared Google Sheet / Excel File Link (View Access)",
+        instructions:
+          "Select a publicly listed company, extract 5 years of historical Income Statement and Balance Sheet data from its annual report, and build a dynamic Common Size Statement tab highlighting gross, EBITDA, and net margin trends."
+      },
+      {
+        title: "Task 02: 5-Year Revenue & Free Cash Flow Forecast",
+        deadline: "Module 2 Milestone",
+        deliverable: "Shared Google Sheet / Excel File Link (Forecast Tab)",
+        instructions:
+          "Compute historical 3-year and 5-year CAGRs, build explicit bull/base/bear revenue growth assumptions, and project 5 years of Unlevered Free Cash Flow (FCFF) with supporting CapEx and Working Capital schedules."
+      },
+      {
+        title: "Task 03: Intrinsic DCF Valuation & WACC Sensitivity Table",
+        deadline: "Module 3 Milestone",
+        deliverable: "Shared Google Sheet / Excel File Link (DCF Tab)",
+        instructions:
+          "Calculate WACC using CAPM and after-tax cost of debt, compute Terminal Value via the Gordon Growth method, bridge Enterprise Value to Implied Share Price, and add a 2-variable sensitivity table (WACC vs. Terminal Growth Rate)."
+      },
+      {
+        title: "Task 04: Peer Comps & Executive Football Field Chart",
+        deadline: "Capstone Deliverable",
+        deliverable: "Complete Valuation Workbook + Football Field Chart",
+        instructions:
+          "Benchmark your target company against at least 4 listed peers using EV/EBITDA and P/E multiples, then construct a clean Football Field valuation chart comparing your DCF range, Trading Comps range, and current market price."
+      }
+    ],
+
+    // --- VERIFICATION QUIZ (6 COMPREHENSIVE QUESTIONS) ---
+    quiz: [
+      {
+        question: "In a Common Size Income Statement, how is every line item expressed?",
+        options: [
+          "As a percentage of Total Assets",
+          "As a percentage of Total Revenue (Net Sales)",
+          "As a percentage of Net Profit",
+          "As a year-over-year dollar variance"
+        ],
+        answer: 1,
+        explanation: "Vertical common-size Income Statements divide every expense and profit line by Total Revenue to standardize margin comparisons across time and peers."
+      },
+      {
+        question: "Which cash flow metric is discounted by the Weighted Average Cost of Capital (WACC) in a standard DCF?",
+        options: [
+          "Free Cash Flow to Equity (FCFE)",
+          "Net Income after Dividends",
+          "Free Cash Flow to Firm (FCFF)",
+          "Operating Cash Flow before taxes"
+        ],
+        answer: 2,
+        explanation: "Because WACC represents the blended required return of both debt and equity holders, it must discount Free Cash Flow to Firm (FCFF), which is available to all capital providers."
+      },
+      {
+        question: "How do you bridge from Enterprise Value (EV) to Implied Equity Value?",
+        options: [
+          "Add Total Debt and subtract Cash & Cash Equivalents",
+          "Subtract Total Debt and add Cash & Cash Equivalents",
+          "Multiply Enterprise Value by the corporate tax rate",
+          "Divide Enterprise Value by EBITDA"
+        ],
+        answer: 1,
+        explanation: "Equity Value = Enterprise Value - Total Debt (and preferred/minority interest) + Cash & Cash Equivalents."
+      },
+      {
+        question: "Why is EV/EBITDA generally preferred over P/E when comparing companies with different capital structures?",
+        options: [
+          "EBITDA includes interest expense and taxes",
+          "EV/EBITDA is capital-structure neutral because both numerator and denominator are pre-debt",
+          "P/E cannot be calculated for profitable companies",
+          "EV/EBITDA ignores depreciation and capital intensity completely"
+        ],
+        answer: 1,
+        explanation: "Because Enterprise Value includes both debt and equity and EBITDA is measured before interest expense, EV/EBITDA avoids distortions caused by differing leverage levels."
+      },
+      {
+        question: "In a DCF model, what happens if the perpetual terminal growth rate (g) is set higher than WACC?",
+        options: [
+          "Terminal Value becomes negative or mathematically invalid because the company would outgrow the economy forever",
+          "The share price automatically equals zero",
+          "WACC adjusts downward to match g",
+          "Terminal Value equals Year 1 Free Cash Flow"
+        ],
+        answer: 0,
+        explanation: "The Gordon Growth formula `FCF * (1 + g) / (WACC - g)` breaks down when g >= WACC, and economically a firm cannot grow faster than the broader economy in perpetuity."
+      },
+      {
+        question: "What is the primary purpose of a Football Field chart in investment banking?",
+        options: [
+          "To track daily intraday stock volume",
+          "To visually compare valuation ranges across multiple methodologies (DCF, Trading Comps, Precedent Transactions) side by side",
+          "To forecast monthly working capital balances",
+          "To calculate historical compound annual growth rates"
+        ],
+        answer: 1,
+        explanation: "A Football Field chart summarizes low-to-high implied valuation ranges from different valuation methods on a single horizontal bar chart for executive decision-making."
+      }
+    ]
+  },
 ];
