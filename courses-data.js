@@ -1184,7 +1184,8 @@ const OPENBOX_COURSES = [
         explanation: "Isolating variables ensures clean causal learning so winning patterns can be reliably scaled across future campaigns."
       }
     ]
-  }
+  },
+
   // ==========================================================================
   // 7. MIT 15.450: ANALYTICS OF FINANCE (FALL 2010) — QUANTITATIVE FINANCE
   // ==========================================================================
@@ -1456,5 +1457,5 @@ const OPENBOX_COURSES = [
         explanation: "Expected Shortfall averages all losses exceeding the VaR cutoff and satisfies sub-additivity (coherence) for portfolio diversification."
       }
     ]
-  },
+  }
 ];
