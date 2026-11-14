@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Login — Openbox Growth Partner</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <script src="shared.js"></script>
+    <style>
+        :root { --background: #f8fafc; --foreground: #0f172a; --muted-bg: #f1f5f9; --muted-text: #475569; --card: #ffffff; }
+        .dark { --background: #0a0a0c; --foreground: #f8fafc; --muted-bg: #111115; --muted-text: #94a3b8; --card: #111115; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--background); color: var(--muted-text); }
+        .heading-font { font-family: 'Space Grotesk', sans-serif; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-center items-center p-4">
+
+    <div class="w-full max-w-md mb-6 flex items-center justify-between">
+        <a href="index.html" class="text-xs font-bold text-blue-500 hover:underline flex items-center gap-1.5">
+            <i class="fa-solid fa-arrow-left"></i> Back to Home
+        </a>
+        <button id="theme-toggle" class="p-2 rounded-xl bg-[var(--muted-bg)] text-xs cursor-pointer">
+            <i class="fa-solid fa-circle-half-stroke"></i>
+        </button>
+    </div>
+
+    <div class="w-full max-w-md bg-[var(--card)] border border-slate-200 dark:border-white/10 rounded-2xl p-6 sm:p-8 shadow-2xl">
+        <div class="flex items-center gap-2 mb-4">
+            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+            <span class="text-xs font-bold uppercase tracking-widest text-blue-500">Openbox Unified Authentication</span>
+        </div>
+        <h1 class="heading-font text-2xl font-bold text-[var(--foreground)] mb-1">Welcome to Openbox</h1>
+        <p class="text-xs text-[var(--muted-text)] mb-6">Log in as Student, Mentor, or Admin—your role is automatically detected.</p>
+
+        <!-- Tabs -->
+        <div class="grid grid-cols-2 gap-2 p-1 rounded-xl bg-[var(--muted-bg)] mb-6">
+            <button id="tab-login" onclick="setMode('login')" class="py-2 rounded-lg text-xs font-bold bg-[var(--card)] text-[var(--foreground)] shadow-sm cursor-pointer">Login</button>
+            <button id="tab-register" onclick="setMode('register')" class="py-2 rounded-lg text-xs font-bold text-[var(--muted-text)] cursor-pointer">Student Sign Up</button>
+        </div>
+
+        <form onsubmit="submitAuth(event)" class="space-y-4">
+            <div id="wrap-name" class="hidden">
+                <label class="block text-xs font-semibold mb-1">Full Name (Printed on Certificate)</label>
+                <input type="text" id="inp-name" placeholder="Aviral Sharma" class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]" />
+            </div>
+            <div>
+                <label class="block text-xs font-semibold mb-1">Email Address</label>
+                <input type="email" id="inp-email" placeholder="aviral@openbox.in" required class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]" />
+            </div>
+            <div>
+                <label class="block text-xs font-semibold mb-1">Password</label>
+                <input type="password" id="inp-pass" placeholder="••••••••" required class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]" />
+            </div>
+            <div id="wrap-gh" class="hidden">
+                <label class="block text-xs font-semibold mb-1">GitHub Profile URL (Optional)</label>
+                <input type="url" id="inp-gh" placeholder="https://github.com/username" class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]" />
+            </div>
+
+            <button type="submit" id="btn-submit" class="w-full py-3 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white shadow-lg cursor-pointer">
+                Login & Enter Workspace
+            </button>
+            <p id="auth-msg" class="text-xs font-semibold text-center"></p>
+        </form>
+    </div>
+
+    <script>
+        let mode = "login";
+        function setMode(m) {
+            mode = m;
+            document.getElementById("wrap-name").classList.toggle("hidden", m === "login");
+            document.getElementById("wrap-gh").classList.toggle("hidden", m === "login");
+            document.getElementById("btn-submit").textContent = m === "login" ? "Login & Enter Workspace" : "Create Student Account";
+            document.getElementById("tab-login").className = m === "login" ? "py-2 rounded-lg text-xs font-bold bg-[var(--card)] text-[var(--foreground)] shadow-sm cursor-pointer" : "py-2 rounded-lg text-xs font-bold text-[var(--muted-text)] cursor-pointer";
+            document.getElementById("tab-register").className = m === "register" ? "py-2 rounded-lg text-xs font-bold bg-[var(--card)] text-[var(--foreground)] shadow-sm cursor-pointer" : "py-2 rounded-lg text-xs font-bold text-[var(--muted-text)] cursor-pointer";
+        }
+
+        async function submitAuth(e) {
+            e.preventDefault();
+            const btn = document.getElementById("btn-submit");
+            const msg = document.getElementById("auth-msg");
+            btn.disabled = true;
+            btn.textContent = "Authenticating...";
+
+            try {
+                const res = await fetch(APPS_SCRIPT_URL, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        action: mode,
+                        name: document.getElementById("inp-name").value.trim(),
+                        email: document.getElementById("inp-email").value.trim(),
+                        password: document.getElementById("inp-pass").value.trim(),
+                        github: document.getElementById("inp-gh").value.trim()
+                    })
+                });
+                const data = await res.json();
+
+                if (data.status === "success") {
+                    currentUser = data.user;
+                    localStorage.setItem("openbox_user", JSON.stringify(data.user));
+                    localStorage.setItem("openbox_progress", JSON.stringify(data.completedLessons || {}));
+                    localStorage.setItem("openbox_approved", JSON.stringify(data.approvedCourses || []));
+                    localStorage.setItem("openbox_submissions", JSON.stringify(data.mySubmissions || []));
+
+                    // Redirect based on role
+                    if (isStaff()) window.location.href = "studio.html";
+                    else window.location.href = "portal.html";
+                } else {
+                    msg.textContent = data.message || "Invalid credentials.";
+                    msg.className = "text-xs font-semibold text-center text-red-400";
+                }
+            } catch (err) {
+                msg.textContent = "Network error. Check APPS_SCRIPT_URL in shared.js.";
+                msg.className = "text-xs font-semibold text-center text-red-400";
+            } finally {
+                btn.disabled = false;
+                btn.textContent = mode === "login" ? "Login & Enter Workspace" : "Create Student Account";
+            }
+        }
+    </script>
+</body>
+</html>
