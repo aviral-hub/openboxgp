@@ -1,135 +1,751 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Courses & Internships — Openbox Growth Partner</title>
-    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
-    <script src="shared.js"></script>
-    <script src="courses-data.js"></script>
-    <style>
-        :root { --background: #f8fafc; --foreground: #0f172a; --muted-bg: #f1f5f9; --muted-text: #475569; --card: #ffffff; }
-        .dark { --background: #0a0a0c; --foreground: #f8fafc; --muted-bg: #111115; --muted-text: #94a3b8; --card: #111115; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--background); color: var(--muted-text); }
-        .heading-font { font-family: 'Space Grotesk', sans-serif; }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Openbox Growth Partner — Learning & Internship Portal</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --text: #0f172a;
+      --muted: #475569;
+    }
+    html.dark {
+      --bg: #090d16;
+      --card: #111827;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+    }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+    }
+  </style>
 </head>
-<body class="min-h-screen pb-16">
+<body class="min-h-screen transition-colors duration-200">
 
-    <!-- Subpage Navbar -->
-    <header class="max-w-6xl mx-auto mt-4 px-4">
-        <div class="h-16 px-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <a href="index.html" class="heading-font font-bold text-[var(--foreground)] text-lg">Openbox<span class="text-blue-500">.</span></a>
-                <span class="text-xs text-slate-500">/</span>
-                <span class="text-xs font-bold text-blue-500">Courses & Internships</span>
-            </div>
-            <div class="flex items-center gap-2.5">
-                <a id="nav-studio-link" href="studio.html" class="hidden text-xs font-bold text-amber-500 px-3 py-2 rounded-xl bg-amber-500/10">Studio</a>
-                <button id="theme-toggle" class="p-2 rounded-xl bg-[var(--muted-bg)] text-xs cursor-pointer"><i class="fa-solid fa-circle-half-stroke"></i></button>
-                <div id="user-pill" class="hidden flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-500/10 text-xs font-bold text-blue-500">
-                    <span id="user-role-badge" class="px-1.5 py-0.5 rounded text-[10px] bg-blue-600 text-white">Student</span>
-                    <span id="user-name-display">User</span>
-                    <button onclick="logoutUser()" class="text-red-400 ml-1 cursor-pointer" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
-                </div>
-                <a id="header-login-btn" href="login.html" class="px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white">Login</a>
-            </div>
+  <!-- TOP NAVBAR -->
+  <header class="sticky top-0 z-40 border-b border-slate-200 dark:border-white/10 bg-[var(--card)]/90 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
+      <a href="index.html" class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl bg-slate-900 dark:bg-blue-600 text-white font-extrabold flex items-center justify-center text-sm tracking-tight">
+          OB
         </div>
-    </header>
+        <div>
+          <span class="font-extrabold text-sm tracking-tight block leading-none">OPENBOX</span>
+          <span class="text-[10px] font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400">Growth Partner</span>
+        </div>
+      </a>
 
-    <main class="max-w-6xl mx-auto px-4 pt-10">
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 pb-6 border-b border-slate-200 dark:border-white/10">
-            <div>
-                <h1 class="heading-font text-3xl font-bold text-[var(--foreground)]">Courses, Worksheets & Task-Based Internships</h1>
-                <p class="text-xs text-emerald-500 font-semibold mt-1">✓ Instant Access • Complete modules & assignments to claim your verified PNG certificate + LinkedIn caption</p>
+      <div class="flex items-center gap-3">
+        <input
+          id="student-name-input"
+          type="text"
+          placeholder="Your Full Name (for Certificate)"
+          class="hidden sm:block px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 focus:outline-none focus:border-blue-600 w-60"
+        />
+        <button
+          onclick="toggleTheme()"
+          class="px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-white/5 cursor-pointer"
+          title="Toggle Theme"
+        >
+          Theme
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CATALOG VIEW -->
+  <main id="catalog-view" class="max-w-7xl mx-auto px-4 sm:px-6 py-10">
+    <div class="max-w-3xl mb-8">
+      <span class="inline-block px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-blue-600/10 text-blue-600 dark:text-blue-400 mb-3">
+        Verified Courses & Task-Based Internships
+      </span>
+      <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3">
+        Build Proof-of-Work Skills. Earn Verified Credentials.
+      </h1>
+      <p class="text-sm text-[var(--muted)] leading-relaxed">
+        Complete structured video modules, submit real GitHub &amp; analytics deliverables, pass the verification assessment, and download your official Openbox Growth Partner certificate.
+      </p>
+    </div>
+
+    <!-- CATEGORY FILTERS -->
+    <div class="flex flex-wrap gap-2 mb-8">
+      <button onclick="setCat('All')" id="cat-All" class="cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-blue-600 text-white cursor-pointer">All Tracks</button>
+      <button onclick="setCat('Internship')" id="cat-Internship" class="cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-slate-200 dark:border-white/10 cursor-pointer">Task-Based Internships</button>
+      <button onclick="setCat('Development')" id="cat-Development" class="cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-slate-200 dark:border-white/10 cursor-pointer">Computer Science &amp; Dev</button>
+      <button onclick="setCat('Analytics')" id="cat-Analytics" class="cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-slate-200 dark:border-white/10 cursor-pointer">Business Analytics</button>
+      <button onclick="setCat('Marketing')" id="cat-Marketing" class="cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-slate-200 dark:border-white/10 cursor-pointer">Growth &amp; Marketing</button>
+    </div>
+
+    <!-- COURSE CARDS GRID -->
+    <div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  </main>
+
+  <!-- COURSE WORKSPACE VIEW (HIDDEN UNTIL A TRACK IS OPENED) -->
+  <section id="workspace-view" class="hidden max-w-7xl mx-auto px-4 sm:px-6 py-8">
+    <button
+      onclick="closeCourse()"
+      class="mb-6 inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-slate-200 dark:border-white/10 hover:border-blue-600 cursor-pointer"
+    >
+      ← Back to All Tracks
+    </button>
+
+    <!-- Course Header Banner -->
+    <div class="p-6 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 mb-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+      <div>
+        <div class="flex flex-wrap items-center gap-2 mb-2">
+          <span id="ws-badge" class="px-2.5 py-0.5 rounded-lg text-[11px] font-extrabold bg-blue-600/10 text-blue-600 dark:text-blue-400"></span>
+          <span id="ws-duration" class="text-xs font-semibold text-[var(--muted)]"></span>
+          <span id="ws-level" class="text-xs font-semibold text-[var(--muted)]"></span>
+        </div>
+        <h2 id="ws-title" class="text-2xl font-extrabold tracking-tight mb-2"></h2>
+        <p id="ws-desc" class="text-xs sm:text-sm text-[var(--muted)] max-w-3xl leading-relaxed"></p>
+      </div>
+
+      <div class="shrink-0">
+        <button
+          onclick="openCertificateModal()"
+          class="w-full lg:w-auto px-5 py-3 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-extrabold tracking-wide shadow-lg shadow-emerald-600/20 cursor-pointer transition"
+        >
+          Generate Official Certificate
+        </button>
+      </div>
+    </div>
+
+    <!-- Video Player + Playlist Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+      <!-- Left 2 Cols: Video Player & Active Lecture Info -->
+      <div class="lg:col-span-2 space-y-4">
+        <div class="aspect-video w-full rounded-2xl overflow-hidden bg-slate-950 border border-slate-200 dark:border-white/10 shadow-lg">
+          <iframe
+            id="lecture-player"
+            class="w-full h-full"
+            src=""
+            title="Course Lecture Video"
+            frameborder="0"
+            referrerpolicy="strict-origin-when-cross-origin"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            allowfullscreen
+          ></iframe>
+        </div>
+
+        <div class="p-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div>
+            <h3 id="active-lec-title" class="text-base font-extrabold mb-1"></h3>
+            <p id="active-lec-desc" class="text-xs text-[var(--muted)] leading-relaxed"></p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 shrink-0">
+            <a
+              id="active-lec-yt-fallback"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="px-3.5 py-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-white/5"
+            >
+              Watch on YouTube ↗
+            </a>
+            <a
+              id="active-lec-doc"
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="hidden px-3.5 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white hover:bg-blue-700"
+            >
+              Lecture Notes ↗
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Col: Lecture Playlist -->
+      <div class="p-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 flex flex-col max-h-[540px]">
+        <h3 class="text-sm font-extrabold uppercase tracking-wider mb-3">Curriculum Modules</h3>
+        <div id="lecture-list" class="space-y-2 overflow-y-auto pr-1"></div>
+      </div>
+    </div>
+
+    <!-- Bottom 3-Column Section: Docs | Assignments | Verification Quiz -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Reference Documents -->
+      <div class="p-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10">
+        <h3 class="text-sm font-extrabold uppercase tracking-wider mb-4">Official Docs &amp; Worksheets</h3>
+        <div id="docs-list" class="space-y-2.5"></div>
+      </div>
+
+      <!-- Practical Assignments -->
+      <div class="p-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10">
+        <h3 class="text-sm font-extrabold uppercase tracking-wider mb-4">Assignments &amp; Deliverables</h3>
+        <div id="assignments-list" class="space-y-3"></div>
+      </div>
+
+      <!-- Verification Quiz -->
+      <div class="p-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-sm font-extrabold uppercase tracking-wider">Verification Quiz</h3>
+          <span id="quiz-score-badge" class="text-xs font-bold text-blue-600 dark:text-blue-400"></span>
+        </div>
+        <div id="quiz-container" class="space-y-4"></div>
+        <button
+          onclick="gradeQuiz()"
+          class="mt-5 w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold cursor-pointer transition"
+        >
+          Submit &amp; Verify Answers
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- EXECUTIVE WHITE CERTIFICATE MODAL -->
+  <div id="certificate-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+    <div class="bg-white text-slate-900 max-w-4xl w-full rounded-2xl shadow-2xl p-6 md:p-8 border border-slate-200 my-auto">
+      <div class="flex flex-wrap items-center justify-between gap-3 mb-5 pb-4 border-b border-slate-200">
+        <div>
+          <span class="text-[11px] font-extrabold uppercase tracking-widest text-amber-700">Official Verified Credential</span>
+          <h3 class="text-lg font-extrabold text-slate-900">Openbox Growth Partner Certificate</h3>
+        </div>
+        <div class="flex flex-wrap items-center gap-2">
+          <input
+            id="modal-student-name"
+            type="text"
+            placeholder="Enter Recipient Full Name"
+            oninput="refreshCertificateName(this.value)"
+            class="px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-900"
+          />
+          <button
+            onclick="downloadWhiteCertificate()"
+            class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold cursor-pointer transition"
+          >
+            Download PNG
+          </button>
+          <button
+            onclick="copyLinkedInCaption()"
+            class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold cursor-pointer transition"
+          >
+            Copy Share Caption
+          </button>
+          <button
+            onclick="document.getElementById('certificate-modal').classList.add('hidden')"
+            class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold cursor-pointer"
+          >
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <!-- Crisp White Canvas -->
+      <div class="w-full overflow-hidden rounded-xl border border-slate-300 shadow-sm bg-white">
+        <canvas id="certificate-canvas" width="1400" height="990" class="w-full h-auto block"></canvas>
+      </div>
+
+      <!-- LinkedIn Caption -->
+      <div class="mt-4 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
+        <p class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">LinkedIn &amp; Social Caption</p>
+        <p id="cert-social-caption" class="text-xs text-slate-700 leading-relaxed select-all"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOAD COURSE DATA -->
+  <script src="courses-data.js"></script>
+
+  <script>
+    let currentCategory = "All";
+    let activeCourse = null;
+    let activeLectureIndex = 0;
+    let activeCredentialId = "";
+
+    function toggleTheme() {
+      document.documentElement.classList.toggle("dark");
+    }
+
+    function setCat(cat) {
+      currentCategory = cat;
+      document.querySelectorAll(".cat-btn").forEach(btn => {
+        btn.className =
+          "cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-slate-200 dark:border-white/10 cursor-pointer";
+      });
+      const activeBtn = document.getElementById("cat-" + cat);
+      if (activeBtn) {
+        activeBtn.className =
+          "cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-blue-600 text-white cursor-pointer";
+      }
+      renderCatalog();
+    }
+
+    function renderCatalog() {
+      const grid = document.getElementById("courses-grid");
+      const filtered =
+        currentCategory === "All"
+          ? OPENBOX_COURSES
+          : OPENBOX_COURSES.filter(c => c.category === currentCategory);
+
+      grid.innerHTML = filtered
+        .map(
+          course => `
+        <article class="p-6 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 flex flex-col justify-between hover:border-blue-600 transition shadow-sm">
+          <div>
+            <div class="flex items-center justify-between gap-2 mb-3">
+              <span class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider ${
+                course.isInternship
+                  ? "bg-amber-500/15 text-amber-700 dark:text-amber-400"
+                  : "bg-blue-600/10 text-blue-600 dark:text-blue-400"
+              }">
+                ${course.typeBadge}
+              </span>
             </div>
-            <input type="text" id="search-box" oninput="renderCatalog()" placeholder="Search Python, MIT, React, Analytics..."
-                class="w-full md:w-72 px-4 py-2.5 text-sm rounded-xl bg-[var(--card)] border border-slate-200 dark:border-white/10 text-[var(--foreground)] focus:outline-none focus:border-blue-500" />
-        </div>
+            <h3 class="text-lg font-extrabold tracking-tight mb-2 leading-snug">${course.title}</h3>
+            <p class="text-xs text-[var(--muted)] leading-relaxed mb-4">${course.description}</p>
+            <div class="flex flex-wrap gap-1.5 mb-5">
+              ${(course.techStack || [])
+                .map(
+                  skill =>
+                    `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 dark:bg-white/5 text-[var(--muted)]">${skill}</span>`
+                )
+                .join("")}
+            </div>
+          </div>
 
-      <div class="flex flex-wrap gap-2 mb-8">
-            <button onclick="setCat('All')" id="cat-All" class="cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-blue-600 text-white cursor-pointer">All Tracks</button>
-            <button onclick="setCat('Internship')" id="cat-Internship" class="cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-slate-200 dark:border-white/10 cursor-pointer">Task-Based Internships</button>
-            <button onclick="setCat('Development')" id="cat-Development" class="cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-slate-200 dark:border-white/10 cursor-pointer">Computer Science & Dev</button>
-            <button onclick="setCat('Analytics')" id="cat-Analytics" class="cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-slate-200 dark:border-white/10 cursor-pointer">Business Analytics</button>
-            <button onclick="setCat('Marketing')" id="cat-Marketing" class="cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-slate-200 dark:border-white/10 cursor-pointer">Growth & Marketing</button>
-        </div>
+          <div class="pt-4 border-t border-slate-200 dark:border-white/10 flex items-center justify-between">
+            <span class="text-[11px] font-bold text-[var(--muted)]">
+              ${course.lectures.length} Modules • ${(course.quiz || []).length} Quiz Qs
+            </span>
+            <button
+              onclick="openCourse('${course.id}')"
+              class="px-4 py-2 rounded-xl bg-slate-900 dark:bg-blue-600 hover:opacity-90 text-white text-xs font-extrabold cursor-pointer transition"
+            >
+              Start Track →
+            </button>
+          </div>
+        </article>
+      `
+        )
+        .join("");
+    }
 
-        <!-- Instant Course Grid -->
-        <div id="grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-    </main>
+    function openCourse(courseId) {
+      activeCourse = OPENBOX_COURSES.find(c => c.id === courseId);
+      if (!activeCourse) return;
 
-    <script>
-        let activeCat = "All";
+      document.getElementById("catalog-view").classList.add("hidden");
+      document.getElementById("workspace-view").classList.remove("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
 
-        function setCat(cat) {
-            activeCat = cat;
-            document.querySelectorAll(".cat-btn").forEach(b => {
-                b.className = "cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-slate-200 dark:border-white/10 cursor-pointer";
-            });
-            document.getElementById(`cat-${cat}`).className = "cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-blue-600 text-white cursor-pointer";
-            renderCatalog();
-        }
+      document.getElementById("ws-badge").textContent = activeCourse.typeBadge;
+      document.getElementById("ws-duration").textContent = activeCourse.duration ? `• ${activeCourse.duration}` : "";
+      document.getElementById("ws-level").textContent = activeCourse.level ? `• ${activeCourse.level}` : "";
+      document.getElementById("ws-title").textContent = activeCourse.title;
+      document.getElementById("ws-desc").textContent = activeCourse.description;
 
-        function renderCatalog() {
-            const q = document.getElementById("search-box").value.toLowerCase();
-            const grid = document.getElementById("grid");
-            grid.innerHTML = "";
+      selectLecture(0);
+      renderDocs();
+      renderAssignments();
+      renderQuiz();
+    }
 
-            const filtered = OPENBOX_COURSES.filter(c => {
-                const matchCat = activeCat === "All" || c.category === activeCat;
-                const matchText = c.title.toLowerCase().includes(q) ||
-                                  c.description.toLowerCase().includes(q) ||
-                                  c.techStack.some(t => t.toLowerCase().includes(q));
-                return matchCat && matchText;
-            });
+    function closeCourse() {
+      document.getElementById("lecture-player").src = "";
+      document.getElementById("workspace-view").classList.add("hidden");
+      document.getElementById("catalog-view").classList.remove("hidden");
+    }
 
-            if (filtered.length === 0) {
-                grid.innerHTML = `<p class="col-span-full text-xs">No tracks matched your filter.</p>`;
-                return;
+    function selectLecture(idx) {
+      activeLectureIndex = idx;
+      const lec = activeCourse.lectures[idx];
+      if (!lec) return;
+
+      const player = document.getElementById("lecture-player");
+      player.src = `https://www.youtube-nocookie.com/embed/${lec.videoId}?rel=0`;
+
+      document.getElementById("active-lec-title").textContent = lec.title;
+      document.getElementById("active-lec-desc").textContent = lec.description;
+      document.getElementById("active-lec-yt-fallback").href = `https://www.youtube.com/watch?v=${lec.videoId}`;
+
+      const docBtn = document.getElementById("active-lec-doc");
+      if (lec.documentUrl) {
+        docBtn.href = lec.documentUrl;
+        docBtn.textContent = (lec.documentLabel || "Lecture Resource") + " ↗";
+        docBtn.classList.remove("hidden");
+      } else {
+        docBtn.classList.add("hidden");
+      }
+
+      const list = document.getElementById("lecture-list");
+      list.innerHTML = activeCourse.lectures
+        .map(
+          (item, i) => `
+        <button
+          onclick="selectLecture(${i})"
+          class="w-full text-left p-3 rounded-xl border text-xs transition cursor-pointer ${
+            i === idx
+              ? "bg-blue-600/10 border-blue-600 font-bold"
+              : "border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5"
+          }"
+        >
+          <div class="flex items-center justify-between gap-2">
+            <span class="line-clamp-1">${item.title}</span>
+            <span class="text-[10px] text-[var(--muted)] shrink-0">${item.duration || ""}</span>
+          </div>
+        </button>
+      `
+        )
+        .join("");
+    }
+
+    function renderDocs() {
+      const container = document.getElementById("docs-list");
+      container.innerHTML = (activeCourse.documents || [])
+        .map(
+          doc => `
+        <a
+          href="${doc.url}"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="block p-3 rounded-xl border border-slate-200 dark:border-white/10 hover:border-blue-600 transition"
+        >
+          <span class="text-[10px] font-extrabold uppercase tracking-wider text-blue-600 dark:text-blue-400">${doc.type}</span>
+          <p class="text-xs font-bold mt-0.5">${doc.title} ↗</p>
+        </a>
+      `
+        )
+        .join("");
+    }
+
+    function renderAssignments() {
+      const container = document.getElementById("assignments-list");
+      container.innerHTML = (activeCourse.assignments || [])
+        .map(
+          task => `
+        <div class="p-3.5 rounded-xl border border-slate-200 dark:border-white/10 bg-slate-50/50 dark:bg-white/[0.02]">
+          <div class="flex flex-wrap items-center justify-between gap-1 mb-1">
+            <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-700 dark:text-amber-400">${task.deadline}</span>
+            ${
+              task.deliverable
+                ? `<span class="text-[10px] font-bold px-2 py-0.5 rounded bg-slate-200/70 dark:bg-white/10">${task.deliverable}</span>`
+                : ""
             }
+          </div>
+          <h4 class="text-xs font-extrabold mb-1">${task.title}</h4>
+          <p class="text-[11px] text-[var(--muted)] leading-relaxed">${task.instructions}</p>
+        </div>
+      `
+        )
+        .join("");
+    }
 
-            filtered.forEach(c => {
-                const total = c.lectures.length;
-                const done = c.lectures.filter(l => completedLessons[l.id]).length;
-                const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+    function renderQuiz() {
+      document.getElementById("quiz-score-badge").textContent = "";
+      const container = document.getElementById("quiz-container");
+      container.innerHTML = (activeCourse.quiz || [])
+        .map(
+          (q, qIdx) => `
+        <div class="p-3.5 rounded-xl border border-slate-200 dark:border-white/10">
+          <p class="text-xs font-bold mb-2.5">${qIdx + 1}. ${q.question}</p>
+          <div class="space-y-1.5">
+            ${q.options
+              .map(
+                (opt, oIdx) => `
+              <label class="flex items-start gap-2 text-[11px] cursor-pointer">
+                <input type="radio" name="quiz-q-${qIdx}" value="${oIdx}" class="mt-0.5 accent-blue-600" />
+                <span>${opt}</span>
+              </label>
+            `
+              )
+              .join("")}
+          </div>
+          <p id="quiz-exp-${qIdx}" class="hidden mt-2 text-[11px] font-medium p-2 rounded-lg"></p>
+        </div>
+      `
+        )
+        .join("");
+    }
 
-                const card = document.createElement("div");
-                card.className = "flex flex-col justify-between p-6 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 hover:border-blue-500/40 transition-all shadow-sm";
-                card.innerHTML = `
-                    <div>
-                        <div class="flex items-center justify-between gap-2 mb-3">
-                            <span class="text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded ${c.isInternship ? 'bg-purple-500/10 text-purple-400 border border-purple-500/20' : 'bg-blue-500/10 text-blue-500 border border-blue-500/20'}">
-                                ${c.typeBadge}
-                            </span>
-                            <span class="text-xs font-bold text-emerald-500">${pct}% Done</span>
-                        </div>
+    function gradeQuiz() {
+      const questions = activeCourse.quiz || [];
+      let score = 0;
+      questions.forEach((q, qIdx) => {
+        const selected = document.querySelector(`input[name="quiz-q-${qIdx}"]:checked`);
+        const expEl = document.getElementById(`quiz-exp-${qIdx}`);
+        expEl.classList.remove("hidden");
 
-                        <h3 class="heading-font text-lg font-bold text-[var(--foreground)] mb-2">${c.title}</h3>
-                        <p class="text-xs text-[var(--muted-text)] leading-relaxed mb-4">${c.description}</p>
-
-                        <div class="flex items-center gap-3 text-[11px] font-semibold text-[var(--foreground)] mb-4">
-                            <span><i class="fa-solid fa-video text-blue-500 mr-1"></i>${c.lectures.length} Lectures</span>
-                            <span><i class="fa-solid fa-file-lines text-emerald-500 mr-1"></i>${(c.documents || []).length} Docs</span>
-                            <span><i class="fa-solid fa-list-check text-amber-500 mr-1"></i>${(c.assignments || []).length} Tasks</span>
-                        </div>
-
-                        <div class="flex flex-wrap gap-1.5 mb-6">
-                            ${c.techStack.map(s => `<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-[var(--muted-bg)]">${s}</span>`).join("")}
-                        </div>
-                    </div>
-
-                    <a href="player.html?id=${encodeURIComponent(c.id)}" class="w-full py-2.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white text-center block transition-all">
-                        ${c.isInternship ? "Enter Internship Sprint →" : "Start Course & Worksheets →"}
-                    </a>
-                `;
-                grid.appendChild(card);
-            });
+        if (selected && Number(selected.value) === q.answer) {
+          score++;
+          expEl.className =
+            "mt-2 text-[11px] font-semibold p-2 rounded-lg bg-emerald-500/10 text-emerald-700 dark:text-emerald-400";
+          expEl.textContent = "✓ Correct — " + (q.explanation || "");
+        } else {
+          expEl.className =
+            "mt-2 text-[11px] font-semibold p-2 rounded-lg bg-rose-500/10 text-rose-700 dark:text-rose-400";
+          expEl.textContent = `✕ Correct answer: ${q.options[q.answer]}. ${q.explanation || ""}`;
         }
+      });
 
-        document.addEventListener("DOMContentLoaded", renderCatalog);
-    </script>
+      document.getElementById("quiz-score-badge").textContent = `Score: ${score}/${questions.length}`;
+    }
+
+    function openCertificateModal() {
+      const topName = document.getElementById("student-name-input").value.trim();
+      const modalInput = document.getElementById("modal-student-name");
+      if (topName && !modalInput.value) modalInput.value = topName;
+
+      if (!activeCredentialId) {
+        activeCredentialId =
+          "OB-" +
+          new Date().getFullYear() +
+          "-" +
+          Math.random().toString(36).substring(2, 8).toUpperCase();
+      }
+
+      document.getElementById("certificate-modal").classList.remove("hidden");
+      drawWhiteCertificate(modalInput.value.trim() || "Aviral Pathak");
+    }
+
+    function refreshCertificateName(val) {
+      document.getElementById("student-name-input").value = val;
+      drawWhiteCertificate(val.trim() || "Learner Name");
+    }
+
+    function drawWhiteCertificate(studentName) {
+      const canvas = document.getElementById("certificate-canvas");
+      const ctx = canvas.getContext("2d");
+      const W = canvas.width;
+      const H = canvas.height;
+      const issueDate = new Date().toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric"
+      });
+
+      // Pure White Paper Background
+      ctx.fillStyle = "#FFFFFF";
+      ctx.fillRect(0, 0, W, H);
+
+      // Navy & Gold Corner Ribbons
+      ctx.fillStyle = "#0F172A";
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.lineTo(150, 0);
+      ctx.lineTo(0, 150);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(W, H);
+      ctx.lineTo(W - 150, H);
+      ctx.lineTo(W, H - 150);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = "#D97706";
+      ctx.beginPath();
+      ctx.moveTo(150, 0);
+      ctx.lineTo(172, 0);
+      ctx.lineTo(0, 172);
+      ctx.lineTo(0, 150);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(W - 150, H);
+      ctx.lineTo(W - 172, H);
+      ctx.lineTo(W, H - 172);
+      ctx.lineTo(W, H - 150);
+      ctx.closePath();
+      ctx.fill();
+
+      // Double Architectural Frame
+      ctx.strokeStyle = "#0F172A";
+      ctx.lineWidth = 4;
+      ctx.strokeRect(48, 48, W - 96, H - 96);
+
+      ctx.strokeStyle = "#D97706";
+      ctx.lineWidth = 1.5;
+      ctx.strokeRect(62, 62, W - 124, H - 124);
+
+      // Subtle Center Watermark
+      ctx.save();
+      ctx.fillStyle = "rgba(15, 23, 42, 0.025)";
+      ctx.font = "800 130px 'Plus Jakarta Sans', Arial, sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("OPENBOX", W / 2, H / 2 + 40);
+      ctx.restore();
+
+      // Organization Header
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#0F172A";
+      ctx.font = "800 22px 'Plus Jakarta Sans', Arial, sans-serif";
+      ctx.fillText("OPENBOX GROWTH PARTNER", W / 2, 138);
+
+      ctx.fillStyle = "#B45309";
+      ctx.font = "700 13px 'Plus Jakarta Sans', Arial, sans-serif";
+      ctx.fillText("SCHOOL OF TECHNOLOGY, ANALYTICS & DIGITAL GROWTH", W / 2, 166);
+
+      // Certificate Main Title
+      const certHeading = activeCourse.isInternship
+        ? "CERTIFICATE OF INTERNSHIP"
+        : "CERTIFICATE OF COMPLETION";
+
+      ctx.fillStyle = "#0F172A";
+      ctx.font = "700 50px 'Playfair Display', Georgia, serif";
+      ctx.fillText(certHeading, W / 2, 248);
+
+      ctx.strokeStyle = "#D97706";
+      ctx.lineWidth = 2.5;
+      ctx.beginPath();
+      ctx.moveTo(W / 2 - 140, 272);
+      ctx.lineTo(W / 2 + 140, 272);
+      ctx.stroke();
+
+      // Recipient Name
+      ctx.fillStyle = "#475569";
+      ctx.font = "500 20px 'Plus Jakarta Sans', Arial, sans-serif";
+      ctx.fillText("This is proudly presented to", W / 2, 330);
+
+      ctx.fillStyle = "#0F172A";
+      ctx.font = "italic 700 58px 'Playfair Display', Georgia, serif";
+      ctx.fillText(studentName, W / 2, 405);
+
+      ctx.strokeStyle = "#CBD5E1";
+      ctx.lineWidth = 1.5;
+      ctx.beginPath();
+      ctx.moveTo(W / 2 - 280, 424);
+      ctx.lineTo(W / 2 + 280, 424);
+      ctx.stroke();
+
+      // Course / Internship Description
+      const actionLine = activeCourse.isInternship
+        ? "for successfully completing all industry sprint tasks, deliverables, and assessments in"
+        : "for successfully completing the verified curriculum, practical assignments, and evaluation in";
+
+      ctx.fillStyle = "#475569";
+      ctx.font = "500 19px 'Plus Jakarta Sans', Arial, sans-serif";
+      ctx.fillText(actionLine, W / 2, 474);
+
+      ctx.fillStyle = "#0F172A";
+      ctx.font = "800 30px 'Plus Jakarta Sans', Arial, sans-serif";
+      wrapText(ctx, activeCourse.title, W / 2, 526, 1040, 38);
+
+      // Verified Skills Line
+      const skillsText = "Verified Competencies: " + (activeCourse.techStack || []).join("  •  ");
+      ctx.fillStyle = "#B45309";
+      ctx.font = "700 15px 'Plus Jakarta Sans', Arial, sans-serif";
+      ctx.fillText(skillsText, W / 2, 616);
+
+      // Footer Columns
+      const footerY = 795;
+
+      // Left: Date & Credential ID
+      ctx.textAlign = "left";
+      ctx.fillStyle = "#0F172A";
+      ctx.font = "700 17px 'Plus Jakarta Sans', Arial, sans-serif";
+      ctx.fillText(issueDate, 140, footerY - 12);
+
+      ctx.strokeStyle = "#94A3B8";
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(140, footerY);
+      ctx.lineTo(390, footerY);
+      ctx.stroke();
+
+      ctx.fillStyle = "#64748B";
+      ctx.font = "600 13px 'Plus Jakarta Sans', Arial, sans-serif";
+      ctx.fillText("DATE OF ISSUE", 140, footerY + 22);
+      ctx.fillText(`CREDENTIAL ID: ${activeCredentialId}`, 140, footerY + 44);
+
+      // Center: Gold & Navy Seal
+      const sealX = W / 2;
+      const sealY = footerY - 5;
+
+      ctx.beginPath();
+      ctx.arc(sealX, sealY, 54, 0, Math.PI * 2);
+      ctx.fillStyle = "#FEF3C7";
+      ctx.fill();
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = "#D97706";
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.arc(sealX, sealY, 44, 0, Math.PI * 2);
+      ctx.lineWidth = 1.2;
+      ctx.strokeStyle = "#0F172A";
+      ctx.stroke();
+
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#0F172A";
+      ctx.font = "800 11px 'Plus Jakarta Sans', Arial, sans-serif";
+      ctx.fillText("VERIFIED", sealX, sealY - 8);
+      ctx.fillStyle = "#B45309";
+      ctx.font = "800 13px 'Plus Jakarta Sans', Arial, sans-serif";
+      ctx.fillText("OPENBOX", sealX, sealY + 8);
+      ctx.fillStyle = "#0F172A";
+      ctx.font = "700 10px 'Plus Jakarta Sans', Arial, sans-serif";
+      ctx.fillText("CREDENTIAL", sealX, sealY + 22);
+
+      // Right: Authorized Signatory
+      ctx.textAlign = "right";
+      ctx.fillStyle = "#0F172A";
+      ctx.font = "italic 700 24px 'Playfair Display', Georgia, serif";
+      ctx.fillText("Aviral Pathak", W - 140, footerY - 12);
+
+      ctx.strokeStyle = "#94A3B8";
+      ctx.lineWidth = 1.2;
+      ctx.beginPath();
+      ctx.moveTo(W - 390, footerY);
+      ctx.lineTo(W - 140, footerY);
+      ctx.stroke();
+
+      ctx.fillStyle = "#64748B";
+      ctx.font = "600 13px 'Plus Jakarta Sans', Arial, sans-serif";
+      ctx.fillText("AVIRAL PATHAK", W - 140, footerY + 22);
+      ctx.fillText("FOUNDER, OPENBOX GROWTH PARTNER", W - 140, footerY + 44);
+
+      // Update LinkedIn Share Caption
+      const hashtags = (activeCourse.techStack || [])
+        .map(t => "#" + t.replace(/[^a-zA-Z0-9]/g, ""))
+        .join(" ");
+      document.getElementById("cert-social-caption").textContent =
+        `Thrilled to share that I have earned my ${certHeading} in "${activeCourse.title}" from Openbox Growth Partner! ` +
+        `Credential ID: ${activeCredentialId}. #OpenboxGrowthPartner #ProofOfWork ${hashtags}`;
+    }
+
+    function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
+      const words = text.split(" ");
+      let line = "";
+      let currentY = y;
+      for (let i = 0; i < words.length; i++) {
+        const testLine = line + words[i] + " ";
+        if (ctx.measureText(testLine).width > maxWidth && i > 0) {
+          ctx.fillText(line.trim(), x, currentY);
+          line = words[i] + " ";
+          currentY += lineHeight;
+        } else {
+          line = testLine;
+        }
+      }
+      ctx.fillText(line.trim(), x, currentY);
+    }
+
+    function downloadWhiteCertificate() {
+      const canvas = document.getElementById("certificate-canvas");
+      const link = document.createElement("a");
+      link.download = `${activeCourse.id}-certificate.png`;
+      link.href = canvas.toDataURL("image/png", 1.0);
+      link.click();
+    }
+
+    function copyLinkedInCaption() {
+      const text = document.getElementById("cert-social-caption").textContent;
+      navigator.clipboard.writeText(text);
+      alert("LinkedIn share caption copied to clipboard!");
+    }
+
+    renderCatalog();
+  </script>
 </body>
 </html>
