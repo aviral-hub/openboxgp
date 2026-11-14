@@ -1,7 +1,7 @@
 // ============================================================================
-// PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL BELOW:
+// OPENBOX GROWTH PARTNER — SHARED CONTROLLER & LIVE GOOGLE SHEETS CONNECTION
 // ============================================================================
-const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwj82z7wQTsWVUHjZhXjaAquyhBWh-M4kqAADiGnAU7GRZyc5hS4LNIVTR30faPjvwLYA/exec";
+const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzuF_hLOONhYsg0YsCUevyFGpJRuE1FJoSz8nWl6bLsI2ALnTwk49tP1B7bvbfS4ZjzDQ/exec";
 const UNLOCK_ALL_FOR_TESTING = true;
 
 // Shared Session State
@@ -92,11 +92,40 @@ function logoutUser() {
   window.location.href = "index.html";
 }
 
-// Live Catalog Fetcher
+// Live Catalog Fetcher with Timeout & Local Cache
 async function fetchLiveTracks() {
-  const res = await fetch(APPS_SCRIPT_URL);
-  const data = await res.json();
-  return data.status === "success" ? (data.tracks || []) : [];
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 12000);
+
+  try {
+    const res = await fetch(APPS_SCRIPT_URL, {
+      method: "GET",
+      redirect: "follow",
+      signal: controller.signal
+    });
+    clearTimeout(timer);
+
+    const text = await res.text();
+    let data;
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      throw new Error("Apps Script returned HTML instead of JSON. Ensure deployment 'Who has access' is set to 'Anyone'.");
+    }
+
+    if (data.status === "success") {
+      localStorage.setItem("openbox_cached_tracks", JSON.stringify(data.tracks || []));
+      return data.tracks || [];
+    } else {
+      throw new Error(data.message || "Sheet error");
+    }
+  } catch (err) {
+    clearTimeout(timer);
+    if (err.name === "AbortError") {
+      throw new Error("Request timed out (12s). Check your Apps Script deployment.");
+    }
+    throw err;
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
