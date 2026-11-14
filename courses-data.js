@@ -640,5 +640,187 @@ const OPENBOX_COURSES = [
         explanation: "Implied average lifetime equals `1 / Monthly Churn Rate` = `1 / 0.05` = 20 months."
       }
     ]
+  },
+
+  // ==========================================================================
+  // 4. APPLIED AI ENGINEERING & LLM AUTOMATION SPRINT
+  // ==========================================================================
+  {
+    id: "applied-ai-llm-automation",
+    title: "Applied AI Engineering & LLM Workflow Automation",
+    category: "Development",
+    typeBadge: "AI Engineering Track • Certificate",
+    isInternship: false,
+    duration: "4 Weeks • 4 Lectures + 4 AI Builds",
+    level: "Intermediate",
+    techStack: ["LLMs", "Prompt Engineering", "RAG", "Vector Embeddings", "Function Calling", "n8n / APIs"],
+    description:
+      "Design production-grade AI applications beyond basic chat wrappers. Learn transformer tokenization, structured JSON outputs, Retrieval-Augmented Generation (RAG) with vector embeddings, and automated multi-step AI agent pipelines.",
+
+    lectures: [
+      {
+        id: "ai-l01",
+        title: "01. Intro to Large Language Models: Tokenization, Context & Scaling",
+        videoId: "zjkBMFhNj_g",
+        duration: "59 mins",
+        description:
+          "Andrej Karpathy's architectural walkthrough of how LLMs work under the hood: next-token prediction, pre-training vs. supervised fine-tuning (SFT), RLHF, context windows, and LLM security considerations.",
+        documentUrl: "https://platform.openai.com/docs/guides/prompt-engineering",
+        documentLabel: "Prompt Engineering & LLM Best Practices"
+      },
+      {
+        id: "ai-l02",
+        title: "02. Prompt Engineering & Structured JSON Output Design",
+        videoId: "_ZvnD73m40o",
+        duration: "41 mins",
+        description:
+          "Master deterministic prompting patterns for production apps: system personas, few-shot examples, chain-of-thought reasoning, delimiter isolation, and strict JSON schema enforcement.",
+        documentUrl: "https://platform.openai.com/docs/guides/structured-outputs",
+        documentLabel: "Structured JSON Outputs Guide"
+      },
+      {
+        id: "ai-l03",
+        title: "03. Retrieval-Augmented Generation (RAG) & Vector Databases",
+        videoId: "T-D1OfcDW1M",
+        duration: "10 mins",
+        description:
+          "Understand how RAG grounds LLM responses in proprietary documents without retraining: document chunking strategies, dense vector embeddings, cosine similarity search, and citation synthesis.",
+        documentUrl: "https://supabase.com/docs/guides/ai",
+        documentLabel: "Supabase pgvector & AI Embeddings Docs"
+      },
+      {
+        id: "ai-l04",
+        title: "04. AI Agents, Tool Calling & Workflow Automation",
+        videoId: "sal78ACtGTc",
+        duration: "18 mins",
+        description:
+          "Connect LLMs to external APIs, webhooks, and databases using function/tool calling loops to automate lead qualification, document extraction, and support triage.",
+        documentUrl: "https://docs.n8n.io/advanced-ai/",
+        documentLabel: "n8n LangChain & AI Agent Nodes Docs"
+      }
+    ],
+
+    documents: [
+      {
+        title: "OpenAI Official Prompt Engineering & System Design Guide",
+        type: "Guide",
+        url: "https://platform.openai.com/docs/guides/prompt-engineering"
+      },
+      {
+        title: "Supabase Vector Embeddings & pgvector Architecture Guide",
+        type: "Guide",
+        url: "https://supabase.com/docs/guides/ai"
+      },
+      {
+        title: "n8n AI Agents, Memory & Tool-Calling Workflow Reference",
+        type: "Guide",
+        url: "https://docs.n8n.io/advanced-ai/"
+      },
+      {
+        title: "Hugging Face NLP & Transformers Course Handbook",
+        type: "Syllabus",
+        url: "https://huggingface.co/learn/nlp-course/chapter1/1"
+      }
+    ],
+
+    assignments: [
+      {
+        title: "Task 01: Structured Invoice & Resume Parser (JSON Schema)",
+        deadline: "Week 1 Milestone",
+        deliverable: "GitHub Repository URL (Python/JS Script)",
+        instructions:
+          "Build an LLM extraction pipeline that ingests unstructured PDF/text resumes or invoices and returns strictly validated JSON containing candidate skills, experience years, or line-item totals with zero conversational filler."
+      },
+      {
+        title: "Task 02: Document Q&A Knowledge Assistant with Citations (RAG)",
+        deadline: "Week 2 Milestone",
+        deliverable: "GitHub Repository URL + Demo Screenshot",
+        instructions:
+          "Chunk a multi-page company handbook or syllabus, generate embeddings, store them in a vector index (e.g., Supabase pgvector or FAISS), and build a Q&A endpoint that cites exact source sections and refuses unsupported answers."
+      },
+      {
+        title: "Task 03: Automated Lead-Triage & Email Drafting Pipeline",
+        deadline: "Week 3 Milestone",
+        deliverable: "n8n Workflow JSON Export or Webhook Script",
+        instructions:
+          "Create an automated workflow triggered by incoming form submissions that classifies user intent, scores urgency (High/Medium/Low), logs structured fields to Google Sheets, and drafts a tailored reply."
+      },
+      {
+        title: "Task 04: Capstone Multi-Tool AI Research & Briefing Agent",
+        deadline: "Week 4 Capstone",
+        deliverable: "GitHub Repository + Evaluation Test Log",
+        instructions:
+          "Combine RAG retrieval and function calling into a unified assistant that queries internal data and formats an executive summary. Include a 10-prompt evaluation test suite measuring accuracy and hallucination rate."
+      }
+    ],
+
+    quiz: [
+      {
+        question: "What is the primary purpose of Retrieval-Augmented Generation (RAG) in production AI systems?",
+        options: [
+          "To permanently modify the neural network weights of an LLM",
+          "To inject relevant external documents into the prompt context so responses are grounded in up-to-date, verifiable facts",
+          "To compress video files into plain text",
+          "To eliminate the need for tokenization"
+        ],
+        answer: 1,
+        explanation: "RAG retrieves top-matching knowledge chunks at query time and supplies them in context, reducing hallucinations without expensive model retraining."
+      },
+      {
+        question: "How do vector embeddings enable semantic search over text chunks?",
+        options: [
+          "By matching exact alphabetical spelling only",
+          "By mapping text into high-dimensional numerical vectors where semantically similar concepts sit close together in vector space",
+          "By sorting strings by character length",
+          "By converting text into SQL primary keys"
+        ],
+        answer: 1,
+        explanation: "Dense embeddings capture semantic meaning so queries like 'refund policy' match passages discussing 'money-back guarantee' via cosine similarity."
+      },
+      {
+        question: "What effect does lowering the `temperature` parameter (e.g., from 0.9 to 0.0) have on LLM generation?",
+        options: [
+          "It increases randomness and creative word diversity",
+          "It makes token selection more deterministic by favoring the highest-probability next tokens",
+          "It doubles the maximum context window size",
+          "It disables system prompt instructions"
+        ],
+        answer: 1,
+        explanation: "Low temperature sharpens the probability distribution over candidate tokens, making outputs consistent and ideal for extraction or classification."
+      },
+      {
+        question: "Why is document chunk size and overlap critical when indexing knowledge for RAG?",
+        options: [
+          "Chunks larger than 10 words cannot be embedded",
+          "Poorly sized chunks either split key context across boundaries or dilute retrieval precision with unrelated noise",
+          "Overlap deletes duplicate vectors automatically",
+          "Chunking is only required for image files"
+        ],
+        answer: 1,
+        explanation: "Balanced chunk sizes with 10–20% overlap preserve cross-boundary sentence context while keeping retrieved passages focused."
+      },
+      {
+        question: "In LLM tool/function calling, what actually executes the external API or database query?",
+        options: [
+          "The LLM weights execute HTTP requests directly inside the GPU",
+          "The LLM outputs a structured JSON function name and arguments, and your application backend executes the code and returns the result",
+          "The browser CSS engine runs the function",
+          "No code is executed; the LLM guesses the database output"
+        ],
+        answer: 1,
+        explanation: "LLMs only emit structured tool-call intents; the host application orchestrator runs the actual function and feeds the output back into the conversation loop."
+      },
+      {
+        question: "Which defensive practice best prevents prompt injection when processing untrusted user text?",
+        options: [
+          "Concatenating raw user input directly into system-level instructions without delimiters",
+          "Separating system instructions from delimited user data and validating structured output schemas before triggering downstream actions",
+          "Setting temperature to 2.0",
+          "Removing all system prompts"
+        ],
+        answer: 1,
+        explanation: "Clear instruction/data boundaries, strict schema validation, and least-privilege tool permissions prevent untrusted input from hijacking agent actions."
+      }
+    ]
   }
 ];
