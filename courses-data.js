@@ -8,7 +8,7 @@
  * 3. Edit the fields:
  *    - id: Unique URL-safe slug (e.g., "python-backend-sprint").
  *    - title: Full course or internship title.
- *    - category: "Internship" | "Development" | "Analytics"
+ *    - category: "Internship" | "Development" | "Analytics" | "Marketing"
  *    - typeBadge: Label shown on card (e.g., "Task-Based Internship", "MIT OCW Track").
  *    - isInternship: `true` for Internships (issues "CERTIFICATE OF INTERNSHIP"),
  *                    `false` for Courses (issues "CERTIFICATE OF COMPLETION").
@@ -822,7 +822,7 @@ const OPENBOX_COURSES = [
         explanation: "Clear instruction/data boundaries, strict schema validation, and least-privilege tool permissions prevent untrusted input from hijacking agent actions."
       }
     ]
-  }
+  },
 
   // ==========================================================================
   // 5. PERFORMANCE MARKETING, SEO & GROWTH ACQUISITION SPRINT
@@ -1003,5 +1003,5 @@ const OPENBOX_COURSES = [
         explanation: "Canonical tags consolidate ranking signals onto a single authoritative URL so duplicate query-string URLs don't dilute SEO equity."
       }
     ]
-  },
+  }
 ];
