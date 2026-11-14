@@ -823,4 +823,185 @@ const OPENBOX_COURSES = [
       }
     ]
   }
+
+  // ==========================================================================
+  // 5. PERFORMANCE MARKETING, SEO & GROWTH ACQUISITION SPRINT
+  // ==========================================================================
+  {
+    id: "performance-marketing-growth-sprint",
+    title: "Performance Marketing, Technical SEO & Growth Acquisition",
+    category: "Marketing",
+    typeBadge: "Growth Marketing Track • Certificate",
+    isInternship: false,
+    duration: "4 Weeks • 4 Lectures + 4 Campaign Builds",
+    level: "Beginner to Intermediate",
+    techStack: ["Technical SEO", "Google Ads", "Meta Ads", "GA4 Attribution", "CRO", "Email Funnels"],
+    description:
+      "Master full-funnel digital customer acquisition from search intent to paid conversion. Learn keyword clustering and technical SEO, structure high-ROAS Google and Meta ad campaigns, configure GA4 event tracking, and optimize landing pages for conversion rate lift.",
+
+    // --- VERIFIED VIDEO LECTURES ---
+    lectures: [
+      {
+        id: "mkt-l01",
+        title: "01. Search Engine Optimization (SEO): Keyword Research, On-Page & Backlinks",
+        videoId: "xsVTqzratPs",
+        duration: "32 mins",
+        description:
+          "Ahrefs complete SEO framework covering search intent classification, long-tail keyword discovery, on-page heading/meta optimization, internal linking architecture, and high-authority link building.",
+        documentUrl: "https://developers.google.com/search/docs/fundamentals/seo-starter-guide",
+        documentLabel: "Google Search Central SEO Starter Guide"
+      },
+      {
+        id: "mkt-l02",
+        title: "02. Google Ads & Paid Search Campaign Architecture",
+        videoId: "l4m2_8_120s",
+        duration: "1 hr 15 mins",
+        description:
+          "Step-by-step paid search setup: campaign bidding strategies (Target CPA & Maximize Conversions), SKAG/STAG ad group structuring, match types, negative keyword pruning, and Quality Score optimization.",
+        documentUrl: "https://support.google.com/google-ads/answer/6146252",
+        documentLabel: "Google Ads Campaign Structure Documentation"
+      },
+      {
+        id: "mkt-l03",
+        title: "03. Meta Ads (Facebook & Instagram) Creative Testing & Retargeting",
+        videoId: "wQ6p5-vA7kI",
+        duration: "54 mins",
+        description:
+          "Build full-funnel social acquisition campaigns using Advantage+ audiences, hook-body-CTA ad creative frameworks, custom retargeting windows, and pixel/CAPI conversion event verification.",
+        documentUrl: "https://www.facebook.com/business/help/112061095610075",
+        documentLabel: "Meta Business Ads Manager Blueprint Guide"
+      },
+      {
+        id: "mkt-l04",
+        title: "04. Google Analytics 4 (GA4), UTM Tracking & Conversion Rate Optimization",
+        videoId: "u7V0f5o885Q",
+        duration: "46 mins",
+        description:
+          "Configure custom conversion events in GA4, enforce strict UTM taxonomy across paid and organic links, diagnose landing page drop-offs, and design A/B split tests to maximize checkout/lead conversion rates.",
+        documentUrl: "https://support.google.com/analytics/answer/9304153",
+        documentLabel: "GA4 Setup & Conversion Event Reference"
+      }
+    ],
+
+    // --- OFFICIAL GUIDES & TEMPLATES ---
+    documents: [
+      {
+        title: "Google Search Central: Official SEO Starter & Indexing Guide",
+        type: "Guide",
+        url: "https://developers.google.com/search/docs/fundamentals/seo-starter-guide"
+      },
+      {
+        title: "Google Campaign URL Builder (UTM Parameter Generator)",
+        type: "Template",
+        url: "https://ga-dev-tools.google/campaign-url-builder/"
+      },
+      {
+        title: "GA4 Custom Events & Conversion Tracking Documentation",
+        type: "Guide",
+        url: "https://support.google.com/analytics/answer/9304153"
+      },
+      {
+        title: "Media Buying & ROAS / CPA Budget Planner (Google Sheets)",
+        type: "Template",
+        url: "https://sheets.new"
+      }
+    ],
+
+    // --- GRADED CAMPAIGN ASSIGNMENTS ---
+    assignments: [
+      {
+        title: "Task 01: SEO Keyword Cluster & Technical Page Audit",
+        deadline: "Week 1 Milestone",
+        deliverable: "Shared Google Sheet + Audit Doc Link",
+        instructions:
+          "Select a target product or SaaS landing page. Map 20 commercial/informational keywords grouped into 4 topic clusters, rewrite the Title Tag, Meta Description, and H1–H3 hierarchy, and document 5 technical SEO fixes (Core Web Vitals, schema markup, canonicals)."
+      },
+      {
+        title: "Task 02: High-Intent Google Search Campaign Blueprint",
+        deadline: "Week 2 Milestone",
+        deliverable: "Shared Google Sheet (Campaign Structure)",
+        instructions:
+          "Design a complete Google Search campaign containing 3 tightly themed ad groups, 15 exact/phrase match keywords, 10 negative keywords, 3 Responsive Search Ad (RSA) headline/description variations, and a 30-day daily budget/CPA forecast."
+      },
+      {
+        title: "Task 03: Meta Ads Creative Matrix & Retargeting Funnel",
+        deadline: "Week 3 Milestone",
+        deliverable: "Notion/Google Doc Brief + UTM Sheet",
+        instructions:
+          "Draft 3 distinct ad angles (Pain-Point Hook, Social Proof/Case Study, Direct Offer) with primary text, visual storyboard, and CTA. Pair each ad with standardized UTM parameters generated via Google's Campaign URL Builder."
+      },
+      {
+        title: "Task 04: Capstone CRO Landing Page Tear-Down & A/B Test Plan",
+        deadline: "Week 4 Capstone",
+        deliverable: "1-Page CRO Proposal + Wireframe/Checklist",
+        instructions:
+          "Audit a live signup or checkout funnel across hero clarity, trust signals, form friction, and mobile speed. Propose 3 prioritized A/B experiments ranked by ICE score (Impact, Confidence, Ease) with clear primary conversion metrics."
+      }
+    ],
+
+    // --- VERIFICATION QUIZ (6 QUESTIONS) ---
+    quiz: [
+      {
+        question: "What is the primary goal of classifying keywords by 'Search Intent' before creating SEO content?",
+        options: [
+          "To stuff as many exact-match keywords into the footer as possible",
+          "To match page format and depth to what the searcher actually wants (informational guide vs. commercial product page)",
+          "To block search engine crawlers from indexing blog posts",
+          "To increase bounce rate on landing pages"
+        ],
+        answer: 1,
+        explanation: "Search engines rank pages that satisfy user intent; an informational query requires a tutorial, whereas a transactional query requires a product or pricing page."
+      },
+      {
+        question: "Why are Negative Keywords critical in a Google Search Ads campaign?",
+        options: [
+          "They automatically double your daily ad budget",
+          "They prevent your ads from triggering on irrelevant search queries, eliminating wasted ad spend and improving CTR",
+          "They lower your landing page load speed",
+          "They force ads to show only on mobile devices"
+        ],
+        answer: 1,
+        explanation: "Adding negative keywords (e.g., 'free', 'jobs', 'torrent') blocks unqualified clicks and raises overall campaign conversion rate."
+      },
+      {
+        question: "If an ad campaign spends ₹20,000 and generates ₹80,000 in attributed revenue, what is its ROAS?",
+        options: ["0.25x", "2.0x", "4.0x", "60.0x"],
+        answer: 2,
+        explanation: "Return on Ad Spend (ROAS) = Attributed Revenue / Ad Spend = ₹80,000 / ₹20,000 = 4.0x (400%)."
+      },
+      {
+        question: "Which three UTM parameters are required to accurately attribute traffic source, channel medium, and specific ad campaign in GA4?",
+        options: [
+          "utm_author, utm_date, utm_color",
+          "utm_source, utm_medium, utm_campaign",
+          "utm_host, utm_port, utm_protocol",
+          "utm_pixel, utm_cookie, utm_session"
+        ],
+        answer: 1,
+        explanation: "`utm_source` (e.g., linkedin), `utm_medium` (e.g., cpc or email), and `utm_campaign` (e.g., spring_launch) form the standard GA4 acquisition attribution trio."
+      },
+      {
+        question: "In Conversion Rate Optimization (CRO), what does 'ad-to-page message match' refer to?",
+        options: [
+          "Using the exact same font file on every website on the internet",
+          "Ensuring the landing page headline, offer, and visuals directly mirror the promise made in the ad the user clicked",
+          "Sending all paid traffic to the company's Privacy Policy page",
+          "Running the same ad copy for 5 years without changes"
+        ],
+        answer: 1,
+        explanation: "Strong message match reassures visitors they landed in the right place, preventing immediate bounce and lifting form/checkout completion."
+      },
+      {
+        question: "What does a canonical tag (`rel=\"canonical\"`) communicate to search engine crawlers?",
+        options: [
+          "That the page should be deleted from the server",
+          "Which URL represents the master/preferred version when duplicate or parameterized URLs exist",
+          "That all external links on the page are paid advertisements",
+          "The exact pixel dimensions of hero images"
+        ],
+        answer: 1,
+        explanation: "Canonical tags consolidate ranking signals onto a single authoritative URL so duplicate query-string URLs don't dilute SEO equity."
+      }
+    ]
+  },
 ];
