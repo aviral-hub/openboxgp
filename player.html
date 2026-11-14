@@ -14,14 +14,19 @@
         .dark { --background: #0a0a0c; --foreground: #f8fafc; --muted-bg: #111115; --muted-text: #94a3b8; --card: #111115; }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--background); color: var(--muted-text); }
         .heading-font { font-family: 'Space Grotesk', sans-serif; }
+        .ai-msg pre { background: rgba(0,0,0,0.45); padding: 10px; border-radius: 8px; overflow-x: auto; margin: 8px 0; font-size: 11px; color: #93c5fd; }
+        .ai-msg code { font-family: monospace; color: #60a5fa; }
     </style>
 </head>
-<body class="min-h-screen pb-16">
+<body class="min-h-screen pb-20">
 
     <header class="max-w-6xl mx-auto mt-4 px-4">
         <div class="h-16 px-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 flex items-center justify-between">
             <a href="course.html" class="text-xs font-bold text-blue-500 hover:underline"><i class="fa-solid fa-arrow-left mr-1"></i> Back to All Courses</a>
             <div class="flex items-center gap-2.5">
+                <button onclick="toggleAiDrawer()" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md cursor-pointer flex items-center gap-1.5">
+                    <i class="fa-solid fa-robot"></i> <span>Ask AI Teacher</span>
+                </button>
                 <button id="theme-toggle" class="p-2 rounded-xl bg-[var(--muted-bg)] text-xs cursor-pointer"><i class="fa-solid fa-circle-half-stroke"></i></button>
                 <div id="user-pill" class="hidden flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-500/10 text-xs font-bold text-blue-500">
                     <span id="user-role-badge" class="px-1.5 py-0.5 rounded text-[10px] bg-blue-600 text-white">Student</span>
@@ -59,7 +64,6 @@
                     </button>
                 </div>
 
-                <!-- Share Caption Box -->
                 <div class="p-4 rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 space-y-3">
                     <div class="flex items-center justify-between">
                         <span class="text-xs font-bold text-[var(--foreground)]"><i class="fa-brands fa-linkedin text-blue-500 mr-1.5"></i> Achievement Caption + Hashtags + Portal Link</span>
@@ -82,12 +86,11 @@
                 <div>
                     <span class="text-[10px] font-bold uppercase tracking-widest text-blue-500 bg-blue-500/10 px-2.5 py-1 rounded">Assignments & Sprint Tasks</span>
                     <h3 class="heading-font text-xl font-bold text-[var(--foreground)] mt-2">Submit Practical Deliverables</h3>
-                    <p class="text-xs text-[var(--muted-text)] mt-1">Complete the assignments/tasks below and submit your GitHub repository or Google Drive link for mentor review.</p>
+                    <p class="text-xs text-[var(--muted-text)] mt-1">Need a hint on an assignment? Click <strong>Ask AI Teacher</strong> for step-by-step guidance without spoilers.</p>
                 </div>
 
                 <div id="tasks-list" class="space-y-3"></div>
 
-                <!-- Student Remarks History -->
                 <div id="remarks-box" class="hidden p-4 rounded-xl bg-[var(--muted-bg)] space-y-2">
                     <h4 class="text-xs font-bold text-blue-500 uppercase">Your Submissions & Mentor Remarks</h4>
                     <div id="remarks-list" class="space-y-2"></div>
@@ -113,16 +116,91 @@
             </div>
         </div>
 
-        <!-- Sidebar (4 cols) -->
-        <aside class="lg:col-span-4 p-6 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 sticky top-6">
-            <h3 id="track-title" class="heading-font text-lg font-bold text-[var(--foreground)] mb-3">Syllabus</h3>
-            <div class="w-full h-2 rounded-full bg-[var(--muted-bg)] overflow-hidden mb-2">
-                <div id="prog-bar" class="h-full bg-emerald-500 transition-all" style="width:0%"></div>
+        <!-- Sidebar (4 cols): Syllabus + Embedded AI Teacher Quick Card -->
+        <aside class="lg:col-span-4 space-y-6 sticky top-6">
+            <!-- AI Teacher Quick-Launch Card -->
+            <div class="p-5 rounded-2xl bg-gradient-to-br from-blue-600/15 to-indigo-600/10 border border-blue-500/30">
+                <div class="flex items-center gap-3 mb-2">
+                    <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm shadow">
+                        <i class="fa-solid fa-robot"></i>
+                    </div>
+                    <div>
+                        <h4 class="heading-font text-sm font-bold text-[var(--foreground)]">Openbox AI Teacher</h4>
+                        <span class="text-[10px] text-emerald-400 font-semibold">● Context-Aware Tutor Online</span>
+                    </div>
+                </div>
+                <p class="text-xs text-[var(--muted-text)] mb-3">Stuck on a lecture concept, Python bug, or assignment? Get instant 1-on-1 guidance.</p>
+                <button onclick="toggleAiDrawer(true)" class="w-full py-2.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white cursor-pointer transition-all">
+                    Open AI Tutor Chat →
+                </button>
             </div>
-            <p id="prog-text" class="text-xs mb-4">0% Completed</p>
-            <ul id="lesson-list" class="space-y-2 max-h-[540px] overflow-y-auto pr-1"></ul>
+
+            <!-- Syllabus Card -->
+            <div class="p-6 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10">
+                <h3 id="track-title" class="heading-font text-lg font-bold text-[var(--foreground)] mb-3">Syllabus</h3>
+                <div class="w-full h-2 rounded-full bg-[var(--muted-bg)] overflow-hidden mb-2">
+                    <div id="prog-bar" class="h-full bg-emerald-500 transition-all" style="width:0%"></div>
+                </div>
+                <p id="prog-text" class="text-xs mb-4">0% Completed</p>
+                <ul id="lesson-list" class="space-y-2 max-h-[420px] overflow-y-auto pr-1"></ul>
+            </div>
         </aside>
     </main>
+
+    <!-- ======================================================================== -->
+    <!-- SLIDE-OVER OPENBOX AI TEACHER DRAWER (POWERED BY GEMINI FLASH)           -->
+    <!-- ======================================================================== -->
+    <div id="ai-drawer" class="hidden fixed inset-y-0 right-0 z-50 w-full max-w-md bg-[var(--card)] border-l border-slate-200 dark:border-white/10 shadow-2xl flex flex-col">
+        <!-- Drawer Header -->
+        <div class="p-4 border-b border-slate-200 dark:border-white/10 flex items-center justify-between bg-[var(--muted-bg)]">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center text-xs">
+                    <i class="fa-solid fa-robot"></i>
+                </div>
+                <div>
+                    <h3 class="heading-font text-sm font-bold text-[var(--foreground)]">Openbox AI Teacher</h3>
+                    <p id="ai-context-badge" class="text-[10px] text-blue-500 font-semibold truncate max-w-[240px]">Guiding your track</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-1.5">
+                <button onclick="clearAiChat()" class="p-2 rounded-lg text-xs text-slate-400 hover:text-red-400 cursor-pointer" title="Clear Chat">
+                    <i class="fa-solid fa-trash-can"></i>
+                </button>
+                <button onclick="toggleAiDrawer(false)" class="p-2 rounded-lg text-xs text-slate-400 hover:text-[var(--foreground)] cursor-pointer">
+                    <i class="fa-solid fa-xmark text-base"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Action Prompts -->
+        <div class="p-3 border-b border-slate-200 dark:border-white/10 flex gap-1.5 overflow-x-auto shrink-0">
+            <button onclick="sendQuickPrompt('Summarize the key concepts of this current lecture simply with an example.')" class="px-2.5 py-1.5 rounded-lg bg-blue-500/10 text-blue-400 text-[11px] font-semibold whitespace-nowrap hover:bg-blue-600 hover:text-white cursor-pointer">
+                ✨ Summarize Lecture
+            </button>
+            <button onclick="sendQuickPrompt('Give me a step-by-step hint on how to approach the current assignment without giving away the full code.')" class="px-2.5 py-1.5 rounded-lg bg-emerald-500/10 text-emerald-400 text-[11px] font-semibold whitespace-nowrap hover:bg-emerald-600 hover:text-white cursor-pointer">
+                🧩 Assignment Hint
+            </button>
+            <button onclick="sendQuickPrompt('Ask me 2 quick practice questions to test my understanding of this lecture.')" class="px-2.5 py-1.5 rounded-lg bg-purple-500/10 text-purple-400 text-[11px] font-semibold whitespace-nowrap hover:bg-purple-600 hover:text-white cursor-pointer">
+                🎯 Quiz Me
+            </button>
+        </div>
+
+        <!-- Chat Messages Area -->
+        <div id="ai-chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs leading-relaxed">
+            <div class="p-3.5 rounded-2xl bg-[var(--muted-bg)] text-[var(--foreground)] border border-slate-200 dark:border-white/5">
+                👋 Hi <strong id="ai-student-name">there</strong>! I'm your <strong>Openbox AI Teacher</strong>. I can see the exact lecture and assignments you're working on. Ask me anything—concept explanations, debugging help, or project architecture!
+            </div>
+        </div>
+
+        <!-- Input Form -->
+        <form onsubmit="handleAiSubmit(event)" class="p-3.5 border-t border-slate-200 dark:border-white/10 bg-[var(--muted-bg)] flex gap-2">
+            <input type="text" id="ai-user-input" placeholder="Ask a doubt or paste code..." required
+                class="flex-1 px-3.5 py-2.5 text-xs rounded-xl bg-[var(--card)] border border-slate-200 dark:border-white/10 text-[var(--foreground)] focus:outline-none focus:border-blue-500" />
+            <button type="submit" id="ai-send-btn" class="px-4 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold cursor-pointer">
+                <i class="fa-solid fa-paper-plane"></i>
+            </button>
+        </form>
+    </div>
 
     <!-- Certificate Modal -->
     <div id="cert-modal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
@@ -144,8 +222,13 @@
     <script>
         if (!currentUser) window.location.href = "login.html";
 
+        // Gemini API Configuration
+        const GEMINI_API_KEY = "AQ.Ab8RN6KDf2ATLNye_vveZ8tvpvk0cjOSSvaASFPgqOOUrh3JaQ";
+        const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent";
+
         let track = null;
         let lessonIdx = 0;
+        let chatHistory = [];
 
         document.addEventListener("DOMContentLoaded", () => {
             const params = new URLSearchParams(window.location.search);
@@ -153,6 +236,7 @@
             track = OPENBOX_COURSES.find(c => c.id === id) || OPENBOX_COURSES[0];
 
             document.getElementById("track-title").textContent = track.title;
+            document.getElementById("ai-student-name").textContent = currentUser.name;
             renderSidebar();
             if (track.lectures.length) loadLesson(0);
             renderDocuments();
@@ -162,6 +246,122 @@
             checkCert();
         });
 
+        // ====================================================================
+        // OPENBOX AI TEACHER ENGINE (GEMINI FLASH)
+        // ====================================================================
+        function toggleAiDrawer(forceState) {
+            const drawer = document.getElementById("ai-drawer");
+            if (typeof forceState === "boolean") {
+                drawer.classList.toggle("hidden", !forceState);
+            } else {
+                drawer.classList.toggle("hidden");
+            }
+        }
+
+        function clearAiChat() {
+            chatHistory = [];
+            document.getElementById("ai-chat-messages").innerHTML = `
+                <div class="p-3.5 rounded-2xl bg-[var(--muted-bg)] text-[var(--foreground)]">
+                    Chat cleared! Ask me anything about <strong>${track.lectures[lessonIdx]?.title || track.title}</strong>.
+                </div>`;
+        }
+
+        function sendQuickPrompt(promptText) {
+            document.getElementById("ai-user-input").value = promptText;
+            handleAiSubmit(new Event("submit"));
+        }
+
+        function formatAiText(raw) {
+            // Basic markdown-to-HTML formatting for code blocks, bold, and line breaks
+            return raw
+                .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+                .replace(/```([\s\S]*?)```/g, "<pre>$1</pre>")
+                .replace(/`([^`]+)`/g, "<code>$1</code>")
+                .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+                .replace(/\n/g, "<br>");
+        }
+
+        async function handleAiSubmit(e) {
+            e.preventDefault();
+            const input = document.getElementById("ai-user-input");
+            const sendBtn = document.getElementById("ai-send-btn");
+            const chatBox = document.getElementById("ai-chat-messages");
+            const userMsg = input.value.trim();
+            if (!userMsg) return;
+
+            input.value = "";
+            sendBtn.disabled = true;
+
+            // Append User Bubble
+            chatBox.innerHTML += `
+                <div class="ml-8 p-3 rounded-2xl bg-blue-600 text-white">
+                    ${userMsg.replace(/</g, "&lt;")}
+                </div>`;
+
+            // Append Typing Indicator
+            const typingId = "ai-typing-" + Date.now();
+            chatBox.innerHTML += `
+                <div id="${typingId}" class="mr-8 p-3 rounded-2xl bg-[var(--muted-bg)] text-blue-400 italic">
+                    <i class="fa-solid fa-circle-notch fa-spin mr-1"></i> Thinking...
+                </div>`;
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // Build Dynamic Course + Lecture + Assignment Context
+            const activeLecture = track.lectures[lessonIdx] || {};
+            const assignmentsSummary = (track.assignments || []).map(a => `- ${a.title}: ${a.instructions}`).join("\n");
+            const systemContext = `You are the Openbox AI Teacher, a supportive, sharp engineering and analytics mentor on Openbox Growth Partner.
+Student Name: ${currentUser.name}
+Current Course/Track: ${track.title} (${track.category})
+Current Video Lecture: ${activeLecture.title || "Overview"} — ${activeLecture.description || ""}
+Course Assignments:\n${assignmentsSummary || "None"}
+
+Rules:
+1. Keep explanations clear, practical, and concise.
+2. If the student asks about an assignment or problem set, guide them step-by-step and give hints or small examples rather than dumping the entire finished solution.
+3. Encourage them to complete all lectures and submit their GitHub link to earn their verified Openbox certificate.`;
+
+            chatHistory.push({ role: "user", parts: [{ text: userMsg }] });
+
+            try {
+                const res = await fetch(GEMINI_ENDPOINT, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-goog-api-key": GEMINI_API_KEY
+                    },
+                    body: JSON.stringify({
+                        systemInstruction: { parts: [{ text: systemContext }] },
+                        contents: chatHistory.slice(-8) // Keep last 8 turns for fast context
+                    })
+                });
+
+                const data = await res.json();
+                document.getElementById(typingId)?.remove();
+
+                if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
+                    const reply = data.candidates[0].content.parts[0].text;
+                    chatHistory.push({ role: "model", parts: [{ text: reply }] });
+
+                    chatBox.innerHTML += `
+                        <div class="ai-msg mr-4 p-3.5 rounded-2xl bg-[var(--muted-bg)] text-[var(--foreground)] border border-slate-200 dark:border-white/5">
+                            ${formatAiText(reply)}
+                        </div>`;
+                } else {
+                    const errMsg = data.error?.message || "No response from Gemini API.";
+                    chatBox.innerHTML += `<div class="p-3 rounded-xl bg-red-500/10 text-red-400">⚠️ ${errMsg}</div>`;
+                }
+            } catch (err) {
+                document.getElementById(typingId)?.remove();
+                chatBox.innerHTML += `<div class="p-3 rounded-xl bg-red-500/10 text-red-400">⚠️ Network error reaching Gemini API.</div>`;
+            } finally {
+                sendBtn.disabled = false;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }
+        }
+
+        // ====================================================================
+        // COURSE PLAYER, DOCS, ASSIGNMENTS & CERTIFICATE LOGIC
+        // ====================================================================
         function renderSidebar() {
             const ul = document.getElementById("lesson-list");
             ul.innerHTML = "";
@@ -184,6 +384,7 @@
             document.getElementById("video-box").innerHTML = `<iframe class="w-full h-full" src="https://www.youtube.com/embed/${l.videoId}" allowfullscreen></iframe>`;
             document.getElementById("lesson-title").textContent = l.title;
             document.getElementById("lesson-desc").textContent = l.description;
+            document.getElementById("ai-context-badge").textContent = `Context: ${l.title}`;
 
             const res = document.getElementById("resource-box");
             if (l.documentUrl) {
