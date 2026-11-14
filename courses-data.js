@@ -1185,4 +1185,276 @@ const OPENBOX_COURSES = [
       }
     ]
   }
+  // ==========================================================================
+  // 7. MIT 15.450: ANALYTICS OF FINANCE (FALL 2010) — QUANTITATIVE FINANCE
+  // ==========================================================================
+  {
+    id: "mit-15-450-analytics-of-finance",
+    title: "MIT 15.450: Analytics of Finance (Quantitative Financial Modeling)",
+    category: "Analytics",
+    typeBadge: "MIT Sloan OCW Track • Certificate",
+    isInternship: false,
+    duration: "6–8 Weeks • 8 Quantitative Modules + 4 Modeling Assignments",
+    level: "Intermediate to Advanced",
+    techStack: [
+      "Stochastic Calculus",
+      "Monte Carlo Simulation",
+      "Black-Scholes-Merton",
+      "Portfolio Optimization",
+      "Fixed Income",
+      "Value-at-Risk (VaR)"
+    ],
+    description:
+      "MIT Sloan School of Management (15.450, Fall 2010) graduate-level quantitative finance track taught by Prof. Leonid Kogan. Covers Brownian motion, Ito's Lemma, Black-Scholes-Merton derivatives pricing, Monte Carlo simulation, dynamic programming, mean-variance portfolio optimization, fixed-income term structure modeling, and Value-at-Risk (VaR) risk management.",
+
+    // --- VIDEO LECTURES + OFFICIAL MIT 15.450 LECTURE NOTES ---
+    lectures: [
+      {
+        id: "mit15450-l01",
+        title: "01. Introduction to Quantitative Finance & Discrete-Time Asset Pricing",
+        videoId: "WGlad1682sQ",
+        duration: "52 mins",
+        description:
+          "Covers the role of mathematical analytics in modern capital markets, no-arbitrage pricing principles, state-price densities, risk-neutral valuation in binomial trees, and replication portfolios.",
+        documentUrl:
+          "https://ocw.mit.edu/courses/15-450-analytics-of-finance-fall-2010/pages/lecture-notes/",
+        documentLabel: "MIT 15.450 Official Lecture Notes Index"
+      },
+      {
+        id: "mit15450-l02",
+        title: "02. Continuous-Time Stochastic Processes, Brownian Motion & Ito's Lemma",
+        videoId: "Z5y54G87v7c",
+        duration: "48 mins",
+        description:
+          "Introduces Wiener processes (standard Brownian motion), Geometric Brownian Motion (GBM) for equity prices, quadratic variation, stochastic differential equations (SDEs), and Ito's Lemma.",
+        documentUrl:
+          "https://ocw.mit.edu/courses/15-450-analytics-of-finance-fall-2010/pages/lecture-notes/",
+        documentLabel: "MIT 15.450 Stochastic Calculus Notes"
+      },
+      {
+        id: "mit15450-l03",
+        title: "03. Black-Scholes-Merton Option Pricing PDE & The Greeks",
+        videoId: "pr-u4LCfisU",
+        duration: "45 mins",
+        description:
+          "Derives the Black-Scholes-Merton partial differential equation via continuous delta-hedging, solves closed-form European call/put formulas, and analyzes Delta, Gamma, Vega, Theta, and Rho sensitivities.",
+        documentUrl:
+          "https://ocw.mit.edu/courses/15-450-analytics-of-finance-fall-2010/pages/lecture-notes/",
+        documentLabel: "MIT 15.450 Derivatives & PDE Notes"
+      },
+      {
+        id: "mit15450-l04",
+        title: "04. Monte Carlo Simulation & Variance Reduction in Finance",
+        videoId: "7ESK5SaP-bc",
+        duration: "38 mins",
+        description:
+          "Simulates correlated multi-asset price paths under risk-neutral dynamics to price path-dependent Asian and barrier options, applying antithetic variates and control variates to tighten confidence intervals.",
+        documentUrl:
+          "https://ocw.mit.edu/courses/15-450-analytics-of-finance-fall-2010/pages/lecture-notes/",
+        documentLabel: "MIT 15.450 Monte Carlo Lecture Notes"
+      },
+      {
+        id: "mit15450-l05",
+        title: "05. Dynamic Programming & American Option Pricing",
+        videoId: "oBt53YbR9Kk",
+        duration: "55 mins",
+        description:
+          "Applies Bellman's Principle of Optimality and backward induction to optimal stopping problems, pricing early-exercise American options via binomial lattices and Longstaff-Schwartz least-squares Monte Carlo.",
+        documentUrl:
+          "https://ocw.mit.edu/courses/15-450-analytics-of-finance-fall-2010/pages/lecture-notes/",
+        documentLabel: "MIT 15.450 Dynamic Programming Notes"
+      },
+      {
+        id: "mit15450-l06",
+        title: "06. Markowitz Mean-Variance Portfolio Optimization & CAPM",
+        videoId: "8TJQhQ2GZ0Y",
+        duration: "44 mins",
+        description:
+          "Formulates quadratic programming models to construct the Efficient Frontier, solve for the Tangency (Maximum Sharpe Ratio) Portfolio, and derive Capital Asset Pricing Model (CAPM) beta risk premia.",
+        documentUrl:
+          "https://ocw.mit.edu/courses/15-450-analytics-of-finance-fall-2010/pages/lecture-notes/",
+        documentLabel: "MIT 15.450 Portfolio Optimization Notes"
+      },
+      {
+        id: "mit15450-l07",
+        title: "07. Fixed-Income Analytics, Yield Curves & Interest Rate Models",
+        videoId: "84v0h81g2r8",
+        duration: "41 mins",
+        description:
+          "Analyzes zero-coupon bond pricing, bootstrapping spot and forward yield curves, Macaulay/Modified duration, convexity hedging, and short-rate models (Vasicek & Cox-Ingersoll-Ross).",
+        documentUrl:
+          "https://ocw.mit.edu/courses/15-450-analytics-of-finance-fall-2010/pages/lecture-notes/",
+        documentLabel: "MIT 15.450 Fixed Income Lecture Notes"
+      },
+      {
+        id: "mit15450-l08",
+        title: "08. Market Risk Management: Value-at-Risk (VaR) & Expected Shortfall",
+        videoId: "2s0yylyEPBU",
+        duration: "36 mins",
+        description:
+          "Quantifies tail risk across multi-asset portfolios using Parametric Variance-Covariance VaR, Historical Simulation, Monte Carlo VaR, Conditional VaR (Expected Shortfall), and stress-testing.",
+        documentUrl:
+          "https://ocw.mit.edu/courses/15-450-analytics-of-finance-fall-2010/pages/lecture-notes/",
+        documentLabel: "MIT 15.450 Risk Management Notes"
+      }
+    ],
+
+    // --- OFFICIAL MIT 15.450 COURSE DOCUMENTS ---
+    documents: [
+      {
+        title: "MIT 15.450 Official Course Home & Overview (Fall 2010)",
+        type: "Syllabus",
+        url: "https://ocw.mit.edu/courses/15-450-analytics-of-finance-fall-2010/"
+      },
+      {
+        title: "MIT 15.450 Official Syllabus & Grading Structure",
+        type: "Syllabus",
+        url: "https://ocw.mit.edu/courses/15-450-analytics-of-finance-fall-2010/pages/syllabus/"
+      },
+      {
+        title: "MIT 15.450 Complete Lecture Notes Repository (PDFs)",
+        type: "Guide",
+        url: "https://ocw.mit.edu/courses/15-450-analytics-of-finance-fall-2010/pages/lecture-notes/"
+      },
+      {
+        title: "MIT 15.450 Problem Sets & Assignments Archive",
+        type: "Worksheet",
+        url: "https://ocw.mit.edu/courses/15-450-analytics-of-finance-fall-2010/pages/assignments/"
+      },
+      {
+        title: "MIT 15.450 Exams & Practice Solutions Archive",
+        type: "Worksheet",
+        url: "https://ocw.mit.edu/courses/15-450-analytics-of-finance-fall-2010/pages/exams/"
+      },
+      {
+        title: "Interactive Financial Modeling Workspace (Google Sheets)",
+        type: "Template",
+        url: "https://sheets.new"
+      }
+    ],
+
+    // --- GRADED QUANTITATIVE MODELING ASSIGNMENTS ---
+    assignments: [
+      {
+        title: "Assignment 01: Binomial Tree & Black-Scholes-Merton Option Pricer",
+        deadline: "Module 2 Milestone",
+        deliverable: "GitHub Repository URL (Python / MATLAB / Sheet)",
+        instructions:
+          "Implement both an N-step Cox-Ross-Rubinstein binomial lattice and the analytical Black-Scholes-Merton formula for European Call and Put options. Verify convergence as N → 500 and plot Delta and Gamma across spot prices."
+      },
+      {
+        title: "Assignment 02: Monte Carlo Exotic Option Pricing & Variance Reduction",
+        deadline: "Module 4 Milestone",
+        deliverable: "GitHub Repository URL (monte_carlo_pricer.py)",
+        instructions:
+          "Simulate 50,000 Geometric Brownian Motion paths to price an arithmetic Asian call option and an up-and-out barrier option. Implement antithetic variates and report the percentage reduction in standard error."
+      },
+      {
+        title: "Assignment 03: Markowitz Efficient Frontier & Tangency Portfolio Optimizer",
+        deadline: "Module 6 Milestone",
+        deliverable: "GitHub Repo or Shared Google Sheet Model",
+        instructions:
+          "Download 3 years of historical daily returns for 6 equities, compute annualized expected returns and the covariance matrix, and solve for the Minimum-Variance Portfolio, Efficient Frontier curve, and Maximum Sharpe Ratio weights."
+      },
+      {
+        title: "Assignment 04: Capstone Multi-Asset Value-at-Risk (VaR) & Stress Report",
+        deadline: "Capstone Assignment",
+        deliverable: "GitHub Repository + Executive Risk Memo",
+        instructions:
+          "For a ₹1,00,00,000 mixed equity and fixed-income portfolio, compute 1-day and 10-day 99% VaR and Expected Shortfall (CVaR) using both Parametric and Historical Simulation methods, plus a +200 bps interest rate shock test."
+      }
+    ],
+
+    // --- VERIFICATION QUIZ (8 QUANTITATIVE FINANCE QUESTIONS, 75% TO PASS) ---
+    quiz: [
+      {
+        question: "In risk-neutral derivative pricing, what drift rate replaces the physical expected return μ of a non-dividend-paying stock?",
+        options: [
+          "The historical 10-year equity risk premium",
+          "The risk-free interest rate r",
+          "Zero (0%)",
+          "The stock's annualized volatility σ"
+        ],
+        answer: 1,
+        explanation: "Under the risk-neutral measure Q, all traded assets grow in expectation at the risk-free rate r so discounted prices are martingales."
+      },
+      {
+        question: "Why does Ito's Lemma include an extra second-derivative term ½σ²S²(∂²f/∂S²) compared to classical calculus?",
+        options: [
+          "Because stock prices can never be negative",
+          "Because Brownian motion has non-zero quadratic variation (dW_t)² = dt over infinitesimal intervals",
+          "Because interest rates compound continuously",
+          "Because option payoffs are always linear"
+        ],
+        answer: 1,
+        explanation: "Unlike smooth deterministic paths where (dx)² ≈ 0, Brownian increments scale with √dt, making (dW_t)² = dt a first-order term."
+      },
+      {
+        question: "What does an option's 'Delta' (Δ) measure in Black-Scholes-Merton risk management?",
+        options: [
+          "The sensitivity of option price to a 1% change in implied volatility",
+          "The rate of change of the option price with respect to a ₹1 change in the underlying asset price (and the required hedge ratio)",
+          "The daily time decay of the option",
+          "The sensitivity of option value to interest rate changes"
+        ],
+        answer: 1,
+        explanation: "Delta (∂V/∂S) measures directional price exposure and tells a market maker how many shares of the underlying asset to hold to remain delta-neutral."
+      },
+      {
+        question: "How does the standard error of a standard Monte Carlo estimator scale with the number of simulated paths N?",
+        options: [
+          "Proportionally to 1/N",
+          "Proportionally to 1/√N (quadrupling paths cuts error in half)",
+          "Proportionally to N²",
+          "Standard error is independent of N"
+        ],
+        answer: 1,
+        explanation: "By the Central Limit Theorem, Monte Carlo standard error decays at O(1/√N), which is why variance-reduction techniques like antithetic variates are essential."
+      },
+      {
+        question: "When can an American option on a stock be worth strictly more than an otherwise identical European option?",
+        options: [
+          "Never; they always have identical prices",
+          "When early exercise before expiration is optimal (such as deep in-the-money puts or calls prior to large dividends)",
+          "Only when implied volatility is zero",
+          "Only when the risk-free rate is negative"
+        ],
+        answer: 1,
+        explanation: "American options grant the right to exercise at any time up to maturity, creating an early-exercise premium modeled via dynamic programming."
+      },
+      {
+        question: "On the Markowitz Efficient Frontier, what defines the 'Tangency Portfolio'?",
+        options: [
+          "The portfolio with 100% allocation to cash",
+          "The risky asset portfolio that maximizes the Sharpe Ratio (excess return per unit of portfolio volatility)",
+          "The portfolio with the highest single-stock concentration",
+          "The portfolio with zero expected return"
+        ],
+        answer: 1,
+        explanation: "Drawing the Capital Allocation Line from the risk-free rate tangent to the efficient frontier identifies the highest Sharpe Ratio portfolio."
+      },
+      {
+        question: "Why does bond 'Convexity' matter alongside Modified Duration when interest rates move sharply?",
+        options: [
+          "Duration is a linear approximation; positive convexity captures the curvature showing bond prices rise faster when yields fall than they drop when yields rise",
+          "Convexity eliminates default risk on corporate bonds",
+          "Duration only applies to zero-coupon bonds",
+          "Convexity measures currency exchange exposure"
+        ],
+        answer: 0,
+        explanation: "Modified duration estimates the tangent slope of the price-yield curve, whereas convexity accounts for second-order curvature during large yield shifts."
+      },
+      {
+        question: "What key limitation of Value-at-Risk (VaR) does Expected Shortfall (Conditional VaR / CVaR) solve?",
+        options: [
+          "VaR cannot be computed for equity portfolios",
+          "VaR only states the threshold loss at a confidence level (e.g., 99%) without measuring the average severity of losses beyond that tail threshold",
+          "Expected Shortfall ignores correlations between assets",
+          "VaR always overestimates extreme market crashes"
+        ],
+        answer: 1,
+        explanation: "Expected Shortfall averages all losses exceeding the VaR cutoff and satisfies sub-additivity (coherence) for portfolio diversification."
+      }
+    ]
+  },
 ];
