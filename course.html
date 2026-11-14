@@ -1272,5 +1272,142 @@
     <i class="fa-brands fa-whatsapp text-lg"></i>
     <span class="text-xs font-extrabold tracking-wide">Instant Help (WhatsApp)</span>
   </a>
+
+  <!-- STUDENT SHEET SYNC MODAL (Triggered when clicking "Sync / Register" or submitting first task) -->
+<div id="sheet-auth-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+  <div class="bg-[var(--card)] text-[var(--text)] max-w-md w-full rounded-2xl shadow-2xl p-6 border border-slate-200 dark:border-white/10">
+    <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-200 dark:border-white/10">
+      <div>
+        <span class="text-[10px] font-extrabold uppercase tracking-widest text-blue-600 dark:text-blue-400">Openbox Student Record</span>
+        <h3 class="text-lg font-extrabold">Register / Sync with Google Sheet</h3>
+      </div>
+      <button onclick="document.getElementById('sheet-auth-modal').classList.add('hidden')" class="w-8 h-8 rounded-xl bg-slate-100 dark:bg-white/10 text-xs font-bold cursor-pointer">✕</button>
+    </div>
+
+    <div class="grid grid-cols-2 gap-2 p-1 rounded-xl bg-slate-100 dark:bg-white/5 mb-4">
+      <button id="sa-tab-reg" onclick="setSheetAuthMode('register')" class="py-1.5 rounded-lg text-xs font-extrabold bg-[var(--card)] shadow-sm cursor-pointer">New Student</button>
+      <button id="sa-tab-log" onclick="setSheetAuthMode('login')" class="py-1.5 rounded-lg text-xs font-bold text-[var(--muted)] cursor-pointer">Existing Login</button>
+    </div>
+
+    <form onsubmit="submitSheetAuth(event)" class="space-y-3">
+      <div id="sa-name-wrap">
+        <label class="block text-[11px] font-bold mb-1">Full Name (Printed on Certificate)</label>
+        <input id="sa-name" type="text" placeholder="Aviral Pathak" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10" />
+      </div>
+      <div>
+        <label class="block text-[11px] font-bold mb-1">Email Address</label>
+        <input id="sa-email" type="email" required placeholder="you@example.com" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10" />
+      </div>
+      <div>
+        <label class="block text-[11px] font-bold mb-1">Password</label>
+        <input id="sa-pass" type="password" required placeholder="••••••••" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10" />
+      </div>
+      <div id="sa-gh-wrap">
+        <label class="block text-[11px] font-bold mb-1">GitHub URL (Optional)</label>
+        <input id="sa-gh" type="url" placeholder="https://github.com/username" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10" />
+      </div>
+      <button type="submit" id="sa-btn" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold cursor-pointer">
+        Save &amp; Sync Account
+      </button>
+      <p id="sa-msg" class="text-xs font-bold text-center"></p>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Use your active Google Apps Script Web App URL
+  const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbzuF_hLOONhYsg0YsCUevyFGpJRuE1FJoSz8nWl6bLsI2ALnTwk49tP1B7bvbfS4ZjzDQ/exec";
+  let sheetAuthMode = "register";
+
+  function postToSheet(payload) {
+    return fetch(SHEET_API_URL, {
+      method: "POST",
+      body: JSON.stringify(payload)
+    }).then(r => r.json());
+  }
+
+  function setSheetAuthMode(mode) {
+    sheetAuthMode = mode;
+    document.getElementById("sa-name-wrap").classList.toggle("hidden", mode === "login");
+    document.getElementById("sa-gh-wrap").classList.toggle("hidden", mode === "login");
+    document.getElementById("sa-btn").textContent = mode === "register" ? "Save & Sync Account" : "Login & Sync Progress";
+    document.getElementById("sa-tab-reg").className = mode === "register" ? "py-1.5 rounded-lg text-xs font-extrabold bg-[var(--card)] shadow-sm cursor-pointer" : "py-1.5 rounded-lg text-xs font-bold text-[var(--muted)] cursor-pointer";
+    document.getElementById("sa-tab-log").className = mode === "login" ? "py-1.5 rounded-lg text-xs font-extrabold bg-[var(--card)] shadow-sm cursor-pointer" : "py-1.5 rounded-lg text-xs font-bold text-[var(--muted)] cursor-pointer";
+  }
+
+  async function submitSheetAuth(e) {
+    e.preventDefault();
+    const btn = document.getElementById("sa-btn");
+    const msg = document.getElementById("sa-msg");
+    btn.disabled = true;
+    btn.textContent = "Syncing with Google Sheet...";
+
+    const name = document.getElementById("sa-name").value.trim();
+    const email = document.getElementById("sa-email").value.trim();
+    const password = document.getElementById("sa-pass").value.trim();
+    const github = document.getElementById("sa-gh").value.trim();
+
+    try {
+      const res = await postToSheet({ action: sheetAuthMode, name, email, password, github });
+      if (res.status === "success") {
+        appState.studentName = res.user.name;
+        appState.studentEmail = res.user.email;
+        saveState();
+        document.getElementById("student-name-input").value = res.user.name;
+        document.getElementById("sheet-auth-modal").classList.add("hidden");
+      } else {
+        msg.textContent = res.message || "Error syncing account.";
+        msg.className = "text-xs font-bold text-center text-rose-500";
+      }
+    } catch (err) {
+      msg.textContent = "Network error reaching Google Sheet.";
+      msg.className = "text-xs font-bold text-center text-rose-500";
+    } finally {
+      btn.disabled = false;
+      btn.textContent = sheetAuthMode === "register" ? "Save & Sync Account" : "Login & Sync Progress";
+    }
+  }
+
+  // Wrap existing lecture toggle so it also pushes to the "Progress" tab
+  const _origToggleLecture = toggleCurrentLectureDone;
+  toggleCurrentLectureDone = function () {
+    _origToggleLecture();
+    if (!appState.studentEmail) {
+      document.getElementById("sheet-auth-modal").classList.remove("hidden");
+      return;
+    }
+    const lec = activeCourse.lectures[activeLectureIndex];
+    const prog = getCourseProgress(activeCourse.id);
+    const isDone = prog.completedLectures.includes(lec.id);
+    postToSheet({
+      action: "progress",
+      email: appState.studentEmail,
+      courseId: activeCourse.id,
+      lessonId: lec.id,
+      status: isDone ? "Completed" : "Incomplete"
+    }).catch(() => {});
+  };
+
+  // Wrap existing assignment input so it also pushes to the "Submissions" tab
+  const _origSaveAssign = saveAssignmentLink;
+  saveAssignmentLink = function (idx, url) {
+    _origSaveAssign(idx, url);
+    if (!url.trim()) return;
+    if (!appState.studentEmail) {
+      document.getElementById("sheet-auth-modal").classList.remove("hidden");
+      return;
+    }
+    const task = activeCourse.assignments[idx];
+    postToSheet({
+      action: "submit_task",
+      name: appState.studentName || "Student",
+      email: appState.studentEmail,
+      courseId: activeCourse.id,
+      taskTitle: task.title,
+      link: url.trim(),
+      notes: appState.referredBy ? `Referred by: ${appState.referredBy}` : ""
+    }).catch(() => {});
+  };
+</script>
 </body>
 </html>
