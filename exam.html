@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Proctored Assessment — Openbox Growth Partner</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-white min-h-screen flex flex-col antialiased">
+
+  <!-- TOP PROCTORING HEADER -->
+  <header class="sticky top-0 z-30 bg-slate-900/95 backdrop-blur border-b border-white/10 px-4 sm:px-8 h-16 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-red-600/20 border border-red-500/40 text-red-400 flex items-center justify-center text-sm">
+        <i class="fa-solid fa-shield-halved"></i>
+      </div>
+      <div>
+        <span class="text-[10px] font-extrabold uppercase tracking-widest text-red-400 block">Openbox Anti-Cheat Proctored Session</span>
+        <h1 id="exam-track-title" class="text-xs sm:text-sm font-extrabold truncate max-w-[200px] sm:max-w-md">Loading Assessment...</h1>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-3 sm:gap-4">
+      <div class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-bold flex items-center gap-2">
+        <span class="text-slate-400 hidden sm:inline">Tab Warnings:</span>
+        <span id="warnings-counter" class="text-emerald-400 font-extrabold">0 / 2</span>
+      </div>
+
+      <div class="px-3.5 py-1.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-mono font-extrabold flex items-center gap-2">
+        <i class="fa-solid fa-stopwatch"></i>
+        <span id="exam-timer">00:00</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- VIOLATION ALERT BAR -->
+  <div id="violation-banner" class="hidden bg-red-600 text-white text-xs font-extrabold py-3 px-6 text-center">
+    <i class="fa-solid fa-triangle-exclamation mr-2"></i>
+    <span id="violation-text">WARNING: Tab switch or window focus loss detected!</span>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="flex-1 max-w-3xl w-full mx-auto px-4 sm:px-6 py-10">
+
+    <!-- PRE-EXAM BRIEFING SCREEN -->
+    <div id="briefing-screen" class="p-6 sm:p-8 rounded-2xl bg-slate-900 border border-white/10 shadow-2xl space-y-6">
+      <div class="flex items-center gap-3">
+        <span class="px-3 py-1 rounded-lg text-[11px] font-extrabold uppercase tracking-wider bg-blue-600/20 text-blue-400 border border-blue-500/30">
+          Identity Verified
+        </span>
+        <span id="candidate-badge" class="text-xs font-bold text-slate-300"></span>
+      </div>
+
+      <div>
+        <h2 class="text-2xl font-extrabold mb-2">Proctored Exam Rules &amp; Integrity Check</h2>
+        <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">
+          You are about to begin the official verification assessment. Once started, full-screen proctoring will activate.
+        </p>
+      </div>
+
+      <div class="p-4 rounded-xl bg-slate-950 border border-white/10 space-y-2.5 text-xs text-slate-300">
+        <p><i class="fa-solid fa-check text-emerald-400 mr-2"></i> <strong>Passing Score:</strong> 75% or higher required to unlock certificate eligibility.</p>
+        <p><i class="fa-solid fa-eye text-amber-400 mr-2"></i> <strong>Zero Tab-Switching:</strong> Leaving this tab or losing window focus triggers a violation warning. <strong>2 violations = automatic submission.</strong></p>
+        <p><i class="fa-solid fa-ban text-red-400 mr-2"></i> <strong>Clipboard &amp; Shortcut Lock:</strong> Right-click, copy/paste, and developer shortcuts are disabled during the exam.</p>
+      </div>
+
+      <div class="flex flex-wrap items-center justify-between gap-3 pt-2">
+        <button onclick="goBackToPortal()" class="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-bold cursor-pointer">
+          ← Cancel &amp; Return
+        </button>
+        <button onclick="startExamSession()" class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-extrabold cursor-pointer shadow-lg shadow-blue-600/30">
+          Enter Fullscreen &amp; Start Assessment →
+        </button>
+      </div>
+    </div>
+
+    <!-- ACTIVE QUESTION SCREEN -->
+    <div id="active-exam-screen" class="hidden">
+      <div class="flex items-center justify-between text-xs font-bold text-slate-400 mb-2">
+        <span id="question-progress-label">Question 1 of 5</span>
+        <span>Passing Threshold: 75%</span>
+      </div>
+      <div class="w-full h-1.5 rounded-full bg-white/10 overflow-hidden mb-6">
+        <div id="question-progress-bar" class="h-full bg-blue-500 transition-all duration-300" style="width: 0%"></div>
+      </div>
+
+      <div id="question-card" class="p-6 sm:p-8 rounded-2xl bg-slate-900 border border-white/10 shadow-2xl mb-6"></div>
+
+      <div class="flex items-center justify-between gap-4">
+        <button id="prev-q-btn" onclick="moveQuestion(-1)" class="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-extrabold cursor-pointer disabled:opacity-40">
+          ← Previous
+        </button>
+        <div class="flex items-center gap-3">
+          <button id="next-q-btn" onclick="moveQuestion(1)" class="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-extrabold cursor-pointer">
+            Next Question →
+          </button>
+          <button id="submit-exam-btn" onclick="submitExam(false)" class="hidden px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-extrabold cursor-pointer shadow-lg shadow-emerald-600/25">
+            Submit &amp; Verify Exam ✓
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESULT SCREEN -->
+    <div id="result-screen" class="hidden p-6 sm:p-8 rounded-2xl bg-slate-900 border border-white/10 text-center space-y-5">
+      <div id="res-icon" class="w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-2xl"></div>
+      <h2 id="res-title" class="text-2xl font-extrabold"></h2>
+      <p id="res-desc" class="text-xs sm:text-sm text-slate-300 max-w-lg mx-auto"></p>
+      <div id="res-breakdown" class="text-left space-y-2.5 max-h-80 overflow-y-auto p-4 rounded-xl bg-slate-950 border border-white/10"></div>
+      <div class="pt-3">
+        <button onclick="goBackToPortal()" class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-extrabold cursor-pointer">
+          Return to Course Workspace →
+        </button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Load your existing track/course datasets -->
+  <script src="data.js"></script>
+  <script src="courses-data.js"></script>
+
+  <script>
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwj82z7wQTsWVUHjZhXjaAquyhBWh-M4kqAADiGnAU7GRZyc5hS4LNIVTR30faPjvwLYA/exec";
+    const PASS_PERCENT = 75;
+
+    const params = new URLSearchParams(window.location.search);
+    const trackId = params.get("track") || params.get("course") || params.get("id");
+    const currentUser = JSON.parse(localStorage.getItem("openbox_user")) || { name: "Candidate", email: "" };
+
+    const allDatasets = [
+      ...(typeof OPENBOX_TRACKS !== "undefined" ? OPENBOX_TRACKS : []),
+      ...(typeof OPENBOX_COURSES !== "undefined" ? OPENBOX_COURSES : [])
+    ];
+    const targetTrack = allDatasets.find(t => t.id === trackId);
+
+    let questions = [];
+    let answers = {};
+    let currentIdx = 0;
+    let warnings = 0;
+    let isExamRunning = false;
+    let timerId = null;
+    let secondsRemaining = 0;
+
+    if (!targetTrack || !targetTrack.quiz || targetTrack.quiz.length === 0) {
+      document.getElementById("exam-track-title").textContent = "Assessment Not Found";
+      document.getElementById("briefing-screen").innerHTML = `
+        <p class="text-sm text-rose-400 font-bold">No assessment questions found for this track.</p>
+        <button onclick="goBackToPortal()" class="px-5 py-2.5 rounded-xl bg-blue-600 text-xs font-extrabold cursor-pointer">← Return to Portal</button>
+      `;
+    } else {
+      document.getElementById("exam-track-title").textContent = targetTrack.title;
+      document.getElementById("candidate-badge").textContent = `${currentUser.name} (${currentUser.email || "Local Session"})`;
+    }
+
+    function startExamSession() {
+      // Shuffle questions for anti-cheat integrity
+      questions = [...targetTrack.quiz].sort(() => Math.random() - 0.5);
+      answers = {};
+      currentIdx = 0;
+      warnings = 0;
+      isExamRunning = true;
+      secondsRemaining = questions.length * 90;
+
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+
+      document.getElementById("briefing-screen").classList.add("hidden");
+      document.getElementById("active-exam-screen").classList.remove("hidden");
+
+      renderQuestion();
+      startTimer();
+    }
+
+    function startTimer() {
+      clearInterval(timerId);
+      updateTimerUI();
+      timerId = setInterval(() => {
+        if (!isExamRunning) return;
+        secondsRemaining--;
+        updateTimerUI();
+        if (secondsRemaining <= 0) {
+          submitExam(true, "Time limit expired. Your assessment was automatically submitted.");
+        }
+      }, 1000);
+    }
+
+    function updateTimerUI() {
+      const m = String(Math.floor(Math.max(0, secondsRemaining) / 60)).padStart(2, "0");
+      const s = String(Math.max(0, secondsRemaining) % 60).padStart(2, "0");
+      document.getElementById("exam-timer").textContent = `${m}:${s}`;
+    }
+
+    function renderQuestion() {
+      const total = questions.length;
+      const q = questions[currentIdx];
+      document.getElementById("question-progress-label").textContent = `Question ${currentIdx + 1} of ${total}`;
+      document.getElementById("question-progress-bar").style.width = `${Math.round(((currentIdx + 1) / total) * 100)}%`;
+
+      const chosen = answers[currentIdx];
+      document.getElementById("question-card").innerHTML = `
+        <p class="text-base sm:text-lg font-extrabold leading-snug mb-6">${currentIdx + 1}. ${q.question}</p>
+        <div class="space-y-3">
+          ${q.options
+            .map(
+              (opt, idx) => `
+            <button
+              type="button"
+              onclick="pickAnswer(${idx})"
+              class="w-full text-left p-4 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-center gap-3.5 cursor-pointer ${
+                chosen === idx
+                  ? "bg-blue-600/20 border-blue-500 text-white"
+                  : "bg-slate-950 border-white/10 text-slate-300 hover:border-white/30"
+              }"
+            >
+              <span class="w-6 h-6 rounded-full border flex items-center justify-center text-xs font-extrabold shrink-0 ${
+                chosen === idx ? "bg-blue-600 border-blue-500 text-white" : "border-white/25 text-slate-400"
+              }">
+                ${String.fromCharCode(65 + idx)}
+              </span>
+              <span>${opt}</span>
+            </button>
+          `
+            )
+            .join("")}
+        </div>
+      `;
+
+      document.getElementById("prev-q-btn").disabled = currentIdx === 0;
+      const isLast = currentIdx === total - 1;
+      document.getElementById("next-q-btn").classList.toggle("hidden", isLast);
+      document.getElementById("submit-exam-btn").classList.toggle("hidden", !isLast);
+    }
+
+    function pickAnswer(idx) {
+      answers[currentIdx] = idx;
+      renderQuestion();
+    }
+
+    function moveQuestion(step) {
+      const next = currentIdx + step;
+      if (next >= 0 && next < questions.length) {
+        currentIdx = next;
+        renderQuestion();
+      }
+    }
+
+    // Anti-Cheat Enforcement Listeners
+    document.addEventListener("visibilitychange", () => {
+      if (isExamRunning && document.hidden) recordViolation("Tab switch or browser minimization detected.");
+    });
+    window.addEventListener("blur", () => {
+      if (isExamRunning) recordViolation("Window focus lost during active exam.");
+    });
+    document.addEventListener("contextmenu", e => { if (isExamRunning) e.preventDefault(); });
+    document.addEventListener("copy", e => { if (isExamRunning) e.preventDefault(); });
+    document.addEventListener("keydown", e => {
+      if (!isExamRunning) return;
+      if ((e.ctrlKey || e.metaKey) && ["c", "v", "x", "u", "p", "s"].includes(e.key.toLowerCase())) e.preventDefault();
+      if (e.key === "F12") e.preventDefault();
+    });
+
+    function recordViolation(reason) {
+      if (!isExamRunning) return;
+      warnings++;
+      const badge = document.getElementById("warnings-counter");
+      badge.textContent = `${warnings} / 2`;
+      badge.className = "text-red-400 font-extrabold";
+
+      const banner = document.getElementById("violation-banner");
+      banner.classList.remove("hidden");
+      document.getElementById("violation-text").textContent =
+        `ANTI-CHEAT VIOLATION (${warnings}/2): ${reason} Reaching 2 warnings automatically terminates and grades your exam.`;
+
+      if (warnings >= 2) {
+        submitExam(true, "Assessment auto-submitted due to repeated tab-switching / focus violations.");
+      }
+    }
+
+    function submitExam(autoTerminated = false, customMsg = "") {
+      isExamRunning = false;
+      clearInterval(timerId);
+      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+
+      let score = 0;
+      const breakdown = questions
+        .map((q, idx) => {
+          const picked = answers[idx];
+          const ok = picked === q.answer;
+          if (ok) score++;
+          return `
+          <div class="p-3 rounded-xl border ${ok ? "border-emerald-500/30 bg-emerald-500/10" : "border-rose-500/30 bg-rose-500/10"}">
+            <p class="text-xs font-bold mb-1">${idx + 1}. ${q.question}</p>
+            <p class="text-[11px] ${ok ? "text-emerald-300" : "text-rose-300"}">
+              ${ok ? "✓ Correct" : `✕ Selected: ${picked !== undefined ? q.options[picked] : "Unanswered"} | Correct: ${q.options[q.answer]}`}
+            </p>
+          </div>
+        `;
+        })
+        .join("");
+
+      const pct = Math.round((score / questions.length) * 100);
+      const passed = pct >= PASS_PERCENT;
+
+      // Persist verified exam score in localStorage
+      const savedResults = JSON.parse(localStorage.getItem("openbox_quiz_results")) || {};
+      const prevBest = savedResults[targetTrack.id]?.percent || 0;
+      savedResults[targetTrack.id] = {
+        percent: Math.max(prevBest, pct),
+        passed: savedResults[targetTrack.id]?.passed || passed,
+        warnings,
+        completedAt: new Date().toISOString()
+      };
+      localStorage.setItem("openbox_quiz_results", JSON.stringify(savedResults));
+
+      // Log assessment attempt to Google Sheets if logged in
+      if (currentUser.email && APPS_SCRIPT_URL.startsWith("http")) {
+        fetch(APPS_SCRIPT_URL, {
+          method: "POST",
+          body: JSON.stringify({
+            action: "submit_task",
+            name: currentUser.name,
+            email: currentUser.email,
+            courseId: targetTrack.id,
+            taskTitle: `[PROCTORED EXAM] ${targetTrack.title}`,
+            link: `Score: ${pct}% (${passed ? "PASSED" : "FAILED"})`,
+            notes: `Warnings: ${warnings}/2`
+          })
+        }).catch(() => {});
+      }
+
+      document.getElementById("active-exam-screen").classList.add("hidden");
+      document.getElementById("result-screen").classList.remove("hidden");
+
+      const icon = document.getElementById("res-icon");
+      icon.className = `w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-2xl ${
+        passed ? "bg-emerald-500/20 text-emerald-400" : "bg-rose-500/20 text-rose-400"
+      }`;
+      icon.innerHTML = passed ? `<i class="fa-solid fa-award"></i>` : `<i class="fa-solid fa-circle-xmark"></i>`;
+
+      document.getElementById("res-title").textContent = passed
+        ? `Assessment Passed — ${pct}% (${score}/${questions.length})`
+        : `Assessment Not Passed — ${pct}% (${score}/${questions.length})`;
+
+      document.getElementById("res-desc").textContent = customMsg
+        ? customMsg
+        : passed
+        ? "Your proctored result has been verified and saved. Return to your workspace to claim your credential."
+        : "You need at least 75% to pass. Review the breakdown below and re-attempt when ready.";
+
+      document.getElementById("res-breakdown").innerHTML = breakdown;
+    }
+
+    function goBackToPortal() {
+      const ref = document.referrer;
+      if (ref && ref.includes("course.html")) {
+        window.location.href = `course.html?id=${encodeURIComponent(trackId || "")}`;
+      } else {
+        window.location.href = `index.html?track=${encodeURIComponent(trackId || "")}`;
+      }
+    }
+  </script>
+</body>
+</html>
