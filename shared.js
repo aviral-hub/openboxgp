@@ -1,13 +1,14 @@
 // ============================================================================
 // OPENBOX GROWTH PARTNER — SHARED CONTROLLER & LIVE GOOGLE SHEETS CONNECTION
 // ============================================================================
-// Ensure this URL matches the exact v4.0-google-oauth-proctored /exec URL you just tested:
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzuF_hLOONhYsg0YsCUevyFGpJRuE1FJoSz8nWl6bLsI2ALnTwk49tP1B7bvbfS4ZjzDQ/exec";
 const UNLOCK_ALL_FOR_TESTING = true;
 
-// Shared Session State
+// Shared Session State (Persisted across logins & page reloads)
 let currentUser = JSON.parse(localStorage.getItem("openbox_user")) || null;
 let completedLessons = JSON.parse(localStorage.getItem("openbox_progress")) || {};
+let videoWatchMap = JSON.parse(localStorage.getItem("openbox_video_watch")) || {};
+let enrolledCourses = JSON.parse(localStorage.getItem("openbox_enrolled")) || [];
 let approvedCourses = JSON.parse(localStorage.getItem("openbox_approved")) || [];
 let mySubmissions = JSON.parse(localStorage.getItem("openbox_submissions")) || [];
 
@@ -45,6 +46,61 @@ function isStaff() {
 
 function isAdmin() {
   return getNormalizedRole() === "Admin";
+}
+
+// Hydrate full session from login response (used by login.html)
+function hydrateUserSession(data) {
+  currentUser = data.user;
+  completedLessons = data.completedLessons || {};
+  videoWatchMap = data.videoWatch || {};
+  enrolledCourses = data.enrolledCourses || [];
+  approvedCourses = data.approvedCourses || [];
+  mySubmissions = data.mySubmissions || [];
+
+  localStorage.setItem("openbox_user", JSON.stringify(currentUser));
+  localStorage.setItem("openbox_progress", JSON.stringify(completedLessons));
+  localStorage.setItem("openbox_video_watch", JSON.stringify(videoWatchMap));
+  localStorage.setItem("openbox_enrolled", JSON.stringify(enrolledCourses));
+  localStorage.setItem("openbox_approved", JSON.stringify(approvedCourses));
+  localStorage.setItem("openbox_submissions", JSON.stringify(mySubmissions));
+}
+
+// Save partial or full video watch progress locally & sync to Google Sheets
+let _lastCloudSyncTs = 0;
+function saveVideoWatchProgress(courseId, lessonId, watchedSec, durationSec, forceCloudSync = false) {
+  if (!courseId || !lessonId || durationSec <= 0) return;
+
+  const pct = Math.min(100, Math.round((watchedSec / durationSec) * 100));
+  const prev = videoWatchMap[lessonId] || { watchedSec: 0, durationSec: 0, percent: 0 };
+
+  const updated = {
+    watchedSec: Math.max(prev.watchedSec, Math.round(watchedSec)),
+    durationSec: Math.max(prev.durationSec, Math.round(durationSec)),
+    percent: Math.max(prev.percent, pct)
+  };
+  videoWatchMap[lessonId] = updated;
+  localStorage.setItem("openbox_video_watch", JSON.stringify(videoWatchMap));
+
+  if (!enrolledCourses.includes(courseId)) {
+    enrolledCourses.push(courseId);
+    localStorage.setItem("openbox_enrolled", JSON.stringify(enrolledCourses));
+  }
+
+  // Throttle cloud sync to once every 12 seconds unless paused/ended/forced
+  const now = Date.now();
+  if (currentUser && (forceCloudSync || now - _lastCloudSyncTs > 12000)) {
+    _lastCloudSyncTs = now;
+    postToOpenboxApi({
+      action: "video_watch",
+      email: currentUser.email,
+      courseId: courseId,
+      lessonId: lessonId,
+      watchedSec: updated.watchedSec,
+      durationSec: updated.durationSec,
+      percent: updated.percent,
+      status: updated.percent >= 96 ? "Completed" : "In Progress"
+    }).catch(() => {});
+  }
 }
 
 // Shared Navbar Updater
@@ -88,12 +144,13 @@ function syncNavbarAuth() {
 function logoutUser() {
   localStorage.removeItem("openbox_user");
   localStorage.removeItem("openbox_progress");
+  localStorage.removeItem("openbox_video_watch");
+  localStorage.removeItem("openbox_enrolled");
   localStorage.removeItem("openbox_approved");
   localStorage.removeItem("openbox_submissions");
   window.location.href = "index.html";
 }
 
-// Unified POST Helper for Google Apps Script (handles 302 redirect & JSON parsing)
 async function postToOpenboxApi(payload) {
   const res = await fetch(APPS_SCRIPT_URL, {
     method: "POST",
@@ -110,7 +167,6 @@ async function postToOpenboxApi(payload) {
   }
 }
 
-// Live Catalog Fetcher with Timeout & Local Cache
 async function fetchLiveTracks() {
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 12000);
