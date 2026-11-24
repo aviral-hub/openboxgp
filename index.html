@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
 
     <!-- Primary SEO Meta Tags -->
     <title>Openbox Growth Partner — Task-Based Software, AI, Analytics &amp; Marketing Internships</title>
@@ -15,7 +15,7 @@
     <meta name="theme-color" content="#0a0a0c">
     <link rel="canonical" href="https://openboxgrowth.vercel.app/">
 
-    <!-- Favicon & App Icons (Custom Openbox Brand SVG + Apple Touch Icon) -->
+    <!-- Favicon & App Icons -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230a0a0c'/%3E%3Cg stroke='%233b82f6' stroke-width='5' stroke-linecap='round' stroke-linejoin='round' fill='none'%3E%3Cpolygon points='50,52 70,62 50,72 30,62' fill='%233b82f6' fill-opacity='0.25' stroke='none'/%3E%3Cpolygon points='50,90 22,75 22,56 50,72'/%3E%3Cpolygon points='50,90 78,75 78,56 50,72'/%3E%3Cline x1='50' y1='64' x2='50' y2='90'/%3E%3Cpolygon points='50,48 20,36 16,54 50,68' fill='%23111827'/%3E%3Cpolygon points='50,48 80,36 84,54 50,68' fill='%23111827'/%3E%3C/g%3E%3C/svg%3E">
     <link rel="apple-touch-icon" href="https://openboxgrowth.vercel.app/og-thumbnail.png">
 
@@ -65,7 +65,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <script src="shared.js"></script>
 
     <style>
@@ -76,7 +76,7 @@
             --foreground: #0f172a;
             --muted-bg: #f1f5f9;
             --muted-text: #475569;
-            --blur-tint: rgba(248, 250, 252, 0.85);
+            --blur-tint: rgba(248, 250, 252, 0.88);
             --shadow-sm: 0 4px 12px rgba(15, 23, 42, 0.05);
             --card: #ffffff;
             --grid-line: rgba(15, 23, 42, 0.04);
@@ -89,26 +89,35 @@
             --foreground: #f8fafc;
             --muted-bg: #111115;
             --muted-text: #94a3b8;
-            --blur-tint: rgba(10, 10, 12, 0.85);
+            --blur-tint: rgba(10, 10, 12, 0.88);
             --shadow-sm: 0 10px 30px rgba(0, 0, 0, 0.5);
             --card: #111115;
             --grid-line: rgba(255, 255, 255, 0.03);
         }
 
         [x-cloak] { display: none !important; }
+        html, body {
+            overflow-x: hidden;
+            max-width: 100%;
+        }
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
             background-color: var(--background);
             color: var(--muted-text);
             transition: background-color 0.3s ease, color 0.3s ease;
+            -webkit-tap-highlight-color: transparent;
         }
         .heading-font { font-family: 'Space Grotesk', sans-serif; }
         .bg-grid {
-            background-size: 40px 40px;
+            background-size: 32px 32px;
             background-image:
                 linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
                 linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
         }
+
+        /* Hide scrollbar on horizontal mobile step pills */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
         @keyframes openLidLeft {
             0% { transform: translate(0, 0) skewY(0deg) scaleY(1); }
@@ -131,211 +140,229 @@
     </style>
 </head>
 
-<body class="min-h-screen relative selection:bg-blue-600 selection:text-white pb-12">
+<body class="min-h-screen relative selection:bg-blue-600 selection:text-white pb-24 md:pb-12 antialiased">
 
-    <!-- Global Header -->
-    <header
-        class="max-w-6xl mx-auto mt-4 mx-4 lg:mx-auto bg-[var(--blur-tint)] backdrop-blur-xl shadow-[var(--shadow-sm)] border border-slate-200 dark:border-white/10 rounded-2xl sticky top-4 z-50 transition-all duration-300"
-        x-data="{ mobileOpen: false }">
-        <div class="h-20 px-4 md:px-6 flex items-center justify-between">
+    <!-- Global Responsive Header -->
+    <div class="px-3 sm:px-4 pt-3 sm:pt-4 sticky top-0 z-50">
+        <header
+            class="max-w-6xl mx-auto bg-[var(--blur-tint)] backdrop-blur-xl shadow-[var(--shadow-sm)] border border-slate-200 dark:border-white/10 rounded-2xl transition-all duration-300"
+            x-data="{ mobileOpen: false }">
+            <div class="h-16 sm:h-20 px-3.5 sm:px-6 flex items-center justify-between gap-2">
 
-            <!-- Brand Logo -->
-            <a href="index.html" class="flex items-center gap-3 focus:outline-none shrink-0 group">
-                <svg class="h-11 w-auto text-[var(--primary)] filter drop-shadow-[0_2px_10px_rgba(59,130,246,0.15)]"
-                    viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <g stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="50,52 70,62 50,72 30,62" fill="currentColor" fill-opacity="0.18" stroke="none" />
-                        <polygon points="50,95 18,78 18,58 50,75" />
-                        <polygon points="50,95 82,78 82,58 50,75" />
-                        <line x1="50" y1="65" x2="50" y2="95" />
-                        <polygon class="box-lid-l" points="50,52 18,42 18,62 50,72" fill="var(--card)" />
-                        <polygon class="box-lid-r" points="50,52 82,42 82,62 50,72" fill="var(--card)" />
-                    </g>
-                </svg>
-                <div class="flex flex-col text-left leading-none pr-2">
-                    <span class="text-[var(--foreground)] font-black text-xl tracking-tight heading-font">Openbox</span>
-                    <span class="text-[var(--primary)] font-bold text-[9px] tracking-[0.25em] uppercase mt-0.5">Growth Partner</span>
-                </div>
-            </a>
-
-            <!-- Desktop Subpage Links -->
-            <nav class="hidden md:flex items-center gap-6 text-[13px] font-semibold text-[var(--muted-text)]">
-                <a href="#how-it-works" class="hover:text-[var(--foreground)] transition-colors">Framework</a>
-                <a href="#tracks" class="hover:text-[var(--foreground)] transition-colors">Cohort Paths</a>
-                <a href="#proof" class="hover:text-[var(--foreground)] transition-colors">Showcase</a>
-                <a href="course.html" class="text-blue-500 hover:text-blue-400 font-bold flex items-center gap-1.5">
-                    <i class="fa-solid fa-graduation-cap"></i> Learning Portal
+                <!-- Brand Logo -->
+                <a href="index.html" class="flex items-center gap-2.5 sm:gap-3 focus:outline-none shrink-0 group">
+                    <svg class="h-9 sm:h-11 w-auto text-[var(--primary)] filter drop-shadow-[0_2px_10px_rgba(59,130,246,0.15)]"
+                        viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <g stroke="currentColor" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon points="50,52 70,62 50,72 30,62" fill="currentColor" fill-opacity="0.18" stroke="none" />
+                            <polygon points="50,95 18,78 18,58 50,75" />
+                            <polygon points="50,95 82,78 82,58 50,75" />
+                            <line x1="50" y1="65" x2="50" y2="95" />
+                            <polygon class="box-lid-l" points="50,52 18,42 18,62 50,72" fill="var(--card)" />
+                            <polygon class="box-lid-r" points="50,52 82,42 82,62 50,72" fill="var(--card)" />
+                        </g>
+                    </svg>
+                    <div class="flex flex-col text-left leading-none">
+                        <span class="text-[var(--foreground)] font-black text-lg sm:text-xl tracking-tight heading-font">Openbox</span>
+                        <span class="text-[var(--primary)] font-bold text-[8px] sm:text-[9px] tracking-[0.22em] uppercase mt-0.5">Growth Partner</span>
+                    </div>
                 </a>
-                <a id="nav-studio-link" href="studio.html" class="hidden text-amber-500 hover:text-amber-400 font-bold flex items-center gap-1.5">
-                    <i class="fa-solid fa-sliders"></i> Admin Studio
-                </a>
-            </nav>
 
-            <!-- Functional Actions -->
-            <div class="flex items-center gap-2.5">
-                <button id="theme-toggle" class="p-2 w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--muted-bg)] text-[var(--muted-text)] hover:text-[var(--foreground)] transition-colors cursor-pointer" title="Toggle Theme">
-                    <i class="fa-solid fa-moon text-sm hidden dark:block"></i>
-                    <i class="fa-solid fa-sun text-sm dark:hidden"></i>
-                </button>
+                <!-- Desktop Subpage Links -->
+                <nav class="hidden md:flex items-center gap-5 lg:gap-6 text-[13px] font-semibold text-[var(--muted-text)]">
+                    <a href="#how-it-works" class="hover:text-[var(--foreground)] transition-colors">Framework</a>
+                    <a href="#tracks" class="hover:text-[var(--foreground)] transition-colors">Cohort Paths</a>
+                    <a href="#proof" class="hover:text-[var(--foreground)] transition-colors">Showcase</a>
+                    <a href="course.html" class="text-blue-500 hover:text-blue-400 font-bold flex items-center gap-1.5">
+                        <i class="fa-solid fa-graduation-cap"></i> Learning Portal
+                    </a>
+                    <a href="portal.html" class="hover:text-[var(--foreground)] transition-colors">Track Hub</a>
+                    <a id="nav-studio-link" href="studio.html" class="hidden text-amber-500 hover:text-amber-400 font-bold flex items-center gap-1.5">
+                        <i class="fa-solid fa-sliders"></i> Admin Studio
+                    </a>
+                </nav>
 
-                <!-- Active User Pill -->
-                <div id="user-pill" class="hidden flex items-center gap-2 px-3 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 text-xs font-bold text-blue-500">
-                    <span id="user-role-badge" class="px-1.5 py-0.5 rounded text-[10px] uppercase bg-blue-600 text-white">Student</span>
-                    <span id="user-name-display" class="hidden sm:inline">User</span>
-                    <button onclick="logoutUser()" class="ml-1 text-slate-400 hover:text-red-400 cursor-pointer" title="Logout">
-                        <i class="fa-solid fa-right-from-bracket"></i>
+                <!-- Functional Actions -->
+                <div class="flex items-center gap-2 sm:gap-2.5">
+                    <button id="theme-toggle" class="w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--muted-bg)] text-[var(--muted-text)] hover:text-[var(--foreground)] transition-colors cursor-pointer shrink-0" title="Toggle Theme">
+                        <i class="fa-solid fa-moon text-sm hidden dark:block"></i>
+                        <i class="fa-solid fa-sun text-sm dark:hidden"></i>
+                    </button>
+
+                    <!-- Active User Pill -->
+                    <div id="user-pill" class="hidden flex items-center gap-1.5 sm:gap-2 px-2.5 sm:px-3 h-10 rounded-xl bg-blue-500/10 border border-blue-500/20 text-xs font-bold text-blue-500">
+                        <span id="user-role-badge" class="px-1.5 py-0.5 rounded text-[9px] sm:text-[10px] uppercase bg-blue-600 text-white">Student</span>
+                        <span id="user-name-display" class="max-w-[72px] sm:max-w-none truncate">User</span>
+                        <button onclick="logoutUser()" class="ml-0.5 text-slate-400 hover:text-red-400 cursor-pointer p-1" title="Logout">
+                            <i class="fa-solid fa-right-from-bracket"></i>
+                        </button>
+                    </div>
+
+                    <!-- Redirect to login.html -->
+                    <a id="header-login-btn" href="login.html"
+                        class="inline-flex items-center gap-1.5 sm:gap-2 text-xs font-bold bg-[var(--foreground)] text-[var(--background)] px-3.5 sm:px-5 h-10 rounded-xl hover:bg-[var(--primary)] hover:text-white shadow-sm transition-all duration-300 shrink-0">
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <span>Login</span>
+                    </a>
+
+                    <button @click="mobileOpen = !mobileOpen" aria-label="Open Navigation Menu" class="md:hidden w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--muted-bg)] text-[var(--muted-text)] shrink-0">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path :class="{'hidden': mobileOpen, 'inline-flex': !mobileOpen }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/>
+                            <path :class="{'hidden': !mobileOpen, 'inline-flex': mobileOpen }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
                     </button>
                 </div>
-
-                <!-- Redirect to login.html -->
-                <a id="header-login-btn" href="login.html"
-                    class="inline-flex items-center gap-2 text-xs font-bold bg-[var(--foreground)] text-[var(--background)] px-4 sm:px-5 h-10 rounded-xl hover:bg-[var(--primary)] hover:text-white shadow-sm transition-all duration-300">
-                    <i class="fa-solid fa-right-to-bracket"></i>
-                    <span>Portal Login</span>
-                </a>
-
-                <button @click="mobileOpen = !mobileOpen" class="md:hidden p-2 w-10 h-10 flex items-center justify-center rounded-xl bg-[var(--muted-bg)] text-[var(--muted-text)]">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path :class="{'hidden': mobileOpen, 'inline-flex': !mobileOpen }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4 6h16M4 12h16M4 18h16"/>
-                        <path :class="{'hidden': !mobileOpen, 'inline-flex': mobileOpen }" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
-                    </svg>
-                </button>
             </div>
-        </div>
 
-        <!-- Mobile Drawer -->
-        <div x-show="mobileOpen" x-cloak class="md:hidden px-6 pb-6 pt-2 flex flex-col gap-3 border-t border-slate-200 dark:border-white/10" @click.away="mobileOpen = false">
-            <a href="course.html" class="text-sm font-bold py-1 text-blue-500"><i class="fa-solid fa-graduation-cap mr-1"></i> Learning Portal</a>
-            <a id="mobile-studio-link" href="studio.html" class="hidden text-sm font-bold py-1 text-amber-500"><i class="fa-solid fa-sliders mr-1"></i> Mentor / Admin Studio</a>
-            <a href="#how-it-works" @click="mobileOpen = false" class="text-sm font-semibold py-1 text-[var(--muted-text)]">Framework</a>
-            <a href="#tracks" @click="mobileOpen = false" class="text-sm font-semibold py-1 text-[var(--muted-text)]">Cohort Paths</a>
-            <a href="login.html" class="text-sm font-semibold py-1 text-[var(--muted-text)]">Login / Sign Up</a>
-            <button id="mobile-logout-btn" onclick="logoutUser()" class="hidden text-left text-xs font-bold text-red-400 uppercase tracking-widest py-2">Logout</button>
-        </div>
-    </header>
+            <!-- Mobile Drawer (Touch-friendly 44px+ rows) -->
+            <div x-show="mobileOpen" x-cloak class="md:hidden px-4 pb-5 pt-2 flex flex-col gap-1.5 border-t border-slate-200 dark:border-white/10" @click.away="mobileOpen = false">
+                <a href="course.html" class="flex items-center justify-between px-3 py-2.5 rounded-xl bg-blue-600/10 text-sm font-bold text-blue-500">
+                    <span><i class="fa-solid fa-graduation-cap mr-2"></i> Learning Portal</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="portal.html" class="flex items-center justify-between px-3 py-2.5 rounded-xl hover:bg-[var(--muted-bg)] text-sm font-semibold text-[var(--foreground)]">
+                    <span><i class="fa-solid fa-layer-group mr-2 text-blue-500"></i> Track Catalog Hub</span>
+                    <i class="fa-solid fa-chevron-right text-[10px] text-slate-400"></i>
+                </a>
+                <a id="mobile-studio-link" href="studio.html" class="hidden flex items-center justify-between px-3 py-2.5 rounded-xl bg-amber-500/10 text-sm font-bold text-amber-500">
+                    <span><i class="fa-solid fa-sliders mr-2"></i> Mentor / Admin Studio</span>
+                    <i class="fa-solid fa-arrow-right text-xs"></i>
+                </a>
+                <a href="#how-it-works" @click="mobileOpen = false" class="px-3 py-2.5 text-sm font-semibold text-[var(--muted-text)]">How It Works</a>
+                <a href="#tracks" @click="mobileOpen = false" class="px-3 py-2.5 text-sm font-semibold text-[var(--muted-text)]">Cohort Paths</a>
+                <a href="login.html" class="px-3 py-2.5 text-sm font-semibold text-[var(--muted-text)]">Google / Student Login</a>
+                <button id="mobile-logout-btn" onclick="logoutUser()" class="hidden text-left px-3 py-2.5 text-xs font-bold text-red-400 uppercase tracking-widest">Logout</button>
+            </div>
+        </header>
+    </div>
 
     <!-- Hero Section -->
-    <main class="relative pt-16 pb-20 md:pt-24 md:pb-32 overflow-hidden bg-grid">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[250px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none"></div>
+    <main class="relative pt-10 pb-16 sm:pt-16 sm:pb-24 md:pt-24 md:pb-32 overflow-hidden bg-grid">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[320px] sm:w-[500px] h-[200px] sm:h-[250px] bg-blue-600/10 blur-[110px] rounded-full pointer-events-none"></div>
 
         <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-slate-200 dark:border-white/10 bg-[var(--card)] text-xs text-blue-500 font-medium tracking-wide mb-6 backdrop-blur-sm shadow-sm">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-slate-200 dark:border-white/10 bg-[var(--card)] text-[11px] sm:text-xs text-blue-500 font-semibold tracking-wide mb-5 sm:mb-6 backdrop-blur-sm shadow-sm">
                 <span class="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span>
-                Built For Ambitious Developers. Zero Tutorial Hell.
+                Built For Ambitious Builders • Zero Tutorial Hell
             </div>
 
-            <h1 class="heading-font text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[var(--foreground)] mb-6 max-w-4xl mx-auto leading-[1.15]">
+            <h1 class="heading-font text-3xl sm:text-5xl md:text-6xl font-bold tracking-tight text-[var(--foreground)] mb-4 sm:mb-6 max-w-4xl mx-auto leading-[1.15]">
                 Internships That <br class="sm:hidden"> Actually
                 <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">Build You.</span>
             </h1>
 
-            <p class="text-base sm:text-lg md:text-xl text-[var(--muted-text)] max-w-2xl mx-auto mb-10 leading-relaxed">
-                Traditional courses teach you syntax. Openbox throws you into active engineering pipelines. Start with
-                our 4-week task sprints, submit real deliverables, and earn verified certificates.
+            <p class="text-sm sm:text-lg md:text-xl text-[var(--muted-text)] max-w-2xl mx-auto mb-8 sm:mb-10 leading-relaxed px-1">
+                Traditional courses teach you syntax. Openbox throws you into active engineering &amp; growth pipelines. Watch modules till completion, ship step-by-step deliverables, and pass proctored exams to earn verified credentials.
             </p>
 
             <!-- Subpage Routing Buttons -->
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-4 max-w-2xl mx-auto mb-16">
-                <a href="course.html"
-                    class="w-full sm:w-auto flex flex-col items-center justify-center px-8 py-3.5 bg-blue-600 hover:bg-blue-500 text-white rounded-xl font-semibold shadow-xl shadow-blue-600/20 transition-all duration-200">
-                    <span class="flex items-center gap-2">Explore Courses &amp; Internships <i class="fa-solid fa-arrow-right text-xs"></i></span>
-                    <span class="text-[10px] opacity-80 font-normal mt-0.5 tracking-wide">All Tracks Unlocked (Testing Mode)</span>
+            <div class="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3.5 sm:gap-4 max-w-2xl mx-auto mb-12 sm:mb-16">
+                <a id="hero-primary-cta" href="course.html"
+                    class="w-full sm:w-auto flex flex-col items-center justify-center px-6 sm:px-8 py-3.5 min-h-[54px] bg-blue-600 hover:bg-blue-500 active:scale-[0.99] text-white rounded-xl font-semibold shadow-xl shadow-blue-600/20 transition-all duration-200">
+                    <span id="hero-primary-label" class="flex items-center gap-2 text-sm sm:text-base">Explore Courses &amp; Internships <i class="fa-solid fa-arrow-right text-xs"></i></span>
+                    <span id="hero-primary-sub" class="text-[10px] opacity-85 font-normal mt-0.5 tracking-wide">Watch-to-End Modules • Step Tasks • Proctored Exams</span>
                 </a>
 
                 <a href="login.html"
-                    class="w-full sm:w-auto flex flex-col items-center justify-center px-8 py-3.5 bg-[var(--muted-bg)] hover:bg-blue-600/10 text-[var(--foreground)] rounded-xl font-semibold border border-slate-200 dark:border-white/10 transition-all duration-200">
-                    <span class="flex items-center gap-2">Student / Mentor / Admin Login</span>
-                    <span class="text-[10px] text-[var(--muted-text)] font-normal mt-0.5 tracking-wide">Access Workspace &amp; Studio</span>
+                    class="w-full sm:w-auto flex flex-col items-center justify-center px-6 sm:px-8 py-3.5 min-h-[54px] bg-[var(--muted-bg)] hover:bg-blue-600/10 active:scale-[0.99] text-[var(--foreground)] rounded-xl font-semibold border border-slate-200 dark:border-white/10 transition-all duration-200">
+                    <span class="flex items-center gap-2 text-sm sm:text-base"><i class="fa-brands fa-google text-blue-500 text-xs"></i> Continue with Google / Student ID</span>
+                    <span class="text-[10px] text-[var(--muted-text)] font-normal mt-0.5 tracking-wide">Password-Free Login &amp; Cloud Sync</span>
                 </a>
             </div>
 
             <!-- Role Quick-Access Cards -->
-            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-4xl mx-auto pt-8 border-t border-slate-200 dark:border-white/5 text-left">
-                <a href="course.html" class="p-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 hover:border-blue-500/40 transition-all group">
-                    <div class="text-xs font-bold text-blue-500 uppercase tracking-wider mb-1">01 / Student Portal</div>
-                    <div class="heading-font text-lg font-bold text-[var(--foreground)] group-hover:text-blue-500">Courses &amp; Task Sprints →</div>
-                    <p class="text-xs text-[var(--muted-text)] mt-1">Watch modules, submit GitHub repos, and claim certificates.</p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4 max-w-4xl mx-auto pt-8 border-t border-slate-200 dark:border-white/5 text-left">
+                <a href="course.html" class="p-4 sm:p-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 hover:border-blue-500/40 active:scale-[0.99] transition-all group">
+                    <div class="text-[11px] font-bold text-blue-500 uppercase tracking-wider mb-1">01 / Student Portal</div>
+                    <div class="heading-font text-base sm:text-lg font-bold text-[var(--foreground)] group-hover:text-blue-500">Enrolled Tracks &amp; Sprints →</div>
+                    <p class="text-xs text-[var(--muted-text)] mt-1 leading-relaxed">Auto-resume videos, finish step tasks, and pass proctored quizzes.</p>
                 </a>
 
-                <a href="login.html?role=mentor" class="p-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 hover:border-emerald-500/40 transition-all group">
-                    <div class="text-xs font-bold text-emerald-500 uppercase tracking-wider mb-1">02 / Mentor Studio</div>
-                    <div class="heading-font text-lg font-bold text-[var(--foreground)] group-hover:text-emerald-500">Review &amp; Build Tracks →</div>
-                    <p class="text-xs text-[var(--muted-text)] mt-1">Approve student deliverables, send remarks, and publish lessons.</p>
+                <a href="login.html?role=mentor" class="p-4 sm:p-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 hover:border-emerald-500/40 active:scale-[0.99] transition-all group">
+                    <div class="text-[11px] font-bold text-emerald-500 uppercase tracking-wider mb-1">02 / Mentor Studio</div>
+                    <div class="heading-font text-base sm:text-lg font-bold text-[var(--foreground)] group-hover:text-emerald-500">Review &amp; Build Tracks →</div>
+                    <p class="text-xs text-[var(--muted-text)] mt-1 leading-relaxed">Audit GitHub repos, check proctored scores, and publish lessons.</p>
                 </a>
 
-                <a href="login.html?role=admin" class="p-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 hover:border-amber-500/40 transition-all group">
-                    <div class="text-xs font-bold text-amber-500 uppercase tracking-wider mb-1">03 / Admin Control</div>
-                    <div class="heading-font text-lg font-bold text-[var(--foreground)] group-hover:text-amber-500">Manage Users &amp; CMS →</div>
-                    <p class="text-xs text-[var(--muted-text)] mt-1">Assign Mentor/Admin roles, manage tiers, and control live sheets.</p>
+                <a href="login.html?role=admin" class="p-4 sm:p-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 hover:border-amber-500/40 active:scale-[0.99] transition-all group">
+                    <div class="text-[11px] font-bold text-amber-500 uppercase tracking-wider mb-1">03 / Admin Control</div>
+                    <div class="heading-font text-base sm:text-lg font-bold text-[var(--foreground)] group-hover:text-amber-500">Manage Users &amp; CMS →</div>
+                    <p class="text-xs text-[var(--muted-text)] mt-1 leading-relaxed">Assign Mentor/Admin roles, manage tiers, and sync Google Sheets.</p>
                 </a>
             </div>
         </div>
     </main>
 
-    <!-- Interactive Journey Section -->
-    <section id="how-it-works" class="py-20 border-t border-slate-200 dark:border-white/5 relative bg-grid">
+    <!-- Interactive Journey Section (Phone-Optimized Horizontal Step Pills + Terminal) -->
+    <section id="how-it-works" class="py-16 sm:py-20 border-t border-slate-200 dark:border-white/5 relative bg-grid">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="heading-font text-3xl sm:text-4xl font-bold text-[var(--foreground)] mb-4 tracking-tight">
+            <div class="text-center mb-10 sm:mb-16">
+                <h2 class="heading-font text-2xl sm:text-4xl font-bold text-[var(--foreground)] mb-3 tracking-tight">
                     How We Turn Students into <span class="text-blue-500">Engineers</span>
                 </h2>
+                <p class="text-xs sm:text-sm text-[var(--muted-text)] max-w-xl mx-auto">Tap any stage below to inspect the live Openbox verification pipeline.</p>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-                <div class="lg:col-span-5 space-y-4">
-                    <button onclick="switchTab(1)" id="step-btn-1" class="tab-btn w-full text-left p-5 rounded-xl border transition-all duration-200 bg-blue-600/10 border-blue-500/30 cursor-pointer">
-                        <div class="flex items-start gap-4">
-                            <span id="step-num-1" class="heading-font text-lg font-bold text-blue-500 bg-blue-500/10 px-2.5 py-1 rounded">01</span>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-8 items-start">
+                <!-- Horizontal scroll on phones, vertical stack on desktop -->
+                <div class="lg:col-span-5 flex lg:flex-col gap-3 overflow-x-auto no-scrollbar pb-2 lg:pb-0 -mx-4 px-4 lg:mx-0 lg:px-0">
+                    <button onclick="switchTab(1)" id="step-btn-1" class="tab-btn min-w-[240px] sm:min-w-[280px] lg:min-w-0 shrink-0 lg:w-full text-left p-4 sm:p-5 rounded-xl border transition-all duration-200 bg-blue-600/10 border-blue-500/30 cursor-pointer">
+                        <div class="flex items-start gap-3.5">
+                            <span id="step-num-1" class="heading-font text-base sm:text-lg font-bold text-blue-500 bg-blue-500/10 px-2.5 py-1 rounded shrink-0">01</span>
                             <div>
-                                <h4 class="text-[var(--foreground)] font-semibold text-base">Strict Vetting</h4>
-                                <p class="text-xs text-[var(--muted-text)] mt-1">Drop your resume and GitHub. We keep the collaborative talent pool high-value.</p>
+                                <h4 class="text-[var(--foreground)] font-semibold text-sm sm:text-base">Google OAuth &amp; Sync</h4>
+                                <p class="text-xs text-[var(--muted-text)] mt-1">Sign in password-free and restore your enrolled tracks &amp; video timestamps.</p>
                             </div>
                         </div>
                     </button>
-                    <button onclick="switchTab(2)" id="step-btn-2" class="tab-btn w-full text-left p-5 rounded-xl border transition-all duration-200 bg-[var(--card)] border-slate-200 dark:border-white/5 cursor-pointer">
-                        <div class="flex items-start gap-4">
-                            <span id="step-num-2" class="heading-font text-lg font-bold text-[var(--muted-text)] bg-[var(--muted-bg)] px-2.5 py-1 rounded">02</span>
+
+                    <button onclick="switchTab(2)" id="step-btn-2" class="tab-btn min-w-[240px] sm:min-w-[280px] lg:min-w-0 shrink-0 lg:w-full text-left p-4 sm:p-5 rounded-xl border transition-all duration-200 bg-[var(--card)] border-slate-200 dark:border-white/5 cursor-pointer">
+                        <div class="flex items-start gap-3.5">
+                            <span id="step-num-2" class="heading-font text-base sm:text-lg font-bold text-[var(--muted-text)] bg-[var(--muted-bg)] px-2.5 py-1 rounded shrink-0">02</span>
                             <div>
-                                <h4 class="text-[var(--foreground)] font-semibold text-base">Active Code Scoping</h4>
-                                <p class="text-xs text-[var(--muted-text)] mt-1">Receive genuine module allocations synced directly from our live sheet.</p>
+                                <h4 class="text-[var(--foreground)] font-semibold text-sm sm:text-base">Watch-to-End &amp; Step Tasks</h4>
+                                <p class="text-xs text-[var(--muted-text)] mt-1">Watch full lectures without skipping and complete step-by-step milestones.</p>
                             </div>
                         </div>
                     </button>
-                    <button onclick="switchTab(3)" id="step-btn-3" class="tab-btn w-full text-left p-5 rounded-xl border transition-all duration-200 bg-[var(--card)] border-slate-200 dark:border-white/5 cursor-pointer">
-                        <div class="flex items-start gap-4">
-                            <span id="step-num-3" class="heading-font text-lg font-bold text-[var(--muted-text)] bg-[var(--muted-bg)] px-2.5 py-1 rounded">03</span>
+
+                    <button onclick="switchTab(3)" id="step-btn-3" class="tab-btn min-w-[240px] sm:min-w-[280px] lg:min-w-0 shrink-0 lg:w-full text-left p-4 sm:p-5 rounded-xl border transition-all duration-200 bg-[var(--card)] border-slate-200 dark:border-white/5 cursor-pointer">
+                        <div class="flex items-start gap-3.5">
+                            <span id="step-num-3" class="heading-font text-base sm:text-lg font-bold text-[var(--muted-text)] bg-[var(--muted-bg)] px-2.5 py-1 rounded shrink-0">03</span>
                             <div>
-                                <h4 class="text-[var(--foreground)] font-semibold text-base">Mentor Code Reviews</h4>
-                                <p class="text-xs text-[var(--muted-text)] mt-1">Submit GitHub links directly to mentors and get actionable remarks.</p>
+                                <h4 class="text-[var(--foreground)] font-semibold text-sm sm:text-base">Proctored Exam &amp; Review</h4>
+                                <p class="text-xs text-[var(--muted-text)] mt-1">Pass the anti-cheat proctored assessment (≥75%) and submit GitHub links.</p>
                             </div>
                         </div>
                     </button>
-                    <button onclick="switchTab(4)" id="step-btn-4" class="tab-btn w-full text-left p-5 rounded-xl border transition-all duration-200 bg-[var(--card)] border-slate-200 dark:border-white/5 cursor-pointer">
-                        <div class="flex items-start gap-4">
-                            <span id="step-num-4" class="heading-font text-lg font-bold text-[var(--muted-text)] bg-[var(--muted-bg)] px-2.5 py-1 rounded">04</span>
+
+                    <button onclick="switchTab(4)" id="step-btn-4" class="tab-btn min-w-[240px] sm:min-w-[280px] lg:min-w-0 shrink-0 lg:w-full text-left p-4 sm:p-5 rounded-xl border transition-all duration-200 bg-[var(--card)] border-slate-200 dark:border-white/5 cursor-pointer">
+                        <div class="flex items-start gap-3.5">
+                            <span id="step-num-4" class="heading-font text-base sm:text-lg font-bold text-[var(--muted-text)] bg-[var(--muted-bg)] px-2.5 py-1 rounded shrink-0">04</span>
                             <div>
-                                <h4 class="text-[var(--foreground)] font-semibold text-base">Verified Certification</h4>
-                                <p class="text-xs text-[var(--muted-text)] mt-1">Download verifiable Openbox PNG certificates once tasks are approved.</p>
+                                <h4 class="text-[var(--foreground)] font-semibold text-sm sm:text-base">Verified Certification</h4>
+                                <p class="text-xs text-[var(--muted-text)] mt-1">Download high-res Openbox PNG credentials and share directly on LinkedIn.</p>
                             </div>
                         </div>
                     </button>
                 </div>
 
+                <!-- Terminal Preview -->
                 <div class="lg:col-span-7 bg-[#111115] border border-white/5 rounded-xl overflow-hidden shadow-2xl">
-                    <div class="bg-[#16161c] px-4 py-3 border-b border-white/5 flex items-center justify-between">
-                        <div class="flex items-center gap-2">
-                            <span class="w-3 h-3 rounded-full bg-red-500/40"></span>
-                            <span class="w-3 h-3 rounded-full bg-yellow-500/40"></span>
-                            <span class="w-3 h-3 rounded-full bg-green-500/40"></span>
+                    <div class="bg-[#16161c] px-4 py-3 border-b border-white/5 flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-1.5 shrink-0">
+                            <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-red-500/40"></span>
+                            <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-yellow-500/40"></span>
+                            <span class="w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full bg-green-500/40"></span>
                         </div>
-                        <div id="terminal-title" class="text-xs text-gray-500 font-mono">openbox-verify.sh</div>
-                        <div class="w-12"></div>
+                        <div id="terminal-title" class="text-[11px] sm:text-xs text-gray-400 font-mono truncate">openbox-verify.sh</div>
+                        <div class="w-6 sm:w-12"></div>
                     </div>
-                    <div class="p-6 font-mono text-xs sm:text-sm min-h-[320px] flex flex-col justify-between text-left">
-                        <div id="terminal-content" class="space-y-4 leading-relaxed text-gray-300"></div>
-                        <div class="pt-4 border-t border-white/5 flex items-center justify-between text-[11px] text-gray-500">
-                            <span id="terminal-status">Pipeline Status: STANDBY</span>
-                            <span>UTF-8</span>
+                    <div class="p-4 sm:p-6 font-mono text-xs sm:text-sm min-h-[260px] sm:min-h-[320px] flex flex-col justify-between text-left overflow-x-auto">
+                        <div id="terminal-content" class="space-y-3 sm:space-y-4 leading-relaxed text-gray-300"></div>
+                        <div class="pt-4 mt-4 border-t border-white/5 flex items-center justify-between text-[10px] sm:text-[11px] text-gray-500">
+                            <span id="terminal-status" class="truncate">Pipeline Status: STANDBY</span>
+                            <span class="shrink-0 ml-2">UTF-8</span>
                         </div>
                     </div>
                 </div>
@@ -344,40 +371,40 @@
     </section>
 
     <!-- Cohort Paths -->
-    <section id="tracks" class="py-20 border-t border-slate-200 dark:border-white/5 relative bg-grid">
+    <section id="tracks" class="py-16 sm:py-20 border-t border-slate-200 dark:border-white/5 relative bg-grid">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="heading-font text-3xl sm:text-4xl font-bold text-[var(--foreground)] mb-4 tracking-tight">
+            <div class="text-center mb-10 sm:mb-16">
+                <h2 class="heading-font text-2xl sm:text-4xl font-bold text-[var(--foreground)] mb-3 tracking-tight">
                     One Community. <span class="text-blue-500">Two Paths to Growth.</span>
                 </h2>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch">
-                <div class="flex flex-col justify-between p-8 rounded-2xl border border-slate-200 dark:border-white/5 bg-[var(--card)]">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto items-stretch">
+                <div class="flex flex-col justify-between p-6 sm:p-8 rounded-2xl border border-slate-200 dark:border-white/5 bg-[var(--card)]">
                     <div>
                         <div class="text-xs font-bold tracking-wider text-[var(--muted-text)] uppercase mb-2">The Foundation</div>
-                        <h3 class="heading-font text-2xl font-bold text-[var(--foreground)] mb-2">4-Week Task Sprint</h3>
-                        <p class="text-sm text-[var(--muted-text)] mb-6">Your entry point into real engineering workflows with structured task milestones.</p>
-                        <ul class="space-y-3 text-sm text-[var(--muted-text)] border-t border-slate-200 dark:border-white/5 pt-6 mb-8">
+                        <h3 class="heading-font text-xl sm:text-2xl font-bold text-[var(--foreground)] mb-2">4-Week Task Sprint</h3>
+                        <p class="text-xs sm:text-sm text-[var(--muted-text)] mb-6">Your entry point into real engineering workflows with structured task milestones.</p>
+                        <ul class="space-y-3 text-xs sm:text-sm text-[var(--muted-text)] border-t border-slate-200 dark:border-white/5 pt-6 mb-8">
                             <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> Curated Core Learning Materials</li>
-                            <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> 4-Weeks of Scheduled Task-Based Milestones</li>
+                            <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> Interactive Step-by-Step Milestones</li>
                             <li class="flex items-center gap-2.5"><span class="text-emerald-500 font-bold">✓</span> Peer Student Dev Community Access</li>
                         </ul>
                     </div>
                     <div>
                         <div class="mb-4"><span class="heading-font text-3xl font-bold text-[var(--foreground)]">₹0</span> <span class="text-xs ml-1">Open Access</span></div>
-                        <a href="course.html" class="w-full inline-flex justify-center py-3 text-sm font-semibold text-[var(--foreground)] bg-[var(--muted-bg)] hover:bg-blue-600 hover:text-white border border-slate-200 dark:border-white/10 rounded-xl transition-all">
+                        <a href="course.html" class="w-full inline-flex justify-center items-center py-3.5 text-xs sm:text-sm font-semibold text-[var(--foreground)] bg-[var(--muted-bg)] hover:bg-blue-600 hover:text-white border border-slate-200 dark:border-white/10 rounded-xl transition-all">
                             Open Sprint Catalog →
                         </a>
                     </div>
                 </div>
 
-                <div class="flex flex-col justify-between p-8 rounded-2xl border-2 border-blue-500/40 bg-[var(--card)] shadow-xl">
+                <div class="flex flex-col justify-between p-6 sm:p-8 rounded-2xl border-2 border-blue-500/40 bg-[var(--card)] shadow-xl">
                     <div>
                         <div class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-emerald-500/10 border border-emerald-500/20 text-[10px] font-bold tracking-wider text-emerald-500 uppercase mb-3">Unlocked for All (Testing)</div>
-                        <h3 class="heading-font text-2xl font-bold text-[var(--foreground)] mb-2">Full Accelerator Track</h3>
-                        <p class="text-sm text-[var(--muted-text)] mb-6">Write production code, interface with tech pros, and claim verified proof of your skillset.</p>
-                        <ul class="space-y-3 text-sm text-[var(--foreground)] border-t border-slate-200 dark:border-white/5 pt-6 mb-8">
+                        <h3 class="heading-font text-xl sm:text-2xl font-bold text-[var(--foreground)] mb-2">Full Accelerator Track</h3>
+                        <p class="text-xs sm:text-sm text-[var(--muted-text)] mb-6">Write production code, interface with tech pros, and claim verified proof of your skillset.</p>
+                        <ul class="space-y-3 text-xs sm:text-sm text-[var(--foreground)] border-t border-slate-200 dark:border-white/5 pt-6 mb-8">
                             <li class="flex items-center gap-2.5"><span class="text-blue-500 font-bold">✓</span> <strong>Weekend Interactive Panels</strong> with Tech Pros</li>
                             <li class="flex items-center gap-2.5"><span class="text-blue-500 font-bold">✓</span> <strong>Verified Internship Certificate</strong> &amp; Reference Letter</li>
                             <li class="flex items-center gap-2.5"><span class="text-blue-500 font-bold">✓</span> 1-on-1 Critical Pull Request Reviews</li>
@@ -385,7 +412,7 @@
                     </div>
                     <div>
                         <div class="mb-4"><span class="heading-font text-3xl font-bold text-emerald-500">FREE</span> <span class="text-xs ml-1">Open Testing Access</span></div>
-                        <a href="course.html" class="w-full inline-flex justify-center py-3 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 rounded-xl shadow-lg transition-all">
+                        <a href="course.html" class="w-full inline-flex justify-center items-center py-3.5 text-xs sm:text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 rounded-xl shadow-lg transition-all">
                             Launch Accelerator Portal 🚀
                         </a>
                     </div>
@@ -395,52 +422,65 @@
     </section>
 
     <!-- Proof of Work Showcase -->
-    <section id="proof" class="py-20 border-t border-slate-200 dark:border-white/5 relative bg-grid">
+    <section id="proof" class="py-16 sm:py-20 border-t border-slate-200 dark:border-white/5 relative bg-grid">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="heading-font text-3xl sm:text-4xl font-bold text-[var(--foreground)] mb-4 tracking-tight">Engineered by Our Interns</h2>
-                <p class="text-[var(--muted-text)] max-w-xl mx-auto text-sm sm:text-base">Real Code. Real Impact. No basic todo-list clones.</p>
+            <div class="text-center mb-10 sm:mb-16">
+                <h2 class="heading-font text-2xl sm:text-4xl font-bold text-[var(--foreground)] mb-3 tracking-tight">Engineered by Our Interns</h2>
+                <p class="text-[var(--muted-text)] max-w-xl mx-auto text-xs sm:text-base">Real Code. Real Impact. No basic todo-list clones.</p>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <div class="p-6 bg-[var(--card)] border border-slate-200 dark:border-white/5 rounded-xl space-y-4 shadow-sm">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto">
+                <div class="p-5 sm:p-6 bg-[var(--card)] border border-slate-200 dark:border-white/5 rounded-xl space-y-3 sm:space-y-4 shadow-sm">
                     <div class="text-xs text-blue-500 font-mono">01 / Distributed Task Engine</div>
-                    <h4 class="text-[var(--foreground)] font-bold text-lg heading-font">Real-Time Sync Engine</h4>
-                    <p class="text-sm text-[var(--muted-text)]">Building a highly concurrent task manager with strict real-time room synchronization states.</p>
-                    <div class="text-xs text-[var(--muted-text)] font-mono">React • Node.js • Socket.io • MongoDB</div>
+                    <h4 class="text-[var(--foreground)] font-bold text-base sm:text-lg heading-font">Real-Time Sync Engine</h4>
+                    <p class="text-xs sm:text-sm text-[var(--muted-text)] leading-relaxed">Building a highly concurrent task manager with strict real-time room synchronization states.</p>
+                    <div class="text-[11px] sm:text-xs text-[var(--muted-text)] font-mono">React • Node.js • Socket.io • MongoDB</div>
                 </div>
-                <div class="p-6 bg-[var(--card)] border border-slate-200 dark:border-white/5 rounded-xl space-y-4 shadow-sm">
+                <div class="p-5 sm:p-6 bg-[var(--card)] border border-slate-200 dark:border-white/5 rounded-xl space-y-3 sm:space-y-4 shadow-sm">
                     <div class="text-xs text-blue-500 font-mono">02 / High-Throughput Checkout Pipeline</div>
-                    <h4 class="text-[var(--foreground)] font-bold text-lg heading-font">Secure Transaction Flow</h4>
-                    <p class="text-sm text-[var(--muted-text)]">Engineering a modular, highly secure transactional checkout route with strict database validation rules.</p>
-                    <div class="text-xs text-[var(--muted-text)] font-mono">Next.js • TypeScript • Stripe • Tailwind CSS</div>
+                    <h4 class="text-[var(--foreground)] font-bold text-base sm:text-lg heading-font">Secure Transaction Flow</h4>
+                    <p class="text-xs sm:text-sm text-[var(--muted-text)] leading-relaxed">Engineering a modular, highly secure transactional checkout route with strict database validation rules.</p>
+                    <div class="text-[11px] sm:text-xs text-[var(--muted-text)] font-mono">Next.js • TypeScript • Stripe • Tailwind CSS</div>
                 </div>
             </div>
         </div>
     </section>
 
+    <!-- Mobile Sticky Bottom Quick-Action Bar (Phones Only) -->
+    <div class="md:hidden fixed bottom-0 inset-x-0 z-40 bg-[var(--card)]/95 backdrop-blur-lg border-t border-slate-200 dark:border-white/10 px-3 py-2.5 flex items-center gap-2 shadow-2xl">
+        <a href="course.html" class="flex-1 py-2.5 px-3 rounded-xl bg-blue-600 text-white text-xs font-extrabold text-center flex items-center justify-center gap-1.5">
+            <i class="fa-solid fa-graduation-cap"></i>
+            <span id="mobile-bar-cta-text">Learning Portal</span>
+        </a>
+        <a href="https://wa.me/917020729200?text=Hi%20Aviral,%20I%20have%20a%20question%20about%20the%20Openbox%20curriculum." target="_blank" rel="noopener noreferrer" class="py-2.5 px-3.5 rounded-xl bg-emerald-600 text-white text-xs font-extrabold flex items-center justify-center gap-1.5 shrink-0">
+            <i class="fa-brands fa-whatsapp text-sm"></i>
+            <span>Help</span>
+        </a>
+    </div>
+
     <script>
         const tabData = {
             1: {
-                title: "openbox-vetting_pipeline.sh",
-                status: "VETTING STATUS: IN_PROGRESS",
-                content: `<p class="text-gray-500">// Processing incoming candidate credentials...</p><p class="text-blue-400">$ openbox parse --resume --github</p><div class="p-3 bg-white/5 rounded border border-white/5 text-gray-400 space-y-1 mt-2"><p class="text-white font-medium">[SYSTEM LOG]: Parsing applicant data...</p><p class="text-green-400">✓ Approved: Baseline logical aptitude matches code standards.</p></div>`
+                title: "openbox-auth_sync.sh",
+                status: "AUTH STATUS: PASSWORD_FREE_OAUTH",
+                content: `<p class="text-gray-500">// Verifying candidate Google / College identity...</p><p class="text-blue-400">$ openbox auth --verify-google-oauth --sync-sheet</p><div class="p-3 bg-white/5 rounded border border-white/5 text-gray-400 space-y-1 mt-2"><p class="text-white font-medium">[SYSTEM LOG]: Session hydrated from live Google Sheet.</p><p class="text-green-400">✓ Enrolled tracks &amp; saved video timestamps restored.</p></div>`
             },
             2: {
-                title: "allocate_startup_module.js",
-                status: "SCOPE STATUS: ALLOCATED",
-                content: `<p class="text-blue-400">$ git checkout -b openbox-feature/high-throughput-checkout</p><div class="p-3 bg-white/5 rounded border border-white/5 text-gray-400 space-y-1 mt-2"><p class="text-white font-medium">[SYSTEM SCOPE]: Live Sheet CMS Synced</p><p>🚀 Target: Complete practical tasks and push commits to GitHub.</p></div>`
+                title: "watch_and_build_tracker.js",
+                status: "TRACKING: WATCH_TO_END + STEP_TASKS",
+                content: `<p class="text-blue-400">$ openbox track --enforce-full-video --interactive-steps</p><div class="p-3 bg-white/5 rounded border border-white/5 text-gray-400 space-y-1 mt-2"><p class="text-white font-medium">[SYSTEM SCOPE]: Anti-Skip Video &amp; Milestone Stepper</p><p>🚀 Auto-saves video watch progress every second &amp; unlocks deliverables step-by-step.</p></div>`
             },
             3: {
-                title: "mentor_review_panel.py",
-                status: "REVIEW STATUS: MENTOR_REMARKS",
-                content: `<p class="text-blue-400">$ openbox mentor --review-pr --send-remark</p><div class="p-3 bg-white/5 rounded border border-white/5 text-gray-400 space-y-1 mt-2"><p class="text-emerald-400 font-medium">[MENTOR REMARK]: "Clean component architecture. Approved for certificate!"</p></div>`
+                title: "proctored_exam_guard.py",
+                status: "PROCTOR STATUS: ANTI_CHEAT_ACTIVE",
+                content: `<p class="text-blue-400">$ openbox exam --fullscreen --tab-guard --pass-threshold=75</p><div class="p-3 bg-white/5 rounded border border-white/5 text-gray-400 space-y-1 mt-2"><p class="text-emerald-400 font-medium">[PROCTOR LOG]: 0 tab-switch warnings • Assessment passed (88%).</p></div>`
             },
             4: {
                 title: "production_deploy_stream.sh",
                 status: "DEPLOY STATUS: VERIFIED",
-                content: `<p class="text-blue-400">$ openbox-pipeline --issue-verified-certificate</p><div class="p-3 bg-emerald-950/40 rounded border border-emerald-500/20 text-emerald-400 space-y-1 mt-2"><p class="font-bold">✓ CREDENTIAL ISSUED [OBX-VERIFIED]</p><p class="text-xs">High-resolution certificate ready for LinkedIn & resume.</p></div>`
+                content: `<p class="text-blue-400">$ openbox-pipeline --issue-verified-certificate</p><div class="p-3 bg-emerald-950/40 rounded border border-emerald-500/20 text-emerald-400 space-y-1 mt-2"><p class="font-bold">✓ CREDENTIAL ISSUED [OBX-VERIFIED]</p><p class="text-xs">High-resolution certificate &amp; LinkedIn share caption unlocked.</p></div>`
             }
         };
+
         function switchTab(id) {
             document.getElementById("terminal-title").innerText = tabData[id].title;
             document.getElementById("terminal-status").innerText = "Pipeline Status: " + tabData[id].status;
@@ -450,15 +490,38 @@
                 if (i + 1 === id) {
                     btn.classList.add("bg-blue-600/10", "border-blue-500/30");
                     btn.classList.remove("bg-[var(--card)]");
-                    badge.className = "heading-font text-lg font-bold text-blue-500 bg-blue-500/10 px-2.5 py-1 rounded";
+                    badge.className = "heading-font text-base sm:text-lg font-bold text-blue-500 bg-blue-500/10 px-2.5 py-1 rounded shrink-0";
                 } else {
                     btn.classList.remove("bg-blue-600/10", "border-blue-500/30");
                     btn.classList.add("bg-[var(--card)]");
-                    badge.className = "heading-font text-lg font-bold text-[var(--muted-text)] bg-[var(--muted-bg)] px-2.5 py-1 rounded";
+                    badge.className = "heading-font text-base sm:text-lg font-bold text-[var(--muted-text)] bg-[var(--muted-bg)] px-2.5 py-1 rounded shrink-0";
                 }
             });
         }
-        document.addEventListener("DOMContentLoaded", () => switchTab(1));
+
+        document.addEventListener("DOMContentLoaded", () => {
+            switchTab(1);
+
+            // Personalize Hero & Mobile Bottom Bar CTA if student is already signed in
+            if (typeof currentUser !== "undefined" && currentUser) {
+                const labelEl = document.getElementById("hero-primary-label");
+                const subEl = document.getElementById("hero-primary-sub");
+                const mobileBarText = document.getElementById("mobile-bar-cta-text");
+                const count = (typeof enrolledCourses !== "undefined" && Array.isArray(enrolledCourses)) ? enrolledCourses.length : 0;
+
+                if (labelEl) {
+                    labelEl.innerHTML = count > 0
+                        ? `Resume Enrolled Tracks (${count}) <i class="fa-solid fa-arrow-right text-xs"></i>`
+                        : `Open My Learning Workspace <i class="fa-solid fa-arrow-right text-xs"></i>`;
+                }
+                if (subEl) {
+                    subEl.textContent = `Signed in as ${currentUser.name} • Progress & Video Timestamps Synced`;
+                }
+                if (mobileBarText) {
+                    mobileBarText.textContent = count > 0 ? `Resume Tracks (${count})` : "My Workspace";
+                }
+            }
+        });
     </script>
 </body>
 </html>
