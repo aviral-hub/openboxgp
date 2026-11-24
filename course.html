@@ -11,16 +11,20 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg: #f8fafc;
+      --bg: #f4f6fa;
       --card: #ffffff;
+      --surface: #f8fafc;
       --text: #0f172a;
       --muted: #475569;
+      --border: #e2e8f0;
     }
     html.dark {
-      --bg: #090d16;
-      --card: #111827;
+      --bg: #070b14;
+      --card: #0f172a;
+      --surface: #1e293b;
       --text: #f8fafc;
       --muted: #94a3b8;
+      --border: rgba(255, 255, 255, 0.08);
     }
     body {
       font-family: 'Plus Jakarta Sans', sans-serif;
@@ -28,7 +32,7 @@
       color: var(--text);
     }
 
-    /* Custom Architectural CSS Course Banners */
+    /* Executive Course Banners */
     .course-banner {
       position: relative;
       overflow: hidden;
@@ -39,47 +43,43 @@
       position: absolute;
       inset: 0;
       background-image:
-        linear-gradient(to right, rgba(255, 255, 255, 0.08) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-      background-size: 20px 20px;
+        linear-gradient(to right, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+      background-size: 24px 24px;
       z-index: -1;
     }
     .course-banner::after {
       content: "";
       position: absolute;
-      width: 140px;
-      height: 140px;
-      right: -30px;
-      bottom: -45px;
+      width: 180px;
+      height: 180px;
+      right: -40px;
+      bottom: -60px;
       border-radius: 9999px;
-      background: rgba(255, 255, 255, 0.14);
-      filter: blur(2px);
+      background: radial-gradient(circle, rgba(255,255,255,0.18) 0%, transparent 70%);
       z-index: -1;
     }
-    .banner-internship {
-      background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 55%, #d97706 130%);
-    }
-    .banner-development {
-      background: linear-gradient(135deg, #090d16 0%, #1d4ed8 60%, #0284c7 125%);
-    }
-    .banner-analytics {
-      background: linear-gradient(135deg, #064e3b 0%, #047857 55%, #0f172a 130%);
-    }
-    .banner-marketing {
-      background: linear-gradient(135deg, #4c1d95 0%, #7c3aed 55%, #db2777 130%);
-    }
-    .banner-default {
-      background: linear-gradient(135deg, #0f172a 0%, #2563eb 100%);
+    .banner-internship { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 60%, #b45309 130%); }
+    .banner-development { background: linear-gradient(135deg, #090d16 0%, #1d4ed8 65%, #0369a1 125%); }
+    .banner-analytics { background: linear-gradient(135deg, #064e3b 0%, #047857 60%, #0f172a 130%); }
+    .banner-marketing { background: linear-gradient(135deg, #3b0764 0%, #6d28d9 60%, #be185d 130%); }
+    .banner-default { background: linear-gradient(135deg, #0f172a 0%, #1d4ed8 100%); }
+
+    /* Anti-Cheat Exam Selection Lock */
+    .exam-locked-surface {
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
     }
   </style>
 </head>
-<body class="min-h-screen transition-colors duration-200">
+<body class="min-h-screen transition-colors duration-200 antialiased">
 
-  <!-- TOP NAVBAR -->
-  <header class="sticky top-0 z-40 border-b border-slate-200 dark:border-white/10 bg-[var(--card)]/90 backdrop-blur-md">
+  <!-- TOP EXECUTIVE NAVBAR -->
+  <header id="main-navbar" class="sticky top-0 z-40 border-b border-[var(--border)] bg-[var(--card)]/95 backdrop-blur-md">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between gap-4">
-      <a href="index.html" class="flex items-center gap-2.5">
-        <div class="w-9 h-9 rounded-xl bg-slate-900 dark:bg-blue-600 text-white font-extrabold flex items-center justify-center text-sm tracking-tight">
+      <a href="index.html" class="flex items-center gap-3">
+        <div class="w-9 h-9 rounded-xl bg-slate-900 dark:bg-blue-600 text-white font-extrabold flex items-center justify-center text-sm tracking-tight shadow-sm">
           OB
         </div>
         <div>
@@ -88,38 +88,43 @@
         </div>
       </a>
 
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-2.5">
         <input
           id="student-name-input"
           type="text"
-          placeholder="Your Full Name (for Certificate)"
+          placeholder="Candidate Full Name"
           oninput="saveStudentName(this.value)"
-          class="hidden sm:block px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 focus:outline-none focus:border-blue-600 w-60"
+          class="hidden md:block px-3.5 py-1.5 rounded-xl text-xs font-semibold bg-[var(--surface)] border border-[var(--border)] focus:outline-none focus:border-blue-600 w-52"
         />
         <button
-          onclick="toggleTheme()"
-          class="px-3 py-1.5 rounded-xl text-xs font-bold border border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-white/5 cursor-pointer"
-          title="Toggle Theme"
+          id="nav-sync-btn"
+          onclick="document.getElementById('sheet-auth-modal').classList.remove('hidden')"
+          class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-blue-600/10 text-blue-600 dark:text-blue-400 border border-blue-600/20 hover:bg-blue-600 hover:text-white transition cursor-pointer flex items-center gap-1.5"
         >
-          Theme
+          <i class="fa-solid fa-cloud-arrow-up"></i>
+          <span id="nav-sync-label">Sync Account</span>
         </button>
-      </div>
-
-      <nav>
+        <button
+          onclick="toggleTheme()"
+          class="w-8 h-8 rounded-xl text-xs font-bold border border-[var(--border)] hover:bg-[var(--surface)] flex items-center justify-center cursor-pointer"
+          title="Toggle Dark/Light Theme"
+        >
+          <i class="fa-solid fa-circle-half-stroke"></i>
+        </button>
         <a
           href="https://wa.me/917020729200?text=Hi%20Aviral,%20I%20have%20a%20question%20about%20the%20Openbox%20curriculum."
           target="_blank"
           rel="noopener noreferrer"
-          class="text-emerald-600 dark:text-emerald-400 hover:opacity-80 text-xs font-extrabold flex items-center gap-1.5"
+          class="px-3 py-1.5 rounded-xl bg-emerald-600/10 text-emerald-700 dark:text-emerald-400 border border-emerald-600/20 hover:bg-emerald-600 hover:text-white text-xs font-extrabold flex items-center gap-1.5 transition"
         >
           <i class="fa-brands fa-whatsapp text-sm"></i>
-          <span class="hidden md:inline">WhatsApp Helpline</span>
+          <span class="hidden lg:inline">Support</span>
         </a>
-      </nav>
+      </div>
     </div>
   </header>
 
-  <!-- REFERRAL WELCOME BANNER (Shown when opened via ?ref= link) -->
+  <!-- REFERRAL WELCOME BANNER -->
   <div id="referral-welcome-bar" class="hidden bg-blue-600 text-white text-xs font-semibold">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center justify-between gap-3">
       <div class="flex items-center gap-2">
@@ -130,110 +135,120 @@
     </div>
   </div>
 
-  <!-- MAIN CATALOG VIEW -->
+  <!-- ===================================================================== -->
+  <!-- VIEW 1: EXECUTIVE CATALOG VIEW                                        -->
+  <!-- ===================================================================== -->
   <main id="catalog-view" class="max-w-7xl mx-auto px-4 sm:px-6 py-10">
-    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-8">
+    <!-- Hero Executive Banner -->
+    <div class="rounded-2xl bg-[var(--card)] border border-[var(--border)] p-6 sm:p-8 mb-8 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-6">
       <div class="max-w-3xl">
-        <span class="inline-block px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-blue-600/10 text-blue-600 dark:text-blue-400 mb-3">
-          Verified Courses &amp; Task-Based Internships
-        </span>
-        <h1 class="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3">
-          Build Proof-of-Work Skills. Earn Verified Credentials.
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-blue-600/10 text-blue-600 dark:text-blue-400 mb-3">
+          <span class="w-1.5 h-1.5 rounded-full bg-blue-600"></span>
+          Verified Proof-of-Work &amp; Internship Portal
+        </div>
+        <h1 class="text-2xl sm:text-4xl font-extrabold tracking-tight mb-2.5">
+          Master Industry Workflows. Earn Verified Credentials.
         </h1>
-        <p class="text-sm text-[var(--muted)] leading-relaxed">
-          Complete 100% of video modules, submit all practical assignments, and score at least 75% on the verification quiz to unlock your official Openbox Growth Partner certificate.
+        <p class="text-xs sm:text-sm text-[var(--muted)] leading-relaxed">
+          Complete 100% of video lectures till the end, finish interactive step-by-step practical tasks, and pass the proctored assessment (≥75%) to unlock your official Openbox Growth Partner credential.
         </p>
       </div>
 
-      <!-- Refer a Friend Quick Action -->
-      <div class="shrink-0 p-4 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 flex items-center gap-3 shadow-sm">
-        <div class="w-10 h-10 rounded-xl bg-blue-600/10 text-blue-600 dark:text-blue-400 flex items-center justify-center text-base shrink-0">
+      <!-- Peer Referral Card -->
+      <div class="shrink-0 p-4 rounded-2xl bg-[var(--surface)] border border-[var(--border)] flex items-center gap-3.5">
+        <div class="w-11 h-11 rounded-xl bg-blue-600 text-white flex items-center justify-center text-base shrink-0 shadow-sm">
           <i class="fa-solid fa-user-plus"></i>
         </div>
         <div>
-          <p class="text-xs font-extrabold">Learn Together with Peers</p>
-          <p class="text-[11px] text-[var(--muted)]">Share any track link directly with friends</p>
+          <p class="text-xs font-extrabold">Peer Cohort Invite</p>
+          <p class="text-[11px] text-[var(--muted)]">Refer a classmate to any track</p>
         </div>
         <button
           onclick="openShareModal(null)"
-          class="ml-2 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold cursor-pointer transition shrink-0"
+          class="ml-1 px-4 py-2 rounded-xl bg-slate-900 dark:bg-blue-600 hover:opacity-90 text-white text-xs font-extrabold cursor-pointer transition shrink-0"
         >
-          Refer Friend
+          Refer
         </button>
       </div>
     </div>
 
     <!-- CATEGORY FILTERS -->
-    <div class="flex flex-wrap gap-2 mb-8">
-      <button onclick="setCat('All')" id="cat-All" class="cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-blue-600 text-white cursor-pointer">All Tracks</button>
-      <button onclick="setCat('Internship')" id="cat-Internship" class="cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-slate-200 dark:border-white/10 cursor-pointer">Task-Based Internships</button>
-      <button onclick="setCat('Development')" id="cat-Development" class="cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-slate-200 dark:border-white/10 cursor-pointer">Computer Science &amp; Dev</button>
-      <button onclick="setCat('Analytics')" id="cat-Analytics" class="cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-slate-200 dark:border-white/10 cursor-pointer">Finance &amp; Analytics</button>
-      <button onclick="setCat('Marketing')" id="cat-Marketing" class="cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-slate-200 dark:border-white/10 cursor-pointer">Growth &amp; Marketing</button>
+    <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+      <div class="flex flex-wrap gap-2">
+        <button onclick="setCat('All')" id="cat-All" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 dark:bg-blue-600 text-white cursor-pointer shadow-sm">All Tracks</button>
+        <button onclick="setCat('Internship')" id="cat-Internship" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-[var(--card)] border border-[var(--border)] cursor-pointer">Task-Based Internships</button>
+        <button onclick="setCat('Development')" id="cat-Development" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-[var(--card)] border border-[var(--border)] cursor-pointer">Computer Science &amp; Dev</button>
+        <button onclick="setCat('Analytics')" id="cat-Analytics" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-[var(--card)] border border-[var(--border)] cursor-pointer">Finance &amp; Analytics</button>
+        <button onclick="setCat('Marketing')" id="cat-Marketing" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-[var(--card)] border border-[var(--border)] cursor-pointer">Growth &amp; Marketing</button>
+      </div>
+      <span id="track-count-indicator" class="text-xs font-bold text-[var(--muted)]"></span>
     </div>
 
     <!-- COURSE CARDS GRID -->
     <div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
   </main>
 
-  <!-- COURSE WORKSPACE VIEW -->
+  <!-- ===================================================================== -->
+  <!-- VIEW 2: PROFESSIONAL COURSE WORKSPACE                                 -->
+  <!-- ===================================================================== -->
   <section id="workspace-view" class="hidden max-w-7xl mx-auto px-4 sm:px-6 py-8">
-    <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+    <!-- Breadcrumb & Share Action Bar -->
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-5">
       <button
         onclick="closeCourse()"
-        class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-slate-200 dark:border-white/10 hover:border-blue-600 cursor-pointer"
+        class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold bg-[var(--card)] border border-[var(--border)] hover:border-blue-600 cursor-pointer transition"
       >
-        ← Back to All Tracks
+        <i class="fa-solid fa-arrow-left"></i> Back to Catalog
       </button>
 
-      <button
-        onclick="openShareModal(activeCourse ? activeCourse.id : null)"
-        class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-extrabold bg-blue-600/10 text-blue-600 dark:text-blue-400 border border-blue-600/20 hover:bg-blue-600 hover:text-white cursor-pointer transition"
-      >
-        <i class="fa-solid fa-share-nodes"></i> Share &amp; Refer Friend to This Track
-      </button>
+      <div class="flex items-center gap-2">
+        <button
+          onclick="openShareModal(activeCourse ? activeCourse.id : null)"
+          class="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-extrabold bg-[var(--card)] border border-[var(--border)] hover:border-blue-600 cursor-pointer transition"
+        >
+          <i class="fa-solid fa-share-nodes text-blue-600"></i> Share Track
+        </button>
+      </div>
     </div>
 
-    <!-- Custom CSS Course Header Banner + Gate Status -->
-    <div class="rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 overflow-hidden mb-6 shadow-sm">
-      <!-- Top Visual CSS Strip -->
+    <!-- Executive Header Card -->
+    <div class="rounded-2xl bg-[var(--card)] border border-[var(--border)] overflow-hidden mb-6 shadow-sm">
       <div id="ws-visual-banner" class="course-banner banner-default px-6 py-5 text-white flex flex-wrap items-center justify-between gap-4">
-        <div class="flex items-center gap-3">
-          <div id="ws-banner-icon" class="w-11 h-11 rounded-xl bg-white/15 backdrop-blur-sm border border-white/20 flex items-center justify-center text-lg">
+        <div class="flex items-center gap-3.5">
+          <div id="ws-banner-icon" class="w-12 h-12 rounded-xl bg-white/15 backdrop-blur-sm border border-white/20 flex items-center justify-center text-lg">
             <i class="fa-solid fa-graduation-cap"></i>
           </div>
           <div>
             <span id="ws-badge" class="inline-block px-2.5 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider bg-white/20 text-white"></span>
-            <p class="text-[11px] text-white/80 font-semibold mt-1">
+            <p class="text-xs text-white/85 font-semibold mt-1">
               <span id="ws-duration"></span> <span id="ws-level"></span>
             </p>
           </div>
         </div>
         <div class="text-right hidden sm:block">
-          <span class="text-[10px] font-extrabold uppercase tracking-widest text-white/70 block">Openbox Verified Track</span>
-          <span id="ws-code-tag" class="text-xs font-mono font-bold text-white/95"></span>
+          <span class="text-[10px] font-extrabold uppercase tracking-widest text-white/70 block">Verified Track Code</span>
+          <span id="ws-code-tag" class="text-xs font-mono font-bold text-white"></span>
         </div>
       </div>
 
-      <!-- Course Info + Certificate Progress Box -->
       <div class="p-6 flex flex-col lg:flex-row lg:items-start lg:justify-between gap-6">
         <div class="max-w-3xl">
-          <h2 id="ws-title" class="text-2xl font-extrabold tracking-tight mb-2"></h2>
+          <h2 id="ws-title" class="text-xl sm:text-2xl font-extrabold tracking-tight mb-2"></h2>
           <p id="ws-desc" class="text-xs sm:text-sm text-[var(--muted)] leading-relaxed mb-4"></p>
           <div id="ws-skills" class="flex flex-wrap gap-1.5"></div>
         </div>
 
-        <!-- Certificate Unlock Box -->
-        <div class="shrink-0 lg:w-80 p-4 rounded-xl bg-slate-50 dark:bg-white/[0.03] border border-slate-200 dark:border-white/10">
+        <!-- Credential Readiness Panel -->
+        <div class="shrink-0 lg:w-80 p-4 rounded-xl bg-[var(--surface)] border border-[var(--border)]">
           <div class="flex items-center justify-between text-[11px] font-extrabold uppercase tracking-wider mb-2">
-            <span class="text-[var(--muted)]">Completion Progress</span>
+            <span class="text-[var(--muted)]">Credential Readiness</span>
             <span id="overall-pct-label" class="text-blue-600 dark:text-blue-400">0%</span>
           </div>
           <div class="w-full h-2 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden mb-3">
             <div id="overall-progress-bar" class="h-full bg-blue-600 transition-all duration-300" style="width: 0%"></div>
           </div>
 
-          <ul id="gate-checklist" class="space-y-1 text-[11px] font-semibold mb-3.5"></ul>
+          <ul id="gate-checklist" class="space-y-1.5 text-[11px] font-semibold mb-3.5"></ul>
 
           <button
             id="cert-unlock-btn"
@@ -247,134 +262,265 @@
       </div>
     </div>
 
-    <!-- Video Player + Playlist Grid -->
+    <!-- =================================================================== -->
+    <!-- STAGE 1: WATCH-TO-END VIDEO PLAYER & CURRICULUM PLAYLIST            -->
+    <!-- =================================================================== -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-      <!-- Left 2 Cols: Video Player & Active Lecture Info -->
+      <!-- Left 2 Cols: Enforced Watch-to-End Video Player -->
       <div class="lg:col-span-2 space-y-4">
-        <div class="aspect-video w-full rounded-2xl overflow-hidden bg-slate-950 border border-slate-200 dark:border-white/10 shadow-lg">
-          <iframe
-            id="lecture-player"
-            class="w-full h-full"
-            src=""
-            title="Course Lecture Video"
-            frameborder="0"
-            referrerpolicy="strict-origin-when-cross-origin"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen
-          ></iframe>
+        <div class="relative aspect-video w-full rounded-2xl overflow-hidden bg-slate-950 border border-[var(--border)] shadow-lg">
+          <div id="yt-player-container" class="w-full h-full"></div>
         </div>
 
-        <div class="p-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div>
-            <h3 id="active-lec-title" class="text-base font-extrabold mb-1"></h3>
-            <p id="active-lec-desc" class="text-xs text-[var(--muted)] leading-relaxed"></p>
+        <!-- Live Watch Progress Bar & Enforcement Status -->
+        <div class="p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-4">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--border)]">
+            <div class="flex items-center gap-2.5">
+              <span id="video-lock-pill" class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider bg-amber-500/15 text-amber-700 dark:text-amber-400">
+                <i class="fa-solid fa-lock mr-1"></i> Watch Full Video to Unlock
+              </span>
+              <span id="video-watch-pct-text" class="text-xs font-bold text-[var(--muted)]">Watched: 0%</span>
+            </div>
+            <div class="w-full sm:w-48 h-2 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden">
+              <div id="video-watch-bar" class="h-full bg-amber-500 transition-all duration-300" style="width: 0%"></div>
+            </div>
           </div>
-          <div class="flex flex-wrap items-center gap-2 shrink-0">
-            <button
-              id="mark-lec-btn"
-              onclick="toggleCurrentLectureDone()"
-              class="px-3.5 py-2 rounded-xl text-xs font-extrabold bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer transition"
-            >
-              ✓ Mark Module Complete
-            </button>
-            <a
-              id="active-lec-yt-fallback"
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="px-3.5 py-2 rounded-xl text-xs font-bold border border-slate-200 dark:border-white/10 hover:bg-slate-100 dark:hover:bg-white/5"
-            >
-              YouTube ↗
-            </a>
-            <a
-              id="active-lec-doc"
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              class="hidden px-3.5 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white hover:bg-blue-700"
-            >
-              Slides ↗
-            </a>
+
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h3 id="active-lec-title" class="text-base font-extrabold mb-1"></h3>
+              <p id="active-lec-desc" class="text-xs text-[var(--muted)] leading-relaxed"></p>
+            </div>
+            <div class="flex flex-wrap items-center gap-2 shrink-0">
+              <button
+                id="mark-lec-btn"
+                onclick="toggleCurrentLectureDone()"
+                disabled
+                class="px-4 py-2.5 rounded-xl text-xs font-extrabold bg-slate-200 dark:bg-white/10 text-slate-400 cursor-not-allowed transition"
+                title="Watch the video until the end to unlock completion"
+              >
+                <i class="fa-solid fa-lock mr-1.5"></i> Watch Till End
+              </button>
+              <a
+                id="active-lec-doc"
+                href="#"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hidden px-3.5 py-2.5 rounded-xl text-xs font-bold bg-blue-600 text-white hover:bg-blue-700"
+              >
+                Slides ↗
+              </a>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Right Col: Lecture Playlist -->
-      <div class="p-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 flex flex-col max-h-[560px]">
-        <div class="flex items-center justify-between mb-3">
-          <h3 class="text-sm font-extrabold uppercase tracking-wider">Curriculum Modules</h3>
-          <span id="lec-count-badge" class="text-[11px] font-bold text-[var(--muted)]"></span>
+      <!-- Right Col: Curriculum Playlist -->
+      <div class="p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] flex flex-col max-h-[600px]">
+        <div class="flex items-center justify-between pb-3 mb-3 border-b border-[var(--border)]">
+          <h3 class="text-xs font-extrabold uppercase tracking-wider">Curriculum Modules</h3>
+          <span id="lec-count-badge" class="text-[11px] font-bold text-blue-600 dark:text-blue-400"></span>
         </div>
         <div id="lecture-list" class="space-y-2 overflow-y-auto pr-1"></div>
       </div>
     </div>
 
-    <!-- Bottom 3-Column Section: Docs | Assignments | Verification Quiz -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <!-- Reference Documents -->
-      <div class="p-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10">
-        <h3 class="text-sm font-extrabold uppercase tracking-wider mb-4">Official Docs &amp; Worksheets</h3>
-        <div id="docs-list" class="space-y-2.5"></div>
+    <!-- =================================================================== -->
+    <!-- STAGE 2 & 3: INTERACTIVE STEP-BY-STEP TASKS | DOCS | PROCTORED EXAM -->
+    <!-- =================================================================== -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+      <!-- Interactive Step-by-Step Practical Tasks (7 Cols) -->
+      <div class="lg:col-span-7 p-6 rounded-2xl bg-[var(--card)] border border-[var(--border)]">
+        <div class="flex items-center justify-between pb-4 mb-5 border-b border-[var(--border)]">
+          <div>
+            <span class="text-[10px] font-extrabold uppercase tracking-widest text-blue-600 dark:text-blue-400">Hands-On Proof of Work</span>
+            <h3 class="text-base font-extrabold">Interactive Step-by-Step Tasks</h3>
+          </div>
+          <span id="assign-count-badge" class="px-3 py-1 rounded-lg text-xs font-extrabold bg-[var(--surface)] border border-[var(--border)]"></span>
+        </div>
+        <div id="assignments-list" class="space-y-4"></div>
       </div>
 
-      <!-- Practical Assignments with Deliverable Verification -->
-      <div class="p-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-sm font-extrabold uppercase tracking-wider">Assignments &amp; Tasks</h3>
-          <span id="assign-count-badge" class="text-[11px] font-bold text-[var(--muted)]"></span>
+      <!-- Right Column: Reference Docs + Proctored Assessment Gateway (5 Cols) -->
+      <div class="lg:col-span-5 space-y-6">
+        <!-- Official Docs -->
+        <div class="p-6 rounded-2xl bg-[var(--card)] border border-[var(--border)]">
+          <div class="flex items-center justify-between pb-3 mb-4 border-b border-[var(--border)]">
+            <h3 class="text-xs font-extrabold uppercase tracking-wider">Official Docs &amp; Templates</h3>
+            <i class="fa-solid fa-folder-open text-blue-600 text-sm"></i>
+          </div>
+          <div id="docs-list" class="space-y-2.5"></div>
         </div>
-        <div id="assignments-list" class="space-y-3"></div>
+
+        <!-- Proctored Anti-Cheat Quiz Gateway Card -->
+        <div class="p-6 rounded-2xl bg-slate-900 text-white border border-slate-800 shadow-lg relative overflow-hidden">
+          <div class="flex items-center justify-between mb-3">
+            <span class="px-2.5 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/30">
+              <i class="fa-solid fa-shield-halved mr-1"></i> Proctored Exam Mode
+            </span>
+            <span id="quiz-score-badge" class="text-xs font-extrabold text-emerald-400">Pass: 75%</span>
+          </div>
+
+          <h3 class="text-lg font-extrabold mb-2">Final Verification Assessment</h3>
+          <p class="text-xs text-slate-300 leading-relaxed mb-4">
+            This assessment redirects to a dedicated anti-cheat testing environment. Switching tabs, minimizing the browser, or copying text is strictly monitored and will auto-submit your exam after 2 warnings.
+          </p>
+
+          <ul class="space-y-1.5 text-[11px] text-slate-300 mb-5">
+            <li><i class="fa-solid fa-clock text-amber-400 w-4"></i> Timed single-session assessment (90 sec/question)</li>
+            <li><i class="fa-solid fa-eye text-amber-400 w-4"></i> Tab-switch &amp; window-focus enforcement active</li>
+            <li><i class="fa-solid fa-ban text-amber-400 w-4"></i> Copy/paste &amp; right-click disabled</li>
+          </ul>
+
+          <button
+            id="launch-proctored-quiz-btn"
+            onclick="launchProctoredQuiz()"
+            class="w-full py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-extrabold tracking-wide cursor-pointer transition flex items-center justify-center gap-2 shadow-lg shadow-blue-600/30"
+          >
+            <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            <span id="launch-quiz-btn-label">Launch Proctored Assessment</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================================================================== -->
+  <!-- VIEW 3: DEDICATED ANTI-CHEAT PROCTORED ASSESSMENT PAGE                -->
+  <!-- ===================================================================== -->
+  <section id="proctored-quiz-view" class="hidden fixed inset-0 z-50 bg-slate-950 text-white overflow-y-auto exam-locked-surface">
+    <!-- Top Proctoring Telemetry Bar -->
+    <div class="sticky top-0 z-20 bg-slate-900 border-b border-white/10 px-4 sm:px-8 h-16 flex items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-red-600/20 border border-red-500/40 text-red-400 flex items-center justify-center text-xs">
+          <i class="fa-solid fa-shield-halved"></i>
+        </div>
+        <div>
+          <span class="text-[10px] font-extrabold uppercase tracking-widest text-red-400 block">Anti-Cheat Proctored Session</span>
+          <h2 id="pq-course-title" class="text-xs sm:text-sm font-extrabold truncate max-w-[200px] sm:max-w-md"></h2>
+        </div>
       </div>
 
-      <!-- Verification Quiz (75% Passing Gate) -->
-      <div class="p-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10">
-        <div class="flex items-center justify-between mb-1">
-          <h3 class="text-sm font-extrabold uppercase tracking-wider">Verification Quiz</h3>
-          <span id="quiz-score-badge" class="text-xs font-extrabold text-blue-600 dark:text-blue-400"></span>
+      <div class="flex items-center gap-3 sm:gap-5">
+        <!-- Violation Counter -->
+        <div class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-bold flex items-center gap-2">
+          <span class="text-slate-400 hidden sm:inline">Tab Warnings:</span>
+          <span id="pq-warnings-badge" class="text-emerald-400 font-extrabold">0 / 2</span>
         </div>
-        <p class="text-[11px] text-[var(--muted)] mb-4">Minimum <strong>75% score</strong> required to unlock your certificate.</p>
-        <div id="quiz-container" class="space-y-4"></div>
+
+        <!-- Countdown Timer -->
+        <div class="px-3.5 py-1.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-mono font-extrabold flex items-center gap-2">
+          <i class="fa-solid fa-stopwatch"></i>
+          <span id="pq-timer">00:00</span>
+        </div>
+
         <button
-          onclick="gradeQuiz()"
-          class="mt-5 w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold cursor-pointer transition"
+          onclick="exitProctoredQuizWithConfirm()"
+          class="px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-bold cursor-pointer"
         >
-          Submit &amp; Verify Answers
+          Abort
         </button>
+      </div>
+    </div>
+
+    <!-- Violation Warning Alert Banner -->
+    <div id="pq-warning-banner" class="hidden bg-red-600 text-white text-xs font-extrabold py-3 px-6 text-center">
+      <i class="fa-solid fa-triangle-exclamation mr-2"></i>
+      <span id="pq-warning-text">WARNING: Tab switch or focus loss detected! One more violation will automatically terminate and grade your exam.</span>
+    </div>
+
+    <!-- Exam Main Content Container -->
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
+      <!-- Active Question Card -->
+      <div id="pq-exam-body">
+        <div class="flex items-center justify-between text-xs font-bold text-slate-400 mb-3">
+          <span id="pq-progress-label">Question 1 of 5</span>
+          <span>Passing Threshold: 75%</span>
+        </div>
+        <div class="w-full h-1.5 rounded-full bg-white/10 overflow-hidden mb-8">
+          <div id="pq-progress-bar" class="h-full bg-blue-500 transition-all duration-300" style="width: 20%"></div>
+        </div>
+
+        <div id="pq-question-card" class="p-6 sm:p-8 rounded-2xl bg-slate-900 border border-white/10 shadow-2xl mb-6">
+          <!-- Injected dynamically -->
+        </div>
+
+        <div class="flex items-center justify-between gap-4">
+          <button
+            id="pq-prev-btn"
+            onclick="navigateQuizQuestion(-1)"
+            class="px-5 py-2.5 rounded-xl bg-white/10 hover:bg-white/15 text-xs font-extrabold cursor-pointer disabled:opacity-40"
+          >
+            ← Previous
+          </button>
+
+          <div class="flex items-center gap-3">
+            <button
+              id="pq-next-btn"
+              onclick="navigateQuizQuestion(1)"
+              class="px-6 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-xs font-extrabold cursor-pointer"
+            >
+              Next Question →
+            </button>
+            <button
+              id="pq-submit-btn"
+              onclick="finishProctoredQuiz(false)"
+              class="hidden px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-extrabold cursor-pointer shadow-lg shadow-emerald-600/25"
+            >
+              Submit &amp; Verify Exam ✓
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Exam Result Summary Screen -->
+      <div id="pq-result-screen" class="hidden p-8 rounded-2xl bg-slate-900 border border-white/10 text-center space-y-5">
+        <div id="pq-result-icon" class="w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-2xl"></div>
+        <h3 id="pq-result-title" class="text-2xl font-extrabold"></h3>
+        <p id="pq-result-subtitle" class="text-sm text-slate-300 max-w-lg mx-auto"></p>
+        <div id="pq-result-breakdown" class="text-left space-y-3 max-h-80 overflow-y-auto p-4 rounded-xl bg-slate-950 border border-white/10"></div>
+        <div class="pt-2 flex flex-wrap justify-center gap-3">
+          <button
+            onclick="returnToWorkspaceFromExam()"
+            class="px-6 py-3 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-extrabold cursor-pointer"
+          >
+            Return to Course Workspace →
+          </button>
+        </div>
       </div>
     </div>
   </section>
 
   <!-- REFER & SHARE COURSE MODAL -->
   <div id="share-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-    <div class="bg-[var(--card)] text-[var(--text)] max-w-lg w-full rounded-2xl shadow-2xl p-6 border border-slate-200 dark:border-white/10">
-      <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-200 dark:border-white/10">
+    <div class="bg-[var(--card)] text-[var(--text)] max-w-lg w-full rounded-2xl shadow-2xl p-6 border border-[var(--border)]">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-[var(--border)]">
         <div>
           <span class="text-[10px] font-extrabold uppercase tracking-widest text-blue-600 dark:text-blue-400">Peer Referral Program</span>
           <h3 class="text-lg font-extrabold">Share &amp; Refer a Friend</h3>
         </div>
-        <button onclick="document.getElementById('share-modal').classList.add('hidden')" class="w-8 h-8 rounded-xl bg-slate-100 dark:bg-white/10 text-xs font-bold cursor-pointer">✕</button>
+        <button onclick="document.getElementById('share-modal').classList.add('hidden')" class="w-8 h-8 rounded-xl bg-[var(--surface)] text-xs font-bold cursor-pointer">✕</button>
       </div>
 
       <div class="space-y-4">
         <div>
           <label class="block text-[11px] font-extrabold uppercase tracking-wider text-[var(--muted)] mb-1.5">Select Course / Internship Track</label>
-          <select id="share-course-select" onchange="updateShareLink()" class="w-full px-3.5 py-2.5 rounded-xl text-xs font-bold bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 focus:outline-none focus:border-blue-600"></select>
+          <select id="share-course-select" onchange="updateShareLink()" class="w-full px-3.5 py-2.5 rounded-xl text-xs font-bold bg-[var(--surface)] border border-[var(--border)] focus:outline-none focus:border-blue-600"></select>
         </div>
 
         <div>
           <label class="block text-[11px] font-extrabold uppercase tracking-wider text-[var(--muted)] mb-1.5">Your Direct Course Referral Link</label>
           <div class="flex gap-2">
-            <input id="share-direct-link" type="text" readonly class="flex-1 px-3 py-2 rounded-xl text-xs font-mono bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10" />
+            <input id="share-direct-link" type="text" readonly class="flex-1 px-3 py-2 rounded-xl text-xs font-mono bg-[var(--surface)] border border-[var(--border)]" />
             <button id="copy-ref-link-btn" onclick="copyReferralLink()" class="px-4 py-2 rounded-xl bg-slate-900 dark:bg-blue-600 text-white text-xs font-extrabold cursor-pointer shrink-0">
               Copy Link
             </button>
           </div>
-          <p class="text-[11px] text-[var(--muted)] mt-1">Opening this link redirects your friend directly into this course workspace.</p>
         </div>
 
         <div>
           <label class="block text-[11px] font-extrabold uppercase tracking-wider text-[var(--muted)] mb-1.5">Invite Message</label>
-          <textarea id="share-invite-msg" rows="3" readonly class="w-full p-3 rounded-xl text-xs bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10 leading-relaxed"></textarea>
+          <textarea id="share-invite-msg" rows="3" readonly class="w-full p-3 rounded-xl text-xs bg-[var(--surface)] border border-[var(--border)] leading-relaxed"></textarea>
         </div>
 
         <div class="grid grid-cols-2 gap-3 pt-1">
@@ -405,33 +551,22 @@
             oninput="refreshCertificateName(this.value)"
             class="px-3 py-2 rounded-xl border border-slate-300 text-xs font-bold text-slate-900 focus:outline-none focus:border-slate-900"
           />
-          <button
-            onclick="downloadWhiteCertificate()"
-            class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold cursor-pointer transition"
-          >
+          <button onclick="downloadWhiteCertificate()" class="px-4 py-2 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold cursor-pointer transition">
             Download PNG
           </button>
-          <button
-            onclick="copyLinkedInCaption()"
-            class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold cursor-pointer transition"
-          >
+          <button onclick="copyLinkedInCaption()" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold cursor-pointer transition">
             Copy Share Caption
           </button>
-          <button
-            onclick="document.getElementById('certificate-modal').classList.add('hidden')"
-            class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold cursor-pointer"
-          >
+          <button onclick="document.getElementById('certificate-modal').classList.add('hidden')" class="px-3 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold cursor-pointer">
             ✕
           </button>
         </div>
       </div>
 
-      <!-- Crisp White Canvas -->
       <div class="w-full overflow-hidden rounded-xl border border-slate-300 shadow-sm bg-white">
         <canvas id="certificate-canvas" width="1400" height="990" class="w-full h-auto block"></canvas>
       </div>
 
-      <!-- LinkedIn Caption -->
       <div class="mt-4 p-3.5 rounded-xl bg-slate-50 border border-slate-200">
         <p class="text-[10px] font-extrabold uppercase tracking-wider text-slate-500 mb-1">LinkedIn &amp; Social Caption</p>
         <p id="cert-social-caption" class="text-xs text-slate-700 leading-relaxed select-all"></p>
@@ -439,22 +574,84 @@
     </div>
   </div>
 
-  <!-- LOAD COURSE DATA -->
+  <!-- STUDENT SHEET SYNC MODAL -->
+  <div id="sheet-auth-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
+    <div class="bg-[var(--card)] text-[var(--text)] max-w-md w-full rounded-2xl shadow-2xl p-6 border border-[var(--border)]">
+      <div class="flex items-center justify-between mb-4 pb-3 border-b border-[var(--border)]">
+        <div>
+          <span class="text-[10px] font-extrabold uppercase tracking-widest text-blue-600 dark:text-blue-400">Openbox Student Record</span>
+          <h3 class="text-lg font-extrabold">Register / Sync with Google Sheet</h3>
+        </div>
+        <button onclick="document.getElementById('sheet-auth-modal').classList.add('hidden')" class="w-8 h-8 rounded-xl bg-[var(--surface)] text-xs font-bold cursor-pointer">✕</button>
+      </div>
+
+      <div class="grid grid-cols-2 gap-2 p-1 rounded-xl bg-[var(--surface)] mb-4">
+        <button id="sa-tab-reg" onclick="setSheetAuthMode('register')" class="py-1.5 rounded-lg text-xs font-extrabold bg-[var(--card)] shadow-sm cursor-pointer">New Student</button>
+        <button id="sa-tab-log" onclick="setSheetAuthMode('login')" class="py-1.5 rounded-lg text-xs font-bold text-[var(--muted)] cursor-pointer">Existing Login</button>
+      </div>
+
+      <form onsubmit="submitSheetAuth(event)" class="space-y-3">
+        <div id="sa-name-wrap">
+          <label class="block text-[11px] font-bold mb-1">Full Name (Printed on Certificate)</label>
+          <input id="sa-name" type="text" placeholder="Aviral Pathak" class="w-full px-3 py-2 rounded-xl text-xs bg-[var(--surface)] border border-[var(--border)]" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold mb-1">Email Address</label>
+          <input id="sa-email" type="email" required placeholder="you@example.com" class="w-full px-3 py-2 rounded-xl text-xs bg-[var(--surface)] border border-[var(--border)]" />
+        </div>
+        <div>
+          <label class="block text-[11px] font-bold mb-1">Password</label>
+          <input id="sa-pass" type="password" required placeholder="••••••••" class="w-full px-3 py-2 rounded-xl text-xs bg-[var(--surface)] border border-[var(--border)]" />
+        </div>
+        <div id="sa-gh-wrap">
+          <label class="block text-[11px] font-bold mb-1">GitHub URL (Optional)</label>
+          <input id="sa-gh" type="url" placeholder="https://github.com/username" class="w-full px-3 py-2 rounded-xl text-xs bg-[var(--surface)] border border-[var(--border)]" />
+        </div>
+        <button type="submit" id="sa-btn" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold cursor-pointer">
+          Save &amp; Sync Account
+        </button>
+        <p id="sa-msg" class="text-xs font-bold text-center"></p>
+      </form>
+    </div>
+  </div>
+
+  <!-- LOAD YOUTUBE IFRAME API & COURSE DATA -->
+  <script src="https://www.youtube.com/iframe_api"></script>
   <script src="courses-data.js"></script>
 
   <script>
-    const STORAGE_KEY = "openbox_portal_progress_v1";
+    const STORAGE_KEY = "openbox_portal_progress_v2";
     const PASS_THRESHOLD = 75;
+    const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbysQBHvivlSzoEYU57dsaauDItp-7fBJhqp7STBU933-9wjZ56JpiP6je9LkzLeyjyQ2w/exec";
 
     let currentCategory = "All";
     let activeCourse = null;
     let activeLectureIndex = 0;
+
+    // YouTube Watch-to-End Enforcement State
+    let ytPlayer = null;
+    let ytApiReady = false;
+    let watchPollInterval = null;
+    let maxWatchedSeconds = 0;
+    let videoDurationSeconds = 0;
+
+    // Proctored Anti-Cheat Quiz State
+    let examActive = false;
+    let examQuestions = [];
+    let examAnswers = {};
+    let examCurrentIdx = 0;
+    let examWarnings = 0;
+    let examTimerInterval = null;
+    let examSecondsLeft = 0;
 
     // Load persisted learner progress
     let appState = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
     if (!appState.courses) appState.courses = {};
     if (appState.studentName) {
       document.getElementById("student-name-input").value = appState.studentName;
+    }
+    if (appState.studentEmail) {
+      document.getElementById("nav-sync-label").textContent = appState.studentEmail.split("@")[0];
     }
 
     function saveState() {
@@ -470,6 +667,8 @@
       if (!appState.courses[courseId]) {
         appState.courses[courseId] = {
           completedLectures: [],
+          watchedVideos: {},        // { [lectureId]: true } unlocked only after full watch
+          taskStepsCompleted: {},   // { [taskIdx]: [stepIdx, ...] }
           submittedAssignments: {},
           quizPercent: 0,
           quizPassed: false,
@@ -480,10 +679,11 @@
             Math.random().toString(36).substring(2, 8).toUpperCase()
         };
       }
+      if (!appState.courses[courseId].watchedVideos) appState.courses[courseId].watchedVideos = {};
+      if (!appState.courses[courseId].taskStepsCompleted) appState.courses[courseId].taskStepsCompleted = {};
       return appState.courses[courseId];
     }
 
-    // Custom CSS Banner Theme Mapper per Course Category / Type
     function getBannerTheme(course) {
       if (course.bannerClass) return { cls: course.bannerClass, icon: course.bannerIcon || "fa-solid fa-layer-group" };
       if (course.isInternship) return { cls: "banner-internship", icon: "fa-solid fa-briefcase" };
@@ -528,13 +728,11 @@
     function setCat(cat) {
       currentCategory = cat;
       document.querySelectorAll(".cat-btn").forEach(btn => {
-        btn.className =
-          "cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-slate-200 dark:border-white/10 cursor-pointer";
+        btn.className = "cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-[var(--card)] border border-[var(--border)] cursor-pointer";
       });
       const activeBtn = document.getElementById("cat-" + cat);
       if (activeBtn) {
-        activeBtn.className =
-          "cat-btn px-4 py-1.5 rounded-xl text-xs font-bold bg-blue-600 text-white cursor-pointer";
+        activeBtn.className = "cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 dark:bg-blue-600 text-white cursor-pointer shadow-sm";
       }
       renderCatalog();
     }
@@ -547,25 +745,22 @@
         return c.category === currentCategory;
       });
 
+      document.getElementById("track-count-indicator").textContent = `Showing ${filtered.length} verified track${filtered.length === 1 ? "" : "s"}`;
+
       grid.innerHTML = filtered
         .map(course => {
           const status = checkEligibility(course);
           const theme = getBannerTheme(course);
           return `
-        <article class="rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 flex flex-col justify-between overflow-hidden hover:border-blue-600 transition shadow-sm group">
+        <article class="rounded-2xl bg-[var(--card)] border border-[var(--border)] flex flex-col justify-between overflow-hidden hover:border-blue-600 transition shadow-sm group">
           <div>
-            <!-- Custom CSS Banner Header -->
             <div class="course-banner ${theme.cls} p-5 text-white">
               <div class="flex items-center justify-between gap-2 mb-4">
                 <span class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider bg-white/15 backdrop-blur-sm border border-white/15">
                   ${course.typeBadge}
                 </span>
                 <div class="flex items-center gap-1.5">
-                  ${
-                    status.unlocked
-                      ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-500 text-white">✓ Certified</span>`
-                      : ""
-                  }
+                  ${status.unlocked ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-500 text-white">✓ Certified</span>` : ""}
                   <button
                     onclick="event.stopPropagation(); openShareModal('${course.id}')"
                     class="w-7 h-7 rounded-lg bg-white/15 hover:bg-white/30 text-white flex items-center justify-center text-xs cursor-pointer transition"
@@ -580,46 +775,33 @@
                 <div class="w-10 h-10 rounded-xl bg-white/15 border border-white/20 flex items-center justify-center text-base shrink-0">
                   <i class="${theme.icon}"></i>
                 </div>
-                <span class="text-[10px] font-mono uppercase tracking-widest text-white/80">
+                <span class="text-[10px] font-mono uppercase tracking-widest text-white/85">
                   ${course.category || "Track"} • ${(course.lectures || []).length} Modules
                 </span>
               </div>
             </div>
 
-            <!-- Card Body -->
             <div class="p-6 pb-4">
-              <h3 class="text-lg font-extrabold tracking-tight mb-2 leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">${course.title}</h3>
+              <h3 class="text-base font-extrabold tracking-tight mb-2 leading-snug group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">${course.title}</h3>
               <p class="text-xs text-[var(--muted)] leading-relaxed mb-4">${course.description}</p>
               <div class="flex flex-wrap gap-1.5">
                 ${(course.techStack || [])
-                  .map(
-                    skill =>
-                      `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 dark:bg-white/5 text-[var(--muted)]">${skill}</span>`
-                  )
+                  .map(skill => `<span class="px-2 py-0.5 rounded-md text-[10px] font-bold bg-[var(--surface)] border border-[var(--border)] text-[var(--muted)]">${skill}</span>`)
                   .join("")}
               </div>
             </div>
           </div>
 
-          <div class="px-6 py-4 border-t border-slate-200 dark:border-white/10 flex items-center justify-between gap-2">
+          <div class="px-6 py-4 border-t border-[var(--border)] flex items-center justify-between gap-2 bg-[var(--surface)]/50">
             <span class="text-[11px] font-bold text-[var(--muted)]">
-              ${status.doneLecs}/${status.totalLecs} Lecs • ${status.doneAssigns}/${status.totalAssigns} Tasks
+              ${status.doneLecs}/${status.totalLecs} Videos • ${status.doneAssigns}/${status.totalAssigns} Tasks
             </span>
-            <div class="flex items-center gap-1.5">
-              <button
-                onclick="openShareModal('${course.id}')"
-                class="px-2.5 py-2 rounded-xl border border-slate-200 dark:border-white/10 hover:border-blue-600 text-xs font-bold cursor-pointer transition"
-                title="Refer Friend"
-              >
-                Refer
-              </button>
-              <button
-                onclick="openCourse('${course.id}')"
-                class="px-4 py-2 rounded-xl bg-slate-900 dark:bg-blue-600 hover:opacity-90 text-white text-xs font-extrabold cursor-pointer transition"
-              >
-                ${status.unlocked ? "Certificate →" : "Start →"}
-              </button>
-            </div>
+            <button
+              onclick="openCourse('${course.id}')"
+              class="px-4 py-2 rounded-xl bg-slate-900 dark:bg-blue-600 hover:opacity-90 text-white text-xs font-extrabold cursor-pointer transition"
+            >
+              ${status.unlocked ? "View Credential →" : "Enter Workspace →"}
+            </button>
           </div>
         </article>
       `;
@@ -641,7 +823,6 @@
       document.getElementById("workspace-view").classList.remove("hidden");
       window.scrollTo({ top: 0, behavior: "smooth" });
 
-      // Apply Custom CSS Banner to Workspace Header
       const theme = getBannerTheme(activeCourse);
       const bannerEl = document.getElementById("ws-visual-banner");
       bannerEl.className = `course-banner ${theme.cls} px-6 py-5 text-white flex flex-wrap items-center justify-between gap-4`;
@@ -654,142 +835,176 @@
       document.getElementById("ws-title").textContent = activeCourse.title;
       document.getElementById("ws-desc").textContent = activeCourse.description;
       document.getElementById("ws-skills").innerHTML = (activeCourse.techStack || [])
-        .map(s => `<span class="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-slate-100 dark:bg-white/5 text-[var(--muted)]">${s}</span>`)
+        .map(s => `<span class="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-[var(--surface)] border border-[var(--border)] text-[var(--muted)]">${s}</span>`)
         .join("");
 
       selectLecture(0);
       renderDocs();
       renderAssignments();
-      renderQuiz();
+      updateQuizGatewayBadge();
       updateCompletionUI();
     }
 
     function closeCourse() {
+      stopWatchPolling();
+      if (ytPlayer && typeof ytPlayer.stopVideo === "function") {
+        ytPlayer.stopVideo();
+      }
       const url = new URL(window.location.href);
       url.searchParams.delete("course");
       window.history.replaceState({}, "", url);
 
-      document.getElementById("lecture-player").src = "";
       document.getElementById("workspace-view").classList.add("hidden");
       document.getElementById("catalog-view").classList.remove("hidden");
       renderCatalog();
     }
 
     // =========================================================================
-    // REFER A FRIEND & DIRECT COURSE SHARE SYSTEM
+    // 1. STRICT WATCH-TO-END YOUTUBE VIDEO ENFORCEMENT
     // =========================================================================
-    function buildCourseReferralUrl(courseId) {
-      const baseUrl = window.location.origin + window.location.pathname;
-      const url = new URL(baseUrl);
-      if (courseId) url.searchParams.set("course", courseId);
-      const refName = (appState.studentName || "").trim();
-      if (refName) url.searchParams.set("ref", refName);
-      return url.toString();
-    }
-
-    function openShareModal(preselectedCourseId) {
-      const select = document.getElementById("share-course-select");
-      select.innerHTML = OPENBOX_COURSES.map(
-        c => `<option value="${c.id}">${c.title} (${c.typeBadge})</option>`
-      ).join("");
-
-      if (preselectedCourseId) {
-        select.value = preselectedCourseId;
-      } else if (activeCourse) {
-        select.value = activeCourse.id;
-      }
-
-      updateShareLink();
-      document.getElementById("share-modal").classList.remove("hidden");
-    }
-
-    function updateShareLink() {
-      const courseId = document.getElementById("share-course-select").value;
-      const course = OPENBOX_COURSES.find(c => c.id === courseId) || OPENBOX_COURSES[0];
-      const directUrl = buildCourseReferralUrl(course.id);
-
-      document.getElementById("share-direct-link").value = directUrl;
-
-      const inviteMsg =
-        `Hey! Join me in "${course.title}" on Openbox Growth Partner — complete hands-on tasks, build proof-of-work projects, and earn a verified certificate:\n${directUrl}`;
-      document.getElementById("share-invite-msg").value = inviteMsg;
-
-      document.getElementById("share-wa-btn").href =
-        `https://wa.me/?text=${encodeURIComponent(inviteMsg)}`;
-      document.getElementById("share-li-btn").href =
-        `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(directUrl)}`;
-    }
-
-    function copyReferralLink() {
-      const link = document.getElementById("share-direct-link").value;
-      navigator.clipboard.writeText(link);
-      const btn = document.getElementById("copy-ref-link-btn");
-      btn.textContent = "✓ Copied!";
-      setTimeout(() => { btn.textContent = "Copy Link"; }, 2000);
-    }
-
-    // Handle incoming ?course=<id>&ref=<friendName> deep links
-    function handleIncomingDeepLink() {
-      const params = new URLSearchParams(window.location.search);
-      const sharedCourseId = params.get("course") || params.get("id");
-      const referrer = params.get("ref");
-
-      if (referrer) {
-        appState.referredBy = referrer;
-        saveState();
-        const bar = document.getElementById("referral-welcome-bar");
-        document.getElementById("referral-welcome-text").textContent =
-          `Referred by ${referrer} • Welcome to Openbox Growth Partner! Complete this track to claim your verified certificate.`;
-        bar.classList.remove("hidden");
-      }
-
-      if (sharedCourseId && OPENBOX_COURSES.some(c => c.id === sharedCourseId)) {
-        openCourse(sharedCourseId, false);
+    function onYouTubeIframeAPIReady() {
+      ytApiReady = true;
+      if (activeCourse && activeCourse.lectures[activeLectureIndex]) {
+        loadYouTubeVideo(activeCourse.lectures[activeLectureIndex].videoId);
       }
     }
 
-    // =========================================================================
-    // COMPLETION PROGRESS, LECTURES, DOCS, ASSIGNMENTS, QUIZ & CERTIFICATE
-    // =========================================================================
-    function updateCompletionUI() {
-      if (!activeCourse) return;
-      const status = checkEligibility(activeCourse);
+    function loadYouTubeVideo(videoId) {
+      stopWatchPolling();
+      maxWatchedSeconds = 0;
+      videoDurationSeconds = 0;
 
-      const lecRatio = status.totalLecs ? status.doneLecs / status.totalLecs : 1;
-      const assignRatio = status.totalAssigns ? status.doneAssigns / status.totalAssigns : 1;
-      const quizRatio = status.quizDone ? 1 : Math.min(status.quizPercent / PASS_THRESHOLD, 0.9);
-      const overallPct = Math.round(((lecRatio + assignRatio + quizRatio) / 3) * 100);
+      if (!window.YT || !window.YT.Player) {
+        // Fallback if YT script hasn't finished loading yet
+        setTimeout(() => loadYouTubeVideo(videoId), 300);
+        return;
+      }
 
-      document.getElementById("overall-pct-label").textContent = `${overallPct}%`;
-      document.getElementById("overall-progress-bar").style.width = `${overallPct}%`;
+      if (ytPlayer && typeof ytPlayer.loadVideoById === "function") {
+        ytPlayer.loadVideoById(videoId);
+        startWatchPolling();
+        return;
+      }
 
-      document.getElementById("lec-count-badge").textContent = `${status.doneLecs}/${status.totalLecs} Done`;
-      document.getElementById("assign-count-badge").textContent = `${status.doneAssigns}/${status.totalAssigns} Submitted`;
+      ytPlayer = new YT.Player("yt-player-container", {
+        videoId: videoId,
+        playerVars: {
+          rel: 0,
+          modestbranding: 1,
+          playsinline: 1
+        },
+        events: {
+          onReady: () => {
+            startWatchPolling();
+          },
+          onStateChange: onPlayerStateChange
+        }
+      });
+    }
 
-      const checklistEl = document.getElementById("gate-checklist");
-      checklistEl.innerHTML = `
-        <li class="${status.lecsDone ? "text-emerald-600 dark:text-emerald-400" : "text-[var(--muted)]"}">
-          ${status.lecsDone ? "✓" : "○"} Complete all modules (${status.doneLecs}/${status.totalLecs})
-        </li>
-        <li class="${status.assignsDone ? "text-emerald-600 dark:text-emerald-400" : "text-[var(--muted)]"}">
-          ${status.assignsDone ? "✓" : "○"} Submit all assignments (${status.doneAssigns}/${status.totalAssigns})
-        </li>
-        <li class="${status.quizDone ? "text-emerald-600 dark:text-emerald-400" : "text-[var(--muted)]"}">
-          ${status.quizDone ? "✓" : "○"} Pass verification quiz ≥75% (Current: ${status.quizPercent}%)
-        </li>
-      `;
+    function onPlayerStateChange(event) {
+      if (event.data === YT.PlayerState.PLAYING) {
+        startWatchPolling();
+      } else if (event.data === YT.PlayerState.ENDED) {
+        unlockCurrentVideoCompletion();
+      }
+    }
 
-      const certBtn = document.getElementById("cert-unlock-btn");
-      if (status.unlocked) {
-        certBtn.disabled = false;
-        certBtn.className =
-          "w-full py-2.5 px-4 rounded-xl text-xs font-extrabold tracking-wide transition bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/20 cursor-pointer";
-        certBtn.textContent = "Download Official Certificate →";
+    function startWatchPolling() {
+      stopWatchPolling();
+      watchPollInterval = setInterval(() => {
+        if (!ytPlayer || typeof ytPlayer.getCurrentTime !== "function") return;
+        const dur = ytPlayer.getDuration() || 0;
+        const cur = ytPlayer.getCurrentTime() || 0;
+
+        if (dur > 0) {
+          videoDurationSeconds = dur;
+          // Prevent skipping ahead more than 3 seconds beyond furthest watched timestamp
+          if (cur > maxWatchedSeconds + 3) {
+            ytPlayer.seekTo(maxWatchedSeconds, true);
+            return;
+          }
+          if (cur > maxWatchedSeconds) {
+            maxWatchedSeconds = cur;
+          }
+
+          const pct = Math.min(100, Math.round((maxWatchedSeconds / dur) * 100));
+          updateVideoWatchUI(pct);
+
+          // Unlock when 96%+ of the video has been legitimately watched
+          if (pct >= 96) {
+            unlockCurrentVideoCompletion();
+          }
+        }
+      }, 800);
+    }
+
+    function stopWatchPolling() {
+      if (watchPollInterval) {
+        clearInterval(watchPollInterval);
+        watchPollInterval = null;
+      }
+    }
+
+    function updateVideoWatchUI(pct) {
+      const lec = activeCourse.lectures[activeLectureIndex];
+      const prog = getCourseProgress(activeCourse.id);
+      const alreadyUnlocked = prog.watchedVideos[lec.id] || prog.completedLectures.includes(lec.id);
+      const effectivePct = alreadyUnlocked ? 100 : pct;
+
+      document.getElementById("video-watch-pct-text").textContent = `Watched: ${effectivePct}%`;
+      const bar = document.getElementById("video-watch-bar");
+      bar.style.width = `${effectivePct}%`;
+
+      const pill = document.getElementById("video-lock-pill");
+      if (alreadyUnlocked) {
+        bar.className = "h-full bg-emerald-500 transition-all duration-300";
+        pill.className = "px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider bg-emerald-500/15 text-emerald-700 dark:text-emerald-400";
+        pill.innerHTML = `<i class="fa-solid fa-lock-open mr-1"></i> Full Video Verified`;
       } else {
-        certBtn.disabled = true;
-        certBtn.className =
-          "w-full py-2.5 px-4 rounded-xl text-xs font-extrabold tracking-wide transition bg-slate-200 dark:bg-white/10 text-slate-500 cursor-not-allowed";
-        certBtn.textContent = "Locked • Complete All & Pass 75% Quiz";
+        bar.className = "h-full bg-amber-500 transition-all duration-300";
+        pill.className = "px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider bg-amber-500/15 text-amber-700 dark:text-amber-400";
+        pill.innerHTML = `<i class="fa-solid fa-lock mr-1"></i> Watch Till End (${effectivePct}%)`;
+      }
+    }
+
+    function unlockCurrentVideoCompletion() {
+      if (!activeCourse) return;
+      const lec = activeCourse.lectures[activeLectureIndex];
+      const prog = getCourseProgress(activeCourse.id);
+      if (!prog.watchedVideos[lec.id]) {
+        prog.watchedVideos[lec.id] = true;
+        if (!prog.completedLectures.includes(lec.id)) {
+          prog.completedLectures.push(lec.id);
+          syncLectureToSheet(lec.id, "Completed");
+        }
+        saveState();
+      }
+      updateVideoWatchUI(100);
+      refreshLectureCompleteButton();
+      renderLecturePlaylist();
+      updateCompletionUI();
+    }
+
+    function refreshLectureCompleteButton() {
+      const lec = activeCourse.lectures[activeLectureIndex];
+      const prog = getCourseProgress(activeCourse.id);
+      const isWatched = Boolean(prog.watchedVideos[lec.id]);
+      const isDone = prog.completedLectures.includes(lec.id);
+      const markBtn = document.getElementById("mark-lec-btn");
+
+      if (!isWatched && !isDone) {
+        markBtn.disabled = true;
+        markBtn.className = "px-4 py-2.5 rounded-xl text-xs font-extrabold bg-slate-200 dark:bg-white/10 text-slate-400 cursor-not-allowed transition";
+        markBtn.innerHTML = `<i class="fa-solid fa-lock mr-1.5"></i> Watch Till End`;
+      } else if (isDone) {
+        markBtn.disabled = false;
+        markBtn.className = "px-4 py-2.5 rounded-xl text-xs font-extrabold bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 cursor-pointer transition";
+        markBtn.innerHTML = `<i class="fa-solid fa-circle-check mr-1.5"></i> Module Completed`;
+      } else {
+        markBtn.disabled = false;
+        markBtn.className = "px-4 py-2.5 rounded-xl text-xs font-extrabold bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer transition";
+        markBtn.innerHTML = `<i class="fa-solid fa-check mr-1.5"></i> Mark Complete`;
       }
     }
 
@@ -798,36 +1013,27 @@
       const lec = activeCourse.lectures[idx];
       if (!lec) return;
 
-      const prog = getCourseProgress(activeCourse.id);
-      const isDone = prog.completedLectures.includes(lec.id);
-
-      const player = document.getElementById("lecture-player");
-      player.src = `https://www.youtube-nocookie.com/embed/${lec.videoId}?rel=0`;
+      loadYouTubeVideo(lec.videoId);
 
       document.getElementById("active-lec-title").textContent = lec.title;
       document.getElementById("active-lec-desc").textContent = lec.description;
-      document.getElementById("active-lec-yt-fallback").href = `https://www.youtube.com/watch?v=${lec.videoId}`;
-
-      const markBtn = document.getElementById("mark-lec-btn");
-      if (isDone) {
-        markBtn.className =
-          "px-3.5 py-2 rounded-xl text-xs font-extrabold bg-emerald-500/15 text-emerald-700 dark:text-emerald-400 border border-emerald-500/30 cursor-pointer transition";
-        markBtn.textContent = "✓ Completed (Undo)";
-      } else {
-        markBtn.className =
-          "px-3.5 py-2 rounded-xl text-xs font-extrabold bg-emerald-600 hover:bg-emerald-700 text-white cursor-pointer transition";
-        markBtn.textContent = "✓ Mark Module Complete";
-      }
 
       const docBtn = document.getElementById("active-lec-doc");
       if (lec.documentUrl) {
         docBtn.href = lec.documentUrl;
-        docBtn.textContent = (lec.documentLabel || "Lecture Resource") + " ↗";
+        docBtn.textContent = (lec.documentLabel || "Slides") + " ↗";
         docBtn.classList.remove("hidden");
       } else {
         docBtn.classList.add("hidden");
       }
 
+      updateVideoWatchUI(0);
+      refreshLectureCompleteButton();
+      renderLecturePlaylist();
+    }
+
+    function renderLecturePlaylist() {
+      const prog = getCourseProgress(activeCourse.id);
       const list = document.getElementById("lecture-list");
       list.innerHTML = activeCourse.lectures
         .map((item, i) => {
@@ -835,16 +1041,16 @@
           return `
         <button
           onclick="selectLecture(${i})"
-          class="w-full text-left p-3 rounded-xl border text-xs transition cursor-pointer ${
-            i === idx
+          class="w-full text-left p-3.5 rounded-xl border text-xs transition cursor-pointer ${
+            i === activeLectureIndex
               ? "bg-blue-600/10 border-blue-600 font-bold"
-              : "border-slate-200 dark:border-white/10 hover:bg-slate-50 dark:hover:bg-white/5"
+              : "border-[var(--border)] hover:bg-[var(--surface)]"
           }"
         >
           <div class="flex items-center justify-between gap-2">
             <span class="line-clamp-1">
               <span class="${itemDone ? "text-emerald-600 dark:text-emerald-400 font-extrabold" : "text-[var(--muted)]"} mr-1.5">
-                ${itemDone ? "✓" : "○"}
+                ${itemDone ? "✓" : `${i + 1}.`}
               </span>
               ${item.title}
             </span>
@@ -860,17 +1066,423 @@
       const lec = activeCourse.lectures[activeLectureIndex];
       if (!lec) return;
       const prog = getCourseProgress(activeCourse.id);
+
+      // Enforce full video watch requirement
+      if (!prog.watchedVideos[lec.id] && !prog.completedLectures.includes(lec.id)) {
+        alert("Please watch the full video till the end before marking this module complete.");
+        return;
+      }
+
       const pos = prog.completedLectures.indexOf(lec.id);
       if (pos === -1) {
         prog.completedLectures.push(lec.id);
+        syncLectureToSheet(lec.id, "Completed");
       } else {
         prog.completedLectures.splice(pos, 1);
+        syncLectureToSheet(lec.id, "Incomplete");
       }
       saveState();
-      selectLecture(activeLectureIndex);
+      refreshLectureCompleteButton();
+      renderLecturePlaylist();
       updateCompletionUI();
     }
 
+    // =========================================================================
+    // 2. INTERACTIVE STEP-BY-STEP PRACTICAL TASKS
+    // =========================================================================
+    function getTaskSteps(task) {
+      if (Array.isArray(task.steps) && task.steps.length > 0) return task.steps;
+      // Auto-decompose instructions into crisp interactive milestones if steps array isn't explicitly defined
+      const parts = task.instructions
+        .split(/\.\s+/)
+        .map(s => s.replace(/\.$/, "").trim())
+        .filter(Boolean);
+      return parts.length >= 2
+        ? parts
+        : [
+            `Review specification & deliverables for "${task.title}"`,
+            task.instructions,
+            `Verify output quality (${task.deliverable || "Public URL"}) and prepare submission link`
+          ];
+    }
+
+    function toggleTaskStep(taskIdx, stepIdx) {
+      const prog = getCourseProgress(activeCourse.id);
+      if (!prog.taskStepsCompleted[taskIdx]) prog.taskStepsCompleted[taskIdx] = [];
+      const arr = prog.taskStepsCompleted[taskIdx];
+      const pos = arr.indexOf(stepIdx);
+      if (pos === -1) arr.push(stepIdx);
+      else arr.splice(pos, 1);
+      saveState();
+      renderAssignments();
+    }
+
+    function renderAssignments() {
+      const prog = getCourseProgress(activeCourse.id);
+      const container = document.getElementById("assignments-list");
+
+      container.innerHTML = (activeCourse.assignments || [])
+        .map((task, idx) => {
+          const steps = getTaskSteps(task);
+          const completedSteps = prog.taskStepsCompleted[idx] || [];
+          const allStepsDone = completedSteps.length >= steps.length;
+          const savedLink = prog.submittedAssignments[idx] || "";
+          const isSubmitted = savedLink.trim().length > 0;
+          const stepPct = Math.round((completedSteps.length / steps.length) * 100);
+
+          return `
+        <div class="p-4 sm:p-5 rounded-2xl border ${
+          isSubmitted
+            ? "border-emerald-500/40 bg-emerald-500/[0.03]"
+            : "border-[var(--border)] bg-[var(--surface)]/60"
+        }">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-2">
+            <span class="px-2.5 py-0.5 rounded-md text-[10px] font-extrabold uppercase tracking-wider bg-amber-500/15 text-amber-700 dark:text-amber-400">
+              ${task.deadline}
+            </span>
+            <span class="text-[11px] font-extrabold ${
+              isSubmitted ? "text-emerald-600 dark:text-emerald-400" : "text-blue-600 dark:text-blue-400"
+            }">
+              ${isSubmitted ? "✓ Submitted & Verified" : `Step Progress: ${completedSteps.length}/${steps.length} (${stepPct}%)`}
+            </span>
+          </div>
+
+          <h4 class="text-sm font-extrabold mb-3">${task.title}</h4>
+
+          <!-- Interactive Step-by-Step Checklist -->
+          <div class="space-y-2 mb-4">
+            ${steps
+              .map((stepText, sIdx) => {
+                const checked = completedSteps.includes(sIdx);
+                return `
+              <button
+                type="button"
+                onclick="toggleTaskStep(${idx}, ${sIdx})"
+                class="w-full text-left p-2.5 rounded-xl border text-xs flex items-start gap-3 transition cursor-pointer ${
+                  checked
+                    ? "bg-emerald-500/10 border-emerald-500/30 text-[var(--text)]"
+                    : "bg-[var(--card)] border-[var(--border)] hover:border-blue-600"
+                }"
+              >
+                <span class="w-5 h-5 rounded-md flex items-center justify-center text-[10px] font-extrabold shrink-0 mt-0.5 ${
+                  checked ? "bg-emerald-600 text-white" : "bg-[var(--surface)] border border-[var(--border)] text-[var(--muted)]"
+                }">
+                  ${checked ? "✓" : sIdx + 1}
+                </span>
+                <span class="${checked ? "line-through opacity-75" : ""}">${stepText}</span>
+              </button>
+            `;
+              })
+              .join("")}
+          </div>
+
+          <!-- Submission Gate (Unlocks when all interactive steps are checked) -->
+          <div class="pt-3 border-t border-[var(--border)]">
+            ${
+              allStepsDone || isSubmitted
+                ? `
+              <label class="block text-[10px] font-extrabold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-1.5">
+                <i class="fa-solid fa-unlock mr-1"></i> Final Deliverable URL Unlocked (${task.deliverable || "Link"})
+              </label>
+              <div class="flex gap-2">
+                <input
+                  id="assign-input-${idx}"
+                  type="url"
+                  value="${savedLink.replace(/"/g, "&quot;")}"
+                  placeholder="Paste GitHub / Google Doc / Live URL..."
+                  class="flex-1 px-3 py-2 rounded-xl text-xs font-medium bg-[var(--card)] border border-[var(--border)] focus:outline-none focus:border-blue-600"
+                />
+                <button
+                  type="button"
+                  onclick="saveAssignmentLink(${idx}, document.getElementById('assign-input-${idx}').value)"
+                  class="px-4 py-2 rounded-xl bg-slate-900 dark:bg-blue-600 hover:opacity-90 text-white text-xs font-extrabold cursor-pointer shrink-0"
+                >
+                  ${isSubmitted ? "Update" : "Submit"}
+                </button>
+              </div>
+            `
+                : `
+              <div class="px-3 py-2.5 rounded-xl bg-[var(--card)] border border-dashed border-[var(--border)] text-[11px] font-semibold text-[var(--muted)] flex items-center gap-2">
+                <i class="fa-solid fa-lock text-amber-500"></i>
+                Complete all ${steps.length} interactive steps above to unlock the deliverable submission box.
+              </div>
+            `
+            }
+          </div>
+        </div>
+      `;
+        })
+        .join("");
+    }
+
+    function saveAssignmentLink(idx, url) {
+      const cleanUrl = url.trim();
+      if (!cleanUrl) return;
+      const prog = getCourseProgress(activeCourse.id);
+      prog.submittedAssignments[idx] = cleanUrl;
+      saveState();
+      renderAssignments();
+      updateCompletionUI();
+
+      if (!appState.studentEmail) {
+        document.getElementById("sheet-auth-modal").classList.remove("hidden");
+        return;
+      }
+      const task = activeCourse.assignments[idx];
+      postToSheet({
+        action: "submit_task",
+        name: appState.studentName || "Student",
+        email: appState.studentEmail,
+        courseId: activeCourse.id,
+        taskTitle: task.title,
+        link: cleanUrl,
+        notes: appState.referredBy ? `Referred by: ${appState.referredBy}` : ""
+      }).catch(() => {});
+    }
+
+    // =========================================================================
+    // 3. DEDICATED ANTI-CHEAT PROCTORED ASSESSMENT PAGE
+    // =========================================================================
+    function updateQuizGatewayBadge() {
+      const prog = getCourseProgress(activeCourse.id);
+      const badge = document.getElementById("quiz-score-badge");
+      const btnLabel = document.getElementById("launch-quiz-btn-label");
+      if (prog.quizPercent > 0) {
+        badge.textContent = `${prog.quizPercent}% (${prog.quizPassed ? "PASSED" : "RETRY REQUIRED"})`;
+        btnLabel.textContent = prog.quizPassed ? "Retake Proctored Assessment" : "Retry Proctored Assessment";
+      } else {
+        badge.textContent = "Pass: 75%";
+        btnLabel.textContent = "Launch Proctored Assessment";
+      }
+    }
+
+    function launchProctoredQuiz() {
+      const questions = activeCourse.quiz || [];
+      if (!questions.length) return;
+
+      // Shuffle questions order for anti-cheat integrity
+      examQuestions = questions.map((q, idx) => ({ ...q, _origIdx: idx })).sort(() => Math.random() - 0.5);
+      examAnswers = {};
+      examCurrentIdx = 0;
+      examWarnings = 0;
+      examActive = true;
+      examSecondsLeft = examQuestions.length * 90; // 90 seconds per question
+
+      document.getElementById("pq-course-title").textContent = activeCourse.title;
+      document.getElementById("pq-warnings-badge").textContent = "0 / 2";
+      document.getElementById("pq-warnings-badge").className = "text-emerald-400 font-extrabold";
+      document.getElementById("pq-warning-banner").classList.add("hidden");
+      document.getElementById("pq-exam-body").classList.remove("hidden");
+      document.getElementById("pq-result-screen").classList.add("hidden");
+
+      // Show dedicated full-screen exam page
+      document.getElementById("proctored-quiz-view").classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+
+      // Request fullscreen if supported
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+
+      renderProctoredQuestion();
+      startExamTimer();
+    }
+
+    function startExamTimer() {
+      clearInterval(examTimerInterval);
+      updateTimerDisplay();
+      examTimerInterval = setInterval(() => {
+        if (!examActive) return;
+        examSecondsLeft--;
+        updateTimerDisplay();
+        if (examSecondsLeft <= 0) {
+          finishProctoredQuiz(true, "Time expired. Your assessment was automatically submitted.");
+        }
+      }, 1000);
+    }
+
+    function updateTimerDisplay() {
+      const mins = String(Math.floor(Math.max(0, examSecondsLeft) / 60)).padStart(2, "0");
+      const secs = String(Math.max(0, examSecondsLeft) % 60).padStart(2, "0");
+      document.getElementById("pq-timer").textContent = `${mins}:${secs}`;
+    }
+
+    function renderProctoredQuestion() {
+      const total = examQuestions.length;
+      const q = examQuestions[examCurrentIdx];
+      const pct = Math.round(((examCurrentIdx + 1) / total) * 100);
+
+      document.getElementById("pq-progress-label").textContent = `Question ${examCurrentIdx + 1} of ${total}`;
+      document.getElementById("pq-progress-bar").style.width = `${pct}%`;
+
+      const selectedOpt = examAnswers[examCurrentIdx];
+      document.getElementById("pq-question-card").innerHTML = `
+        <p class="text-base sm:text-lg font-extrabold leading-snug mb-6">${examCurrentIdx + 1}. ${q.question}</p>
+        <div class="space-y-3">
+          ${q.options
+            .map(
+              (opt, oIdx) => `
+            <button
+              type="button"
+              onclick="selectExamOption(${oIdx})"
+              class="w-full text-left p-4 rounded-xl border text-xs sm:text-sm font-semibold transition flex items-center gap-3.5 cursor-pointer ${
+                selectedOpt === oIdx
+                  ? "bg-blue-600/20 border-blue-500 text-white"
+                  : "bg-slate-950 border-white/10 text-slate-300 hover:border-white/30"
+              }"
+            >
+              <span class="w-6 h-6 rounded-full border flex items-center justify-center text-xs font-extrabold shrink-0 ${
+                selectedOpt === oIdx ? "bg-blue-600 border-blue-500 text-white" : "border-white/25 text-slate-400"
+              }">
+                ${String.fromCharCode(65 + oIdx)}
+              </span>
+              <span>${opt}</span>
+            </button>
+          `
+            )
+            .join("")}
+        </div>
+      `;
+
+      document.getElementById("pq-prev-btn").disabled = examCurrentIdx === 0;
+      const isLast = examCurrentIdx === total - 1;
+      document.getElementById("pq-next-btn").classList.toggle("hidden", isLast);
+      document.getElementById("pq-submit-btn").classList.toggle("hidden", !isLast);
+    }
+
+    function selectExamOption(optIdx) {
+      examAnswers[examCurrentIdx] = optIdx;
+      renderProctoredQuestion();
+    }
+
+    function navigateQuizQuestion(delta) {
+      const next = examCurrentIdx + delta;
+      if (next >= 0 && next < examQuestions.length) {
+        examCurrentIdx = next;
+        renderProctoredQuestion();
+      }
+    }
+
+    // Anti-Cheat Listeners: Tab Visibility, Window Blur, Copy/Paste/Right-Click
+    document.addEventListener("visibilitychange", () => {
+      if (examActive && document.hidden) {
+        registerAntiCheatViolation("Tab switch or browser minimization detected.");
+      }
+    });
+
+    window.addEventListener("blur", () => {
+      if (examActive) {
+        registerAntiCheatViolation("Window focus lost during active proctored exam.");
+      }
+    });
+
+    document.addEventListener("contextmenu", e => {
+      if (examActive) e.preventDefault();
+    });
+
+    document.addEventListener("copy", e => {
+      if (examActive) e.preventDefault();
+    });
+
+    document.addEventListener("keydown", e => {
+      if (!examActive) return;
+      if ((e.ctrlKey || e.metaKey) && ["c", "v", "x", "u", "p", "s"].includes(e.key.toLowerCase())) {
+        e.preventDefault();
+      }
+      if (e.key === "F12") e.preventDefault();
+    });
+
+    function registerAntiCheatViolation(reason) {
+      if (!examActive) return;
+      examWarnings++;
+      const badge = document.getElementById("pq-warnings-badge");
+      badge.textContent = `${examWarnings} / 2`;
+      badge.className = "text-red-400 font-extrabold";
+
+      const banner = document.getElementById("pq-warning-banner");
+      banner.classList.remove("hidden");
+      document.getElementById("pq-warning-text").textContent =
+        `ANTI-CHEAT VIOLATION (${examWarnings}/2): ${reason} Reaching 2 warnings automatically terminates and submits your exam.`;
+
+      if (examWarnings >= 2) {
+        finishProctoredQuiz(true, "Exam auto-submitted due to repeated tab-switching / focus violations.");
+      }
+    }
+
+    function exitProctoredQuizWithConfirm() {
+      if (confirm("Are you sure you want to abort this proctored exam? Your current attempt will not be saved.")) {
+        examActive = false;
+        clearInterval(examTimerInterval);
+        if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+        document.body.style.overflow = "";
+        document.getElementById("proctored-quiz-view").classList.add("hidden");
+      }
+    }
+
+    function finishProctoredQuiz(autoTerminated = false, customReason = "") {
+      examActive = false;
+      clearInterval(examTimerInterval);
+      if (document.fullscreenElement) document.exitFullscreen().catch(() => {});
+
+      let score = 0;
+      const breakdownHtml = examQuestions
+        .map((q, idx) => {
+          const picked = examAnswers[idx];
+          const isCorrect = picked === q.answer;
+          if (isCorrect) score++;
+          return `
+          <div class="p-3 rounded-xl border ${isCorrect ? "border-emerald-500/30 bg-emerald-500/10" : "border-rose-500/30 bg-rose-500/10"}">
+            <p class="text-xs font-bold mb-1">${idx + 1}. ${q.question}</p>
+            <p class="text-[11px] ${isCorrect ? "text-emerald-300" : "text-rose-300"}">
+              ${isCorrect ? "✓ Correct" : `✕ Your answer: ${picked !== undefined ? q.options[picked] : "Unanswered"} | Correct: ${q.options[q.answer]}`}
+            </p>
+          </div>
+        `;
+        })
+        .join("");
+
+      const pct = examQuestions.length ? Math.round((score / examQuestions.length) * 100) : 100;
+      const passed = pct >= PASS_THRESHOLD;
+
+      const prog = getCourseProgress(activeCourse.id);
+      prog.quizPercent = pct;
+      prog.quizPassed = passed;
+      saveState();
+
+      document.getElementById("pq-exam-body").classList.add("hidden");
+      const resScreen = document.getElementById("pq-result-screen");
+      resScreen.classList.remove("hidden");
+
+      const iconEl = document.getElementById("pq-result-icon");
+      iconEl.className = `w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-2xl ${
+        passed ? "bg-emerald-500/20 text-emerald-400" : "bg-rose-500/20 text-rose-400"
+      }`;
+      iconEl.innerHTML = passed ? `<i class="fa-solid fa-award"></i>` : `<i class="fa-solid fa-circle-xmark"></i>`;
+
+      document.getElementById("pq-result-title").textContent = passed
+        ? `Assessment Passed — ${pct}% (${score}/${examQuestions.length})`
+        : `Assessment Not Passed — ${pct}% (${score}/${examQuestions.length})`;
+
+      document.getElementById("pq-result-subtitle").textContent = customReason
+        ? customReason
+        : passed
+        ? "Congratulations! Your proctored score has been verified and recorded toward your Openbox Growth Partner credential."
+        : "A minimum score of 75% is required to unlock your certificate. Review the breakdown below and re-attempt when ready.";
+
+      document.getElementById("pq-result-breakdown").innerHTML = breakdownHtml;
+
+      updateQuizGatewayBadge();
+      updateCompletionUI();
+    }
+
+    function returnToWorkspaceFromExam() {
+      document.body.style.overflow = "";
+      document.getElementById("proctored-quiz-view").classList.add("hidden");
+    }
+
+    // =========================================================================
+    // DOCS, COMPLETION UI, REFERRALS, CERTIFICATE & SHEET SYNC
+    // =========================================================================
     function renderDocs() {
       const container = document.getElementById("docs-list");
       container.innerHTML = (activeCourse.documents || [])
@@ -880,142 +1492,117 @@
           href="${doc.url}"
           target="_blank"
           rel="noopener noreferrer"
-          class="block p-3 rounded-xl border border-slate-200 dark:border-white/10 hover:border-blue-600 transition"
+          class="flex items-center justify-between p-3 rounded-xl border border-[var(--border)] hover:border-blue-600 bg-[var(--surface)]/50 transition"
         >
-          <span class="text-[10px] font-extrabold uppercase tracking-wider text-blue-600 dark:text-blue-400">${doc.type}</span>
-          <p class="text-xs font-bold mt-0.5">${doc.title} ↗</p>
+          <div>
+            <span class="text-[10px] font-extrabold uppercase tracking-wider text-blue-600 dark:text-blue-400">${doc.type}</span>
+            <p class="text-xs font-bold mt-0.5">${doc.title}</p>
+          </div>
+          <i class="fa-solid fa-arrow-up-right-from-square text-xs text-[var(--muted)]"></i>
         </a>
       `
         )
         .join("");
     }
 
-    function renderAssignments() {
-      const prog = getCourseProgress(activeCourse.id);
-      const container = document.getElementById("assignments-list");
-      container.innerHTML = (activeCourse.assignments || [])
-        .map((task, idx) => {
-          const savedLink = prog.submittedAssignments[idx] || "";
-          const isSubmitted = savedLink.trim().length > 0;
-          return `
-        <div class="p-3.5 rounded-xl border ${
-          isSubmitted
-            ? "border-emerald-500/40 bg-emerald-500/[0.03]"
-            : "border-slate-200 dark:border-white/10 bg-slate-50/50 dark:bg-white/[0.02]"
-        }">
-          <div class="flex flex-wrap items-center justify-between gap-1 mb-1">
-            <span class="text-[10px] font-extrabold uppercase tracking-wider text-amber-700 dark:text-amber-400">${task.deadline}</span>
-            <span class="text-[10px] font-extrabold ${
-              isSubmitted ? "text-emerald-600 dark:text-emerald-400" : "text-[var(--muted)]"
-            }">
-              ${isSubmitted ? "✓ Deliverable Logged" : task.deliverable || "Required"}
-            </span>
-          </div>
-          <h4 class="text-xs font-extrabold mb-1">${task.title}</h4>
-          <p class="text-[11px] text-[var(--muted)] leading-relaxed mb-2.5">${task.instructions}</p>
-          <input
-            type="url"
-            value="${savedLink.replace(/"/g, "&quot;")}"
-            onchange="saveAssignmentLink(${idx}, this.value)"
-            placeholder="Paste GitHub / Google Doc / Sheet link..."
-            class="w-full px-2.5 py-1.5 rounded-lg text-[11px] font-medium bg-[var(--card)] border border-slate-200 dark:border-white/10 focus:outline-none focus:border-blue-600"
-          />
-        </div>
+    function updateCompletionUI() {
+      if (!activeCourse) return;
+      const status = checkEligibility(activeCourse);
+
+      const lecRatio = status.totalLecs ? status.doneLecs / status.totalLecs : 1;
+      const assignRatio = status.totalAssigns ? status.doneAssigns / status.totalAssigns : 1;
+      const quizRatio = status.quizDone ? 1 : Math.min(status.quizPercent / PASS_THRESHOLD, 0.9);
+      const overallPct = Math.round(((lecRatio + assignRatio + quizRatio) / 3) * 100);
+
+      document.getElementById("overall-pct-label").textContent = `${overallPct}%`;
+      document.getElementById("overall-progress-bar").style.width = `${overallPct}%`;
+
+      document.getElementById("lec-count-badge").textContent = `${status.doneLecs}/${status.totalLecs} Watched`;
+      document.getElementById("assign-count-badge").textContent = `${status.doneAssigns}/${status.totalAssigns} Submitted`;
+
+      const checklistEl = document.getElementById("gate-checklist");
+      checklistEl.innerHTML = `
+        <li class="${status.lecsDone ? "text-emerald-600 dark:text-emerald-400" : "text-[var(--muted)]"}">
+          ${status.lecsDone ? "✓" : "○"} Watch all videos till end (${status.doneLecs}/${status.totalLecs})
+        </li>
+        <li class="${status.assignsDone ? "text-emerald-600 dark:text-emerald-400" : "text-[var(--muted)]"}">
+          ${status.assignsDone ? "✓" : "○"} Complete step-by-step tasks (${status.doneAssigns}/${status.totalAssigns})
+        </li>
+        <li class="${status.quizDone ? "text-emerald-600 dark:text-emerald-400" : "text-[var(--muted)]"}">
+          ${status.quizDone ? "✓" : "○"} Pass proctored exam ≥75% (Best: ${status.quizPercent}%)
+        </li>
       `;
-        })
-        .join("");
-    }
 
-    function saveAssignmentLink(idx, url) {
-      const prog = getCourseProgress(activeCourse.id);
-      prog.submittedAssignments[idx] = url.trim();
-      saveState();
-      renderAssignments();
-      updateCompletionUI();
-    }
-
-    function renderQuiz() {
-      const prog = getCourseProgress(activeCourse.id);
-      const badge = document.getElementById("quiz-score-badge");
-      if (prog.quizPercent > 0) {
-        badge.textContent = `${prog.quizPercent}% (${prog.quizPassed ? "Passed" : "Need 75%"})`;
+      const certBtn = document.getElementById("cert-unlock-btn");
+      if (status.unlocked) {
+        certBtn.disabled = false;
+        certBtn.className =
+          "w-full py-2.5 px-4 rounded-xl text-xs font-extrabold tracking-wide transition bg-emerald-600 hover:bg-emerald-700 text-white shadow-lg shadow-emerald-600/20 cursor-pointer";
+        certBtn.textContent = "Download Official Certificate →";
       } else {
-        badge.textContent = "Pass: 75%";
+        certBtn.disabled = true;
+        certBtn.className =
+          "w-full py-2.5 px-4 rounded-xl text-xs font-extrabold tracking-wide transition bg-slate-200 dark:bg-white/10 text-slate-500 cursor-not-allowed";
+        certBtn.textContent = "Locked • Complete All Requirements";
       }
-
-      const container = document.getElementById("quiz-container");
-      container.innerHTML = (activeCourse.quiz || [])
-        .map(
-          (q, qIdx) => `
-        <div class="p-3.5 rounded-xl border border-slate-200 dark:border-white/10">
-          <p class="text-xs font-bold mb-2.5">${qIdx + 1}. ${q.question}</p>
-          <div class="space-y-1.5">
-            ${q.options
-              .map(
-                (opt, oIdx) => `
-              <label class="flex items-start gap-2 text-[11px] cursor-pointer">
-                <input type="radio" name="quiz-q-${qIdx}" value="${oIdx}" class="mt-0.5 accent-blue-600" />
-                <span>${opt}</span>
-              </label>
-            `
-              )
-              .join("")}
-          </div>
-          <p id="quiz-exp-${qIdx}" class="hidden mt-2 text-[11px] font-medium p-2 rounded-lg"></p>
-        </div>
-      `
-        )
-        .join("");
     }
 
-    function gradeQuiz() {
-      const questions = activeCourse.quiz || [];
-      let score = 0;
-      questions.forEach((q, qIdx) => {
-        const selected = document.querySelector(`input[name="quiz-q-${qIdx}"]:checked`);
-        const expEl = document.getElementById(`quiz-exp-${qIdx}`);
-        expEl.classList.remove("hidden");
+    function buildCourseReferralUrl(courseId) {
+      const baseUrl = window.location.origin + window.location.pathname;
+      const url = new URL(baseUrl);
+      if (courseId) url.searchParams.set("course", courseId);
+      const refName = (appState.studentName || "").trim();
+      if (refName) url.searchParams.set("ref", refName);
+      return url.toString();
+    }
 
-        if (selected && Number(selected.value) === q.answer) {
-          score++;
-          expEl.className =
-            "mt-2 text-[11px] font-semibold p-2 rounded-lg bg-emerald-500/10 text-emerald-700 dark:text-emerald-400";
-          expEl.textContent = "✓ Correct — " + (q.explanation || "");
-        } else {
-          expEl.className =
-            "mt-2 text-[11px] font-semibold p-2 rounded-lg bg-rose-500/10 text-rose-700 dark:text-rose-400";
-          expEl.textContent = `✕ Correct answer: ${q.options[q.answer]}. ${q.explanation || ""}`;
-        }
-      });
+    function openShareModal(preselectedCourseId) {
+      const select = document.getElementById("share-course-select");
+      select.innerHTML = OPENBOX_COURSES.map(c => `<option value="${c.id}">${c.title} (${c.typeBadge})</option>`).join("");
+      if (preselectedCourseId) select.value = preselectedCourseId;
+      else if (activeCourse) select.value = activeCourse.id;
+      updateShareLink();
+      document.getElementById("share-modal").classList.remove("hidden");
+    }
 
-      const pct = questions.length ? Math.round((score / questions.length) * 100) : 100;
-      const passed = pct >= PASS_THRESHOLD;
+    function updateShareLink() {
+      const courseId = document.getElementById("share-course-select").value;
+      const course = OPENBOX_COURSES.find(c => c.id === courseId) || OPENBOX_COURSES[0];
+      const directUrl = buildCourseReferralUrl(course.id);
 
-      const prog = getCourseProgress(activeCourse.id);
-      prog.quizPercent = pct;
-      prog.quizPassed = passed;
-      saveState();
+      document.getElementById("share-direct-link").value = directUrl;
+      const inviteMsg = `Hey! Join me in "${course.title}" on Openbox Growth Partner — complete hands-on tasks, pass the proctored assessment, and earn a verified certificate:\n${directUrl}`;
+      document.getElementById("share-invite-msg").value = inviteMsg;
+      document.getElementById("share-wa-btn").href = `https://wa.me/?text=${encodeURIComponent(inviteMsg)}`;
+      document.getElementById("share-li-btn").href = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(directUrl)}`;
+    }
 
-      const badge = document.getElementById("quiz-score-badge");
-      badge.textContent = `${score}/${questions.length} (${pct}% • ${passed ? "PASSED" : "FAILED — Need 75%"})`;
-      badge.className = passed
-        ? "text-xs font-extrabold text-emerald-600 dark:text-emerald-400"
-        : "text-xs font-extrabold text-rose-600 dark:text-rose-400";
+    function copyReferralLink() {
+      navigator.clipboard.writeText(document.getElementById("share-direct-link").value);
+      const btn = document.getElementById("copy-ref-link-btn");
+      btn.textContent = "✓ Copied!";
+      setTimeout(() => { btn.textContent = "Copy Link"; }, 2000);
+    }
 
-      updateCompletionUI();
+    function handleIncomingDeepLink() {
+      const params = new URLSearchParams(window.location.search);
+      const sharedCourseId = params.get("course") || params.get("id");
+      const referrer = params.get("ref");
+      if (referrer) {
+        appState.referredBy = referrer;
+        saveState();
+        document.getElementById("referral-welcome-text").textContent =
+          `Referred by ${referrer} • Welcome to Openbox Growth Partner! Complete this track to claim your verified certificate.`;
+        document.getElementById("referral-welcome-bar").classList.remove("hidden");
+      }
+      if (sharedCourseId && OPENBOX_COURSES.some(c => c.id === sharedCourseId)) {
+        openCourse(sharedCourseId, false);
+      }
     }
 
     function openCertificateModal() {
       const status = checkEligibility(activeCourse);
-      if (!status.unlocked) {
-        alert(
-          `Certificate Locked!\n\nTo unlock your certificate, you must:\n` +
-            `• Complete all modules (${status.doneLecs}/${status.totalLecs})\n` +
-            `• Submit all assignments (${status.doneAssigns}/${status.totalAssigns})\n` +
-            `• Score at least 75% on the quiz (Current: ${status.quizPercent}%)`
-        );
-        return;
-      }
+      if (!status.unlocked) return;
 
       const topName = document.getElementById("student-name-input").value.trim();
       const modalInput = document.getElementById("modal-student-name");
@@ -1037,54 +1624,21 @@
       const ctx = canvas.getContext("2d");
       const W = canvas.width;
       const H = canvas.height;
-      const issueDate = new Date().toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric"
-      });
+      const issueDate = new Date().toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
 
       ctx.fillStyle = "#FFFFFF";
       ctx.fillRect(0, 0, W, H);
 
       ctx.fillStyle = "#0F172A";
-      ctx.beginPath();
-      ctx.moveTo(0, 0);
-      ctx.lineTo(150, 0);
-      ctx.lineTo(0, 150);
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.beginPath();
-      ctx.moveTo(W, H);
-      ctx.lineTo(W - 150, H);
-      ctx.lineTo(W, H - 150);
-      ctx.closePath();
-      ctx.fill();
+      ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(150, 0); ctx.lineTo(0, 150); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(W, H); ctx.lineTo(W - 150, H); ctx.lineTo(W, H - 150); ctx.closePath(); ctx.fill();
 
       ctx.fillStyle = "#D97706";
-      ctx.beginPath();
-      ctx.moveTo(150, 0);
-      ctx.lineTo(172, 0);
-      ctx.lineTo(0, 172);
-      ctx.lineTo(0, 150);
-      ctx.closePath();
-      ctx.fill();
+      ctx.beginPath(); ctx.moveTo(150, 0); ctx.lineTo(172, 0); ctx.lineTo(0, 172); ctx.lineTo(0, 150); ctx.closePath(); ctx.fill();
+      ctx.beginPath(); ctx.moveTo(W - 150, H); ctx.lineTo(W - 172, H); ctx.lineTo(W, H - 172); ctx.lineTo(W, H - 150); ctx.closePath(); ctx.fill();
 
-      ctx.beginPath();
-      ctx.moveTo(W - 150, H);
-      ctx.lineTo(W - 172, H);
-      ctx.lineTo(W, H - 172);
-      ctx.lineTo(W, H - 150);
-      ctx.closePath();
-      ctx.fill();
-
-      ctx.strokeStyle = "#0F172A";
-      ctx.lineWidth = 4;
-      ctx.strokeRect(48, 48, W - 96, H - 96);
-
-      ctx.strokeStyle = "#D97706";
-      ctx.lineWidth = 1.5;
-      ctx.strokeRect(62, 62, W - 124, H - 124);
+      ctx.strokeStyle = "#0F172A"; ctx.lineWidth = 4; ctx.strokeRect(48, 48, W - 96, H - 96);
+      ctx.strokeStyle = "#D97706"; ctx.lineWidth = 1.5; ctx.strokeRect(62, 62, W - 124, H - 124);
 
       ctx.save();
       ctx.fillStyle = "rgba(15, 23, 42, 0.025)";
@@ -1094,132 +1648,75 @@
       ctx.restore();
 
       ctx.textAlign = "center";
-      ctx.fillStyle = "#0F172A";
-      ctx.font = "800 22px 'Plus Jakarta Sans', Arial, sans-serif";
+      ctx.fillStyle = "#0F172A"; ctx.font = "800 22px 'Plus Jakarta Sans', Arial, sans-serif";
       ctx.fillText("OPENBOX GROWTH PARTNER", W / 2, 138);
 
-      ctx.fillStyle = "#B45309";
-      ctx.font = "700 13px 'Plus Jakarta Sans', Arial, sans-serif";
+      ctx.fillStyle = "#B45309"; ctx.font = "700 13px 'Plus Jakarta Sans', Arial, sans-serif";
       ctx.fillText("SCHOOL OF TECHNOLOGY, ANALYTICS & DIGITAL GROWTH", W / 2, 166);
 
-      const certHeading = activeCourse.isInternship
-        ? "CERTIFICATE OF INTERNSHIP"
-        : "CERTIFICATE OF COMPLETION";
-
-      ctx.fillStyle = "#0F172A";
-      ctx.font = "700 50px 'Playfair Display', Georgia, serif";
+      const certHeading = activeCourse.isInternship ? "CERTIFICATE OF INTERNSHIP" : "CERTIFICATE OF COMPLETION";
+      ctx.fillStyle = "#0F172A"; ctx.font = "700 50px 'Playfair Display', Georgia, serif";
       ctx.fillText(certHeading, W / 2, 248);
 
-      ctx.strokeStyle = "#D97706";
-      ctx.lineWidth = 2.5;
-      ctx.beginPath();
-      ctx.moveTo(W / 2 - 140, 272);
-      ctx.lineTo(W / 2 + 140, 272);
-      ctx.stroke();
+      ctx.strokeStyle = "#D97706"; ctx.lineWidth = 2.5;
+      ctx.beginPath(); ctx.moveTo(W / 2 - 140, 272); ctx.lineTo(W / 2 + 140, 272); ctx.stroke();
 
-      ctx.fillStyle = "#475569";
-      ctx.font = "500 20px 'Plus Jakarta Sans', Arial, sans-serif";
+      ctx.fillStyle = "#475569"; ctx.font = "500 20px 'Plus Jakarta Sans', Arial, sans-serif";
       ctx.fillText("This is proudly presented to", W / 2, 330);
 
-      ctx.fillStyle = "#0F172A";
-      ctx.font = "italic 700 58px 'Playfair Display', Georgia, serif";
+      ctx.fillStyle = "#0F172A"; ctx.font = "italic 700 58px 'Playfair Display', Georgia, serif";
       ctx.fillText(studentName, W / 2, 405);
 
-      ctx.strokeStyle = "#CBD5E1";
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.moveTo(W / 2 - 280, 424);
-      ctx.lineTo(W / 2 + 280, 424);
-      ctx.stroke();
+      ctx.strokeStyle = "#CBD5E1"; ctx.lineWidth = 1.5;
+      ctx.beginPath(); ctx.moveTo(W / 2 - 280, 424); ctx.lineTo(W / 2 + 280, 424); ctx.stroke();
 
       const actionLine = activeCourse.isInternship
-        ? `for completing 100% of sprint modules, deliverables, and passing with ${prog.quizPercent}% in`
-        : `for completing 100% of curriculum modules, assignments, and passing with ${prog.quizPercent}% in`;
+        ? `for completing 100% of sprint modules, deliverables, and passing proctored assessment with ${prog.quizPercent}% in`
+        : `for completing 100% of curriculum modules, assignments, and passing proctored assessment with ${prog.quizPercent}% in`;
 
-      ctx.fillStyle = "#475569";
-      ctx.font = "500 19px 'Plus Jakarta Sans', Arial, sans-serif";
+      ctx.fillStyle = "#475569"; ctx.font = "500 19px 'Plus Jakarta Sans', Arial, sans-serif";
       ctx.fillText(actionLine, W / 2, 474);
 
-      ctx.fillStyle = "#0F172A";
-      ctx.font = "800 30px 'Plus Jakarta Sans', Arial, sans-serif";
+      ctx.fillStyle = "#0F172A"; ctx.font = "800 30px 'Plus Jakarta Sans', Arial, sans-serif";
       wrapText(ctx, activeCourse.title, W / 2, 526, 1040, 38);
 
       const skillsText = "Verified Competencies: " + (activeCourse.techStack || []).join("  •  ");
-      ctx.fillStyle = "#B45309";
-      ctx.font = "700 15px 'Plus Jakarta Sans', Arial, sans-serif";
+      ctx.fillStyle = "#B45309"; ctx.font = "700 15px 'Plus Jakarta Sans', Arial, sans-serif";
       ctx.fillText(skillsText, W / 2, 616);
 
       const footerY = 795;
-
       ctx.textAlign = "left";
-      ctx.fillStyle = "#0F172A";
-      ctx.font = "700 17px 'Plus Jakarta Sans', Arial, sans-serif";
+      ctx.fillStyle = "#0F172A"; ctx.font = "700 17px 'Plus Jakarta Sans', Arial, sans-serif";
       ctx.fillText(issueDate, 140, footerY - 12);
-
-      ctx.strokeStyle = "#94A3B8";
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      ctx.moveTo(140, footerY);
-      ctx.lineTo(390, footerY);
-      ctx.stroke();
-
-      ctx.fillStyle = "#64748B";
-      ctx.font = "600 13px 'Plus Jakarta Sans', Arial, sans-serif";
+      ctx.strokeStyle = "#94A3B8"; ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.moveTo(140, footerY); ctx.lineTo(390, footerY); ctx.stroke();
+      ctx.fillStyle = "#64748B"; ctx.font = "600 13px 'Plus Jakarta Sans', Arial, sans-serif";
       ctx.fillText("DATE OF ISSUE", 140, footerY + 22);
       ctx.fillText(`CREDENTIAL ID: ${prog.credentialId}`, 140, footerY + 44);
 
-      const sealX = W / 2;
-      const sealY = footerY - 5;
-
-      ctx.beginPath();
-      ctx.arc(sealX, sealY, 54, 0, Math.PI * 2);
-      ctx.fillStyle = "#FEF3C7";
-      ctx.fill();
-      ctx.lineWidth = 3;
-      ctx.strokeStyle = "#D97706";
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.arc(sealX, sealY, 44, 0, Math.PI * 2);
-      ctx.lineWidth = 1.2;
-      ctx.strokeStyle = "#0F172A";
-      ctx.stroke();
+      const sealX = W / 2, sealY = footerY - 5;
+      ctx.beginPath(); ctx.arc(sealX, sealY, 54, 0, Math.PI * 2); ctx.fillStyle = "#FEF3C7"; ctx.fill();
+      ctx.lineWidth = 3; ctx.strokeStyle = "#D97706"; ctx.stroke();
+      ctx.beginPath(); ctx.arc(sealX, sealY, 44, 0, Math.PI * 2); ctx.lineWidth = 1.2; ctx.strokeStyle = "#0F172A"; ctx.stroke();
 
       ctx.textAlign = "center";
-      ctx.fillStyle = "#0F172A";
-      ctx.font = "800 11px 'Plus Jakarta Sans', Arial, sans-serif";
-      ctx.fillText("VERIFIED", sealX, sealY - 8);
-      ctx.fillStyle = "#B45309";
-      ctx.font = "800 13px 'Plus Jakarta Sans', Arial, sans-serif";
-      ctx.fillText("OPENBOX", sealX, sealY + 8);
-      ctx.fillStyle = "#0F172A";
-      ctx.font = "700 10px 'Plus Jakarta Sans', Arial, sans-serif";
-      ctx.fillText("CREDENTIAL", sealX, sealY + 22);
+      ctx.fillStyle = "#0F172A"; ctx.font = "800 11px 'Plus Jakarta Sans', Arial, sans-serif"; ctx.fillText("VERIFIED", sealX, sealY - 8);
+      ctx.fillStyle = "#B45309"; ctx.font = "800 13px 'Plus Jakarta Sans', Arial, sans-serif"; ctx.fillText("OPENBOX", sealX, sealY + 8);
+      ctx.fillStyle = "#0F172A"; ctx.font = "700 10px 'Plus Jakarta Sans', Arial, sans-serif"; ctx.fillText("CREDENTIAL", sealX, sealY + 22);
 
       ctx.textAlign = "right";
-      ctx.fillStyle = "#0F172A";
-      ctx.font = "italic 700 24px 'Playfair Display', Georgia, serif";
+      ctx.fillStyle = "#0F172A"; ctx.font = "italic 700 24px 'Playfair Display', Georgia, serif";
       ctx.fillText("Aviral Pathak", W - 140, footerY - 12);
-
-      ctx.strokeStyle = "#94A3B8";
-      ctx.lineWidth = 1.2;
-      ctx.beginPath();
-      ctx.moveTo(W - 390, footerY);
-      ctx.lineTo(W - 140, footerY);
-      ctx.stroke();
-
-      ctx.fillStyle = "#64748B";
-      ctx.font = "600 13px 'Plus Jakarta Sans', Arial, sans-serif";
+      ctx.strokeStyle = "#94A3B8"; ctx.lineWidth = 1.2;
+      ctx.beginPath(); ctx.moveTo(W - 390, footerY); ctx.lineTo(W - 140, footerY); ctx.stroke();
+      ctx.fillStyle = "#64748B"; ctx.font = "600 13px 'Plus Jakarta Sans', Arial, sans-serif";
       ctx.fillText("AVIRAL PATHAK", W - 140, footerY + 22);
       ctx.fillText("FOUNDER, OPENBOX GROWTH PARTNER", W - 140, footerY + 44);
 
       const directCourseUrl = buildCourseReferralUrl(activeCourse.id);
-      const hashtags = (activeCourse.techStack || [])
-        .map(t => "#" + t.replace(/[^a-zA-Z0-9]/g, ""))
-        .join(" ");
+      const hashtags = (activeCourse.techStack || []).map(t => "#" + t.replace(/[^a-zA-Z0-9]/g, "")).join(" ");
       document.getElementById("cert-social-caption").textContent =
-        `Thrilled to share that I have earned my ${certHeading} in "${activeCourse.title}" from Openbox Growth Partner (Assessment Score: ${prog.quizPercent}%)! ` +
-        `Credential ID: ${prog.credentialId}. Join the track here: ${directCourseUrl} #OpenboxGrowthPartner #ProofOfWork ${hashtags}`;
+        `Thrilled to share that I have earned my ${certHeading} in "${activeCourse.title}" from Openbox Growth Partner (Proctored Score: ${prog.quizPercent}%)! Credential ID: ${prog.credentialId}. Join here: ${directCourseUrl} #OpenboxGrowthPartner #ProofOfWork ${hashtags}`;
     }
 
     function wrapText(ctx, text, x, y, maxWidth, lineHeight) {
@@ -1248,9 +1745,68 @@
     }
 
     function copyLinkedInCaption() {
-      const text = document.getElementById("cert-social-caption").textContent;
-      navigator.clipboard.writeText(text);
+      navigator.clipboard.writeText(document.getElementById("cert-social-caption").textContent);
       alert("LinkedIn share caption copied to clipboard!");
+    }
+
+    // Google Sheet Backend Sync
+    let sheetAuthMode = "register";
+    function postToSheet(payload) {
+      return fetch(SHEET_API_URL, { method: "POST", body: JSON.stringify(payload) }).then(r => r.json());
+    }
+
+    function syncLectureToSheet(lessonId, status) {
+      if (!appState.studentEmail) return;
+      postToSheet({
+        action: "progress",
+        email: appState.studentEmail,
+        courseId: activeCourse.id,
+        lessonId,
+        status
+      }).catch(() => {});
+    }
+
+    function setSheetAuthMode(mode) {
+      sheetAuthMode = mode;
+      document.getElementById("sa-name-wrap").classList.toggle("hidden", mode === "login");
+      document.getElementById("sa-gh-wrap").classList.toggle("hidden", mode === "login");
+      document.getElementById("sa-btn").textContent = mode === "register" ? "Save & Sync Account" : "Login & Sync Progress";
+      document.getElementById("sa-tab-reg").className = mode === "register" ? "py-1.5 rounded-lg text-xs font-extrabold bg-[var(--card)] shadow-sm cursor-pointer" : "py-1.5 rounded-lg text-xs font-bold text-[var(--muted)] cursor-pointer";
+      document.getElementById("sa-tab-log").className = mode === "login" ? "py-1.5 rounded-lg text-xs font-extrabold bg-[var(--card)] shadow-sm cursor-pointer" : "py-1.5 rounded-lg text-xs font-bold text-[var(--muted)] cursor-pointer";
+    }
+
+    async function submitSheetAuth(e) {
+      e.preventDefault();
+      const btn = document.getElementById("sa-btn");
+      const msg = document.getElementById("sa-msg");
+      btn.disabled = true;
+      btn.textContent = "Syncing with Google Sheet...";
+
+      const name = document.getElementById("sa-name").value.trim();
+      const email = document.getElementById("sa-email").value.trim();
+      const password = document.getElementById("sa-pass").value.trim();
+      const github = document.getElementById("sa-gh").value.trim();
+
+      try {
+        const res = await postToSheet({ action: sheetAuthMode, name, email, password, github });
+        if (res.status === "success") {
+          appState.studentName = res.user.name;
+          appState.studentEmail = res.user.email;
+          saveState();
+          document.getElementById("student-name-input").value = res.user.name;
+          document.getElementById("nav-sync-label").textContent = res.user.email.split("@")[0];
+          document.getElementById("sheet-auth-modal").classList.add("hidden");
+        } else {
+          msg.textContent = res.message || "Error syncing account.";
+          msg.className = "text-xs font-bold text-center text-rose-500";
+        }
+      } catch (err) {
+        msg.textContent = "Network error reaching Google Sheet.";
+        msg.className = "text-xs font-bold text-center text-rose-500";
+      } finally {
+        btn.disabled = false;
+        btn.textContent = sheetAuthMode === "register" ? "Save & Sync Account" : "Login & Sync Progress";
+      }
     }
 
     renderCatalog();
@@ -1262,7 +1818,7 @@
     href="https://wa.me/917020729200?text=Hi%20Aviral,%20I%20need%20help%20with%20an%20issue%20in%20my%20Openbox%20course/task."
     target="_blank"
     rel="noopener noreferrer"
-    class="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl shadow-xl shadow-emerald-600/30 transition-all duration-300 hover:scale-105 group"
+    class="fixed bottom-6 right-6 z-40 flex items-center gap-2.5 px-4 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-2xl shadow-xl shadow-emerald-600/30 transition-all duration-300 hover:scale-105"
     title="Chat with Openbox Support on WhatsApp"
   >
     <span class="relative flex h-3 w-3">
@@ -1270,144 +1826,7 @@
       <span class="relative inline-flex rounded-full h-3 w-3 bg-white"></span>
     </span>
     <i class="fa-brands fa-whatsapp text-lg"></i>
-    <span class="text-xs font-extrabold tracking-wide">Instant Help (WhatsApp)</span>
+    <span class="text-xs font-extrabold tracking-wide">Instant Help</span>
   </a>
-
-  <!-- STUDENT SHEET SYNC MODAL (Triggered when clicking "Sync / Register" or submitting first task) -->
-<div id="sheet-auth-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
-  <div class="bg-[var(--card)] text-[var(--text)] max-w-md w-full rounded-2xl shadow-2xl p-6 border border-slate-200 dark:border-white/10">
-    <div class="flex items-center justify-between mb-4 pb-3 border-b border-slate-200 dark:border-white/10">
-      <div>
-        <span class="text-[10px] font-extrabold uppercase tracking-widest text-blue-600 dark:text-blue-400">Openbox Student Record</span>
-        <h3 class="text-lg font-extrabold">Register / Sync with Google Sheet</h3>
-      </div>
-      <button onclick="document.getElementById('sheet-auth-modal').classList.add('hidden')" class="w-8 h-8 rounded-xl bg-slate-100 dark:bg-white/10 text-xs font-bold cursor-pointer">✕</button>
-    </div>
-
-    <div class="grid grid-cols-2 gap-2 p-1 rounded-xl bg-slate-100 dark:bg-white/5 mb-4">
-      <button id="sa-tab-reg" onclick="setSheetAuthMode('register')" class="py-1.5 rounded-lg text-xs font-extrabold bg-[var(--card)] shadow-sm cursor-pointer">New Student</button>
-      <button id="sa-tab-log" onclick="setSheetAuthMode('login')" class="py-1.5 rounded-lg text-xs font-bold text-[var(--muted)] cursor-pointer">Existing Login</button>
-    </div>
-
-    <form onsubmit="submitSheetAuth(event)" class="space-y-3">
-      <div id="sa-name-wrap">
-        <label class="block text-[11px] font-bold mb-1">Full Name (Printed on Certificate)</label>
-        <input id="sa-name" type="text" placeholder="Aviral Pathak" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10" />
-      </div>
-      <div>
-        <label class="block text-[11px] font-bold mb-1">Email Address</label>
-        <input id="sa-email" type="email" required placeholder="you@example.com" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10" />
-      </div>
-      <div>
-        <label class="block text-[11px] font-bold mb-1">Password</label>
-        <input id="sa-pass" type="password" required placeholder="••••••••" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10" />
-      </div>
-      <div id="sa-gh-wrap">
-        <label class="block text-[11px] font-bold mb-1">GitHub URL (Optional)</label>
-        <input id="sa-gh" type="url" placeholder="https://github.com/username" class="w-full px-3 py-2 rounded-xl text-xs bg-slate-100 dark:bg-white/5 border border-slate-200 dark:border-white/10" />
-      </div>
-      <button type="submit" id="sa-btn" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold cursor-pointer">
-        Save &amp; Sync Account
-      </button>
-      <p id="sa-msg" class="text-xs font-bold text-center"></p>
-    </form>
-  </div>
-</div>
-
-<script>
-  // Use your active Google Apps Script Web App URL
-  const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbysQBHvivlSzoEYU57dsaauDItp-7fBJhqp7STBU933-9wjZ56JpiP6je9LkzLeyjyQ2w/exec";
-  let sheetAuthMode = "register";
-
-  function postToSheet(payload) {
-    return fetch(SHEET_API_URL, {
-      method: "POST",
-      body: JSON.stringify(payload)
-    }).then(r => r.json());
-  }
-
-  function setSheetAuthMode(mode) {
-    sheetAuthMode = mode;
-    document.getElementById("sa-name-wrap").classList.toggle("hidden", mode === "login");
-    document.getElementById("sa-gh-wrap").classList.toggle("hidden", mode === "login");
-    document.getElementById("sa-btn").textContent = mode === "register" ? "Save & Sync Account" : "Login & Sync Progress";
-    document.getElementById("sa-tab-reg").className = mode === "register" ? "py-1.5 rounded-lg text-xs font-extrabold bg-[var(--card)] shadow-sm cursor-pointer" : "py-1.5 rounded-lg text-xs font-bold text-[var(--muted)] cursor-pointer";
-    document.getElementById("sa-tab-log").className = mode === "login" ? "py-1.5 rounded-lg text-xs font-extrabold bg-[var(--card)] shadow-sm cursor-pointer" : "py-1.5 rounded-lg text-xs font-bold text-[var(--muted)] cursor-pointer";
-  }
-
-  async function submitSheetAuth(e) {
-    e.preventDefault();
-    const btn = document.getElementById("sa-btn");
-    const msg = document.getElementById("sa-msg");
-    btn.disabled = true;
-    btn.textContent = "Syncing with Google Sheet...";
-
-    const name = document.getElementById("sa-name").value.trim();
-    const email = document.getElementById("sa-email").value.trim();
-    const password = document.getElementById("sa-pass").value.trim();
-    const github = document.getElementById("sa-gh").value.trim();
-
-    try {
-      const res = await postToSheet({ action: sheetAuthMode, name, email, password, github });
-      if (res.status === "success") {
-        appState.studentName = res.user.name;
-        appState.studentEmail = res.user.email;
-        saveState();
-        document.getElementById("student-name-input").value = res.user.name;
-        document.getElementById("sheet-auth-modal").classList.add("hidden");
-      } else {
-        msg.textContent = res.message || "Error syncing account.";
-        msg.className = "text-xs font-bold text-center text-rose-500";
-      }
-    } catch (err) {
-      msg.textContent = "Network error reaching Google Sheet.";
-      msg.className = "text-xs font-bold text-center text-rose-500";
-    } finally {
-      btn.disabled = false;
-      btn.textContent = sheetAuthMode === "register" ? "Save & Sync Account" : "Login & Sync Progress";
-    }
-  }
-
-  // Wrap existing lecture toggle so it also pushes to the "Progress" tab
-  const _origToggleLecture = toggleCurrentLectureDone;
-  toggleCurrentLectureDone = function () {
-    _origToggleLecture();
-    if (!appState.studentEmail) {
-      document.getElementById("sheet-auth-modal").classList.remove("hidden");
-      return;
-    }
-    const lec = activeCourse.lectures[activeLectureIndex];
-    const prog = getCourseProgress(activeCourse.id);
-    const isDone = prog.completedLectures.includes(lec.id);
-    postToSheet({
-      action: "progress",
-      email: appState.studentEmail,
-      courseId: activeCourse.id,
-      lessonId: lec.id,
-      status: isDone ? "Completed" : "Incomplete"
-    }).catch(() => {});
-  };
-
-  // Wrap existing assignment input so it also pushes to the "Submissions" tab
-  const _origSaveAssign = saveAssignmentLink;
-  saveAssignmentLink = function (idx, url) {
-    _origSaveAssign(idx, url);
-    if (!url.trim()) return;
-    if (!appState.studentEmail) {
-      document.getElementById("sheet-auth-modal").classList.remove("hidden");
-      return;
-    }
-    const task = activeCourse.assignments[idx];
-    postToSheet({
-      action: "submit_task",
-      name: appState.studentName || "Student",
-      email: appState.studentEmail,
-      courseId: activeCourse.id,
-      taskTitle: task.title,
-      link: url.trim(),
-      notes: appState.referredBy ? `Referred by: ${appState.referredBy}` : ""
-    }).catch(() => {});
-  };
-</script>
 </body>
 </html>
