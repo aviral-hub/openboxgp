@@ -6,9 +6,11 @@
     <title>Workspace — Openbox Growth Partner</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://www.youtube.com/iframe_api"></script>
     <script src="shared.js"></script>
     <script src="courses-data.js"></script>
+    <script src="data.js"></script>
     <style>
         :root { --background: #f8fafc; --foreground: #0f172a; --muted-bg: #f1f5f9; --muted-text: #475569; --card: #ffffff; }
         .dark { --background: #0a0a0c; --foreground: #f8fafc; --muted-bg: #111115; --muted-text: #94a3b8; --card: #111115; }
@@ -18,7 +20,7 @@
         .ai-msg code { font-family: monospace; color: #60a5fa; }
     </style>
 </head>
-<body class="min-h-screen pb-20">
+<body class="min-h-screen pb-20 antialiased">
 
     <header class="max-w-6xl mx-auto mt-4 px-4">
         <div class="h-16 px-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 flex items-center justify-between">
@@ -39,13 +41,31 @@
     <main class="max-w-6xl mx-auto px-4 pt-8 grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
         <!-- Left Column (8 cols) -->
         <div class="lg:col-span-8 space-y-6">
-            <div id="video-box" class="relative w-full aspect-video bg-black rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 shadow-xl"></div>
+            <!-- Watch-to-End YouTube Player + Live Watch Bar -->
+            <div class="rounded-2xl overflow-hidden border border-slate-200 dark:border-white/10 shadow-xl bg-black">
+                <div class="relative w-full aspect-video">
+                    <div id="yt-player-mount" class="w-full h-full"></div>
+                </div>
+                <div class="px-4 py-2.5 bg-slate-900 border-t border-white/10 flex flex-wrap items-center justify-between gap-3 text-[11px]">
+                    <div class="flex items-center gap-2">
+                        <span id="watch-lock-badge" class="font-extrabold text-amber-400">
+                            <i class="fa-solid fa-lock mr-1"></i> Watch Full Video to Unlock (0%)
+                        </span>
+                        <span id="watch-resume-pill" class="hidden px-2 py-0.5 rounded bg-blue-500/20 text-blue-300 font-bold"></span>
+                    </div>
+                    <div class="w-36 sm:w-48 h-1.5 rounded-full bg-white/10 overflow-hidden">
+                        <div id="watch-progress-fill" class="h-full bg-amber-500 transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
 
             <!-- Lecture Info & Official Slides Link -->
             <div class="p-6 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-3">
                     <h1 id="lesson-title" class="heading-font text-xl font-bold text-[var(--foreground)]">Lecture Title</h1>
-                    <button id="complete-btn" onclick="toggleComplete()" class="px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white cursor-pointer shrink-0">Mark Complete</button>
+                    <button id="complete-btn" onclick="toggleComplete()" disabled class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-200 dark:bg-white/10 text-slate-400 cursor-not-allowed shrink-0">
+                        <i class="fa-solid fa-lock mr-1"></i> Watch Till End
+                    </button>
                 </div>
                 <p id="lesson-desc" class="text-sm leading-relaxed"></p>
                 <div id="resource-box" class="hidden mt-4 p-3.5 rounded-xl bg-blue-500/10 border border-blue-500/20 text-xs text-blue-400"></div>
@@ -55,9 +75,9 @@
             <div id="cert-box" class="hidden p-6 rounded-2xl bg-gradient-to-br from-blue-600/15 via-[var(--card)] to-emerald-500/15 border-2 border-emerald-500/40 space-y-5 shadow-lg">
                 <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded">✓ 100% Modules Completed</span>
-                        <h3 class="heading-font text-xl font-bold text-[var(--foreground)] mt-2">Your Verified Certificate & Share Caption</h3>
-                        <p class="text-xs text-[var(--muted-text)] mt-1">Download your PNG certificate and copy the LinkedIn caption with hashtags & portal link below.</p>
+                        <span class="text-[10px] font-bold uppercase tracking-widest text-emerald-400 bg-emerald-500/10 px-2.5 py-1 rounded">✓ 100% Requirements Verified</span>
+                        <h3 class="heading-font text-xl font-bold text-[var(--foreground)] mt-2">Your Verified Certificate &amp; Share Caption</h3>
+                        <p class="text-xs text-[var(--muted-text)] mt-1">Download your PNG certificate and copy the LinkedIn caption with hashtags &amp; portal link below.</p>
                     </div>
                     <button onclick="openCert()" class="px-5 py-3 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg cursor-pointer shrink-0">
                         <i class="fa-solid fa-award mr-1.5"></i> Download Certificate
@@ -77,48 +97,62 @@
 
             <!-- Documents & Worksheets Section -->
             <div id="docs-box" class="hidden p-6 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 space-y-4">
-                <h3 class="heading-font text-lg font-bold text-[var(--foreground)]"><i class="fa-solid fa-folder-open text-emerald-500 mr-2"></i>Course Documents & Worksheets</h3>
+                <h3 class="heading-font text-lg font-bold text-[var(--foreground)]"><i class="fa-solid fa-folder-open text-emerald-500 mr-2"></i>Course Documents &amp; Worksheets</h3>
                 <div id="docs-list" class="grid grid-cols-1 sm:grid-cols-2 gap-3"></div>
             </div>
 
-            <!-- Assignments & Internship Task Submission Section -->
+            <!-- Interactive Step-by-Step Assignments & Deliverable Submission -->
             <div id="tasks-box" class="hidden p-6 rounded-2xl bg-[var(--card)] border-2 border-blue-500/30 space-y-5">
                 <div>
-                    <span class="text-[10px] font-bold uppercase tracking-widest text-blue-500 bg-blue-500/10 px-2.5 py-1 rounded">Assignments & Sprint Tasks</span>
-                    <h3 class="heading-font text-xl font-bold text-[var(--foreground)] mt-2">Submit Practical Deliverables</h3>
-                    <p class="text-xs text-[var(--muted-text)] mt-1">Need a hint on an assignment? Click <strong>Ask AI Teacher</strong> for step-by-step guidance without spoilers.</p>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-blue-500 bg-blue-500/10 px-2.5 py-1 rounded">Interactive Step-by-Step Tasks</span>
+                    <h3 class="heading-font text-xl font-bold text-[var(--foreground)] mt-2">Complete Milestones &amp; Submit Deliverables</h3>
+                    <p class="text-xs text-[var(--muted-text)] mt-1">Check off each step below to unlock the deliverable submission form. Need a hint? Click <strong>Ask AI Teacher</strong>.</p>
                 </div>
 
-                <div id="tasks-list" class="space-y-3"></div>
+                <div id="tasks-list" class="space-y-4"></div>
 
                 <div id="remarks-box" class="hidden p-4 rounded-xl bg-[var(--muted-bg)] space-y-2">
-                    <h4 class="text-xs font-bold text-blue-500 uppercase">Your Submissions & Mentor Remarks</h4>
+                    <h4 class="text-xs font-bold text-blue-500 uppercase">Your Submissions &amp; Mentor Remarks</h4>
                     <div id="remarks-list" class="space-y-2"></div>
                 </div>
 
-                <form onsubmit="submitTask(event)" class="pt-4 border-t border-slate-200 dark:border-white/10 space-y-3">
+                <div id="task-form-lock-banner" class="p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold">
+                    <i class="fa-solid fa-lock mr-1.5"></i> Complete all interactive task steps above to unlock final deliverable submission.
+                </div>
+
+                <form id="task-submit-form" onsubmit="submitTask(event)" class="pt-4 border-t border-slate-200 dark:border-white/10 space-y-3 opacity-50 pointer-events-none">
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         <select id="task-select" required class="px-3 py-2 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]"></select>
                         <input type="url" id="task-link" placeholder="https://github.com/username/repo" required class="px-3 py-2 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]" />
                     </div>
                     <textarea id="task-notes" rows="2" placeholder="Summary of your solution or notes for mentor..." class="w-full px-3 py-2 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]"></textarea>
-                    <button type="submit" id="task-btn" class="px-5 py-2.5 rounded-xl text-xs font-bold bg-blue-600 text-white cursor-pointer">Submit Assignment / Task</button>
+                    <button type="submit" id="task-btn" disabled class="px-5 py-2.5 rounded-xl text-xs font-bold bg-blue-600 text-white cursor-pointer">Submit Assignment / Task</button>
                     <span id="task-msg" class="text-xs font-semibold ml-3"></span>
                 </form>
             </div>
 
-            <!-- Quiz Section -->
-            <div id="quiz-box" class="hidden p-6 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10">
-                <h3 class="heading-font text-lg font-bold text-[var(--foreground)] mb-4">Verification Quiz</h3>
-                <div id="quiz-list" class="space-y-4"></div>
-                <button onclick="gradeQuiz()" class="mt-4 px-5 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white cursor-pointer">Check Answers</button>
-                <span id="quiz-msg" class="text-xs font-bold ml-3"></span>
+            <!-- Anti-Cheat Proctored Quiz Gateway -->
+            <div id="quiz-box" class="hidden p-6 rounded-2xl bg-slate-900 text-white border border-slate-800 shadow-lg space-y-4">
+                <div class="flex flex-wrap items-center justify-between gap-2">
+                    <span class="px-2.5 py-1 rounded-md text-[10px] font-extrabold uppercase tracking-wider bg-amber-500/20 text-amber-400 border border-amber-500/30">
+                        <i class="fa-solid fa-shield-halved mr-1"></i> Proctored Anti-Cheat Exam
+                    </span>
+                    <span id="quiz-msg" class="text-xs font-extrabold text-emerald-400">Passing Threshold: 75%</span>
+                </div>
+                <div>
+                    <h3 class="heading-font text-lg font-bold mb-1">Final Verification Assessment</h3>
+                    <p class="text-xs text-slate-300 leading-relaxed">
+                        Redirects to a dedicated fullscreen anti-cheat assessment environment. Switching tabs, minimizing the window, or copying text triggers automatic termination after 2 warnings.
+                    </p>
+                </div>
+                <a id="launch-exam-link" href="exam.html" class="w-full py-3 px-4 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-extrabold text-center block transition shadow-lg shadow-blue-600/25">
+                    Launch Proctored Assessment →
+                </a>
             </div>
         </div>
 
         <!-- Sidebar (4 cols): Syllabus + Embedded AI Teacher Quick Card -->
         <aside class="lg:col-span-4 space-y-6 sticky top-6">
-            <!-- AI Teacher Quick-Launch Card -->
             <div class="p-5 rounded-2xl bg-gradient-to-br from-blue-600/15 to-indigo-600/10 border border-blue-500/30">
                 <div class="flex items-center gap-3 mb-2">
                     <div class="w-9 h-9 rounded-xl bg-blue-600 text-white flex items-center justify-center text-sm shadow">
@@ -135,7 +169,6 @@
                 </button>
             </div>
 
-            <!-- Syllabus Card -->
             <div class="p-6 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10">
                 <h3 id="track-title" class="heading-font text-lg font-bold text-[var(--foreground)] mb-3">Syllabus</h3>
                 <div class="w-full h-2 rounded-full bg-[var(--muted-bg)] overflow-hidden mb-2">
@@ -147,11 +180,8 @@
         </aside>
     </main>
 
-    <!-- ======================================================================== -->
-    <!-- SLIDE-OVER OPENBOX AI TEACHER DRAWER (POWERED BY GEMINI FLASH)           -->
-    <!-- ======================================================================== -->
+    <!-- SLIDE-OVER OPENBOX AI TEACHER DRAWER -->
     <div id="ai-drawer" class="hidden fixed inset-y-0 right-0 z-50 w-full max-w-md bg-[var(--card)] border-l border-slate-200 dark:border-white/10 shadow-2xl flex flex-col">
-        <!-- Drawer Header -->
         <div class="p-4 border-b border-slate-200 dark:border-white/10 flex items-center justify-between bg-[var(--muted-bg)]">
             <div class="flex items-center gap-2.5">
                 <div class="w-8 h-8 rounded-lg bg-blue-600 text-white flex items-center justify-center text-xs">
@@ -172,7 +202,6 @@
             </div>
         </div>
 
-        <!-- Quick Action Prompts -->
         <div class="p-3 border-b border-slate-200 dark:border-white/10 flex gap-1.5 overflow-x-auto shrink-0">
             <button onclick="sendQuickPrompt('Summarize the key concepts of this current lecture simply with an example.')" class="px-2.5 py-1.5 rounded-lg bg-blue-500/10 text-blue-400 text-[11px] font-semibold whitespace-nowrap hover:bg-blue-600 hover:text-white cursor-pointer">
                 ✨ Summarize Lecture
@@ -185,14 +214,12 @@
             </button>
         </div>
 
-        <!-- Chat Messages Area -->
         <div id="ai-chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 text-xs leading-relaxed">
             <div class="p-3.5 rounded-2xl bg-[var(--muted-bg)] text-[var(--foreground)] border border-slate-200 dark:border-white/5">
                 👋 Hi <strong id="ai-student-name">there</strong>! I'm your <strong>Openbox AI Teacher</strong>. I can see the exact lecture and assignments you're working on. Ask me anything—concept explanations, debugging help, or project architecture!
             </div>
         </div>
 
-        <!-- Input Form -->
         <form onsubmit="handleAiSubmit(event)" class="p-3.5 border-t border-slate-200 dark:border-white/10 bg-[var(--muted-bg)] flex gap-2">
             <input type="text" id="ai-user-input" placeholder="Ask a doubt or paste code..." required
                 class="flex-1 px-3.5 py-2.5 text-xs rounded-xl bg-[var(--card)] border border-slate-200 dark:border-white/10 text-[var(--foreground)] focus:outline-none focus:border-blue-500" />
@@ -222,18 +249,51 @@
     <script>
         if (!currentUser) window.location.href = "login.html";
 
-        // Gemini API Configuration
         const GEMINI_API_KEY = "AQ.Ab8RN6KDf2ATLNye_vveZ8tvpvk0cjOSSvaASFPgqOOUrh3JaQ";
         const GEMINI_ENDPOINT = "https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent";
 
         let track = null;
         let lessonIdx = 0;
         let chatHistory = [];
+        let taskStepsState = JSON.parse(localStorage.getItem("openbox_task_steps") || "{}");
 
-        document.addEventListener("DOMContentLoaded", () => {
+        // YouTube Watch-to-End & Resume State
+        let ytPlayer = null;
+        let watchInterval = null;
+        let maxWatchedSec = 0;
+        let currentDurationSec = 0;
+
+        function normalizeCatalogItem(item) {
+            return {
+                ...item,
+                lectures: item.lectures || item.lessons || [],
+                assignments: item.assignments || item.tasks || [],
+                documents: item.documents || []
+            };
+        }
+
+        document.addEventListener("DOMContentLoaded", async () => {
             const params = new URLSearchParams(window.location.search);
-            const id = params.get("id");
-            track = OPENBOX_COURSES.find(c => c.id === id) || OPENBOX_COURSES[0];
+            const id = params.get("id") || params.get("course");
+
+            const cachedLive = JSON.parse(localStorage.getItem("openbox_cached_tracks") || "[]");
+            const combined = [
+                ...cachedLive,
+                ...(typeof OPENBOX_COURSES !== "undefined" ? OPENBOX_COURSES : []),
+                ...(typeof OPENBOX_TRACKS !== "undefined" ? OPENBOX_TRACKS : [])
+            ].map(normalizeCatalogItem);
+
+            track = combined.find(c => c.id === id);
+
+            // If track wasn't in local cache (e.g. newly added in Studio), fetch live from Google Sheet
+            if (!track) {
+                try {
+                    const liveTracks = (await fetchLiveTracks()).map(normalizeCatalogItem);
+                    track = liveTracks.find(c => c.id === id) || liveTracks[0];
+                } catch (e) {
+                    track = combined[0];
+                }
+            }
 
             document.getElementById("track-title").textContent = track.title;
             document.getElementById("ai-student-name").textContent = currentUser.name;
@@ -242,20 +302,168 @@
             renderDocuments();
             renderAssignments();
             renderRemarks();
-            renderQuiz();
+            renderQuizGateway();
             checkCert();
         });
 
         // ====================================================================
-        // OPENBOX AI TEACHER ENGINE (GEMINI FLASH)
+        // WATCH-TO-END YOUTUBE PLAYER + AUTO-RESUME
+        // ====================================================================
+        function formatMMSS(sec) {
+            const s = Math.max(0, Math.floor(sec || 0));
+            return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+        }
+
+        function onYouTubeIframeAPIReady() {
+            if (track && track.lectures[lessonIdx]) {
+                mountYouTubePlayer(track.lectures[lessonIdx]);
+            }
+        }
+
+        function mountYouTubePlayer(lesson) {
+            clearInterval(watchInterval);
+            const saved = videoWatchMap[lesson.id] || { watchedSec: 0, percent: 0 };
+            const isVerified = Boolean(completedLessons[lesson.id] || saved.percent >= 96);
+            maxWatchedSec = saved.watchedSec || 0;
+            currentDurationSec = saved.durationSec || 0;
+
+            const resumePill = document.getElementById("watch-resume-pill");
+            if (maxWatchedSec > 5 && !isVerified) {
+                resumePill.textContent = `Resumed at ${formatMMSS(maxWatchedSec)}`;
+                resumePill.classList.remove("hidden");
+            } else {
+                resumePill.classList.add("hidden");
+            }
+
+            if (!window.YT || !window.YT.Player) {
+                setTimeout(() => mountYouTubePlayer(lesson), 300);
+                return;
+            }
+
+            if (ytPlayer && typeof ytPlayer.loadVideoById === "function") {
+                ytPlayer.loadVideoById({ videoId: lesson.videoId, startSeconds: Math.floor(maxWatchedSec) });
+                startWatchLoop(lesson);
+                return;
+            }
+
+            ytPlayer = new YT.Player("yt-player-mount", {
+                videoId: lesson.videoId,
+                playerVars: { rel: 0, modestbranding: 1, playsinline: 1, start: Math.floor(maxWatchedSec) },
+                events: {
+                    onReady: (e) => {
+                        if (maxWatchedSec > 3) e.target.seekTo(Math.floor(maxWatchedSec), true);
+                        startWatchLoop(lesson);
+                    },
+                    onStateChange: (e) => {
+                        if (e.data === YT.PlayerState.PLAYING) startWatchLoop(lesson);
+                        if (e.data === YT.PlayerState.PAUSED) flushWatch(lesson, true);
+                        if (e.data === YT.PlayerState.ENDED) {
+                            flushWatch(lesson, true);
+                            unlockLessonCompletion(lesson);
+                        }
+                    }
+                }
+            });
+        }
+
+        function startWatchLoop(lesson) {
+            clearInterval(watchInterval);
+            watchInterval = setInterval(() => {
+                if (!ytPlayer || typeof ytPlayer.getCurrentTime !== "function") return;
+                const dur = ytPlayer.getDuration() || 0;
+                const cur = ytPlayer.getCurrentTime() || 0;
+                if (dur <= 0) return;
+
+                currentDurationSec = dur;
+                const alreadyVerified = Boolean(completedLessons[lesson.id] || (videoWatchMap[lesson.id]?.percent >= 96));
+
+                if (!alreadyVerified && cur > maxWatchedSec + 3) {
+                    ytPlayer.seekTo(maxWatchedSec, true);
+                    return;
+                }
+                if (cur > maxWatchedSec) maxWatchedSec = cur;
+
+                const pct = alreadyVerified ? 100 : Math.min(100, Math.round((maxWatchedSec / dur) * 100));
+                updateWatchBarUI(pct, alreadyVerified);
+                flushWatch(lesson, false);
+
+                if (pct >= 96 && !alreadyVerified) {
+                    unlockLessonCompletion(lesson);
+                }
+            }, 1000);
+        }
+
+        function flushWatch(lesson, forceSync) {
+            if (!lesson || currentDurationSec <= 0 || maxWatchedSec <= 0) return;
+            if (typeof saveVideoWatchProgress === "function") {
+                saveVideoWatchProgress(track.id, lesson.id, maxWatchedSec, currentDurationSec, forceSync);
+            }
+        }
+
+        function updateWatchBarUI(pct, verified) {
+            const badge = document.getElementById("watch-lock-badge");
+            const fill = document.getElementById("watch-progress-fill");
+            fill.style.width = `${pct}%`;
+
+            if (verified) {
+                fill.className = "h-full bg-emerald-500 transition-all duration-300";
+                badge.className = "font-extrabold text-emerald-400";
+                badge.innerHTML = `<i class="fa-solid fa-lock-open mr-1"></i> Full Video Verified (100%)`;
+            } else {
+                fill.className = "h-full bg-amber-500 transition-all duration-300";
+                badge.className = "font-extrabold text-amber-400";
+                badge.innerHTML = `<i class="fa-solid fa-lock mr-1"></i> Watch Full Video to Unlock (${pct}%)`;
+            }
+        }
+
+        function unlockLessonCompletion(lesson) {
+            if (!completedLessons[lesson.id]) {
+                completedLessons[lesson.id] = true;
+                localStorage.setItem("openbox_progress", JSON.stringify(completedLessons));
+                postToOpenboxApi({
+                    action: "progress",
+                    email: currentUser.email,
+                    courseId: track.id,
+                    lessonId: lesson.id,
+                    status: "Completed",
+                    watchedSec: Math.round(currentDurationSec || maxWatchedSec),
+                    durationSec: Math.round(currentDurationSec || maxWatchedSec),
+                    percent: 100
+                }).catch(() => {});
+            }
+            updateWatchBarUI(100, true);
+            refreshCompleteButton(lesson);
+            renderSidebar();
+            checkCert();
+        }
+
+        function refreshCompleteButton(lesson) {
+            const btn = document.getElementById("complete-btn");
+            const isDone = Boolean(completedLessons[lesson.id]);
+            const isWatched = isDone || (videoWatchMap[lesson.id]?.percent >= 96);
+
+            if (!isWatched) {
+                btn.disabled = true;
+                btn.className = "px-4 py-2 rounded-xl text-xs font-bold bg-slate-200 dark:bg-white/10 text-slate-400 cursor-not-allowed shrink-0";
+                btn.innerHTML = `<i class="fa-solid fa-lock mr-1"></i> Watch Till End`;
+            } else if (isDone) {
+                btn.disabled = false;
+                btn.className = "px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 text-white cursor-pointer shrink-0";
+                btn.textContent = "Completed ✓";
+            } else {
+                btn.disabled = false;
+                btn.className = "px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white cursor-pointer shrink-0";
+                btn.textContent = "Mark Complete";
+            }
+        }
+
+        // ====================================================================
+        // OPENBOX AI TEACHER ENGINE
         // ====================================================================
         function toggleAiDrawer(forceState) {
             const drawer = document.getElementById("ai-drawer");
-            if (typeof forceState === "boolean") {
-                drawer.classList.toggle("hidden", !forceState);
-            } else {
-                drawer.classList.toggle("hidden");
-            }
+            if (typeof forceState === "boolean") drawer.classList.toggle("hidden", !forceState);
+            else drawer.classList.toggle("hidden");
         }
 
         function clearAiChat() {
@@ -272,7 +480,6 @@
         }
 
         function formatAiText(raw) {
-            // Basic markdown-to-HTML formatting for code blocks, bold, and line breaks
             return raw
                 .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
                 .replace(/```([\s\S]*?)```/g, "<pre>$1</pre>")
@@ -292,21 +499,12 @@
             input.value = "";
             sendBtn.disabled = true;
 
-            // Append User Bubble
-            chatBox.innerHTML += `
-                <div class="ml-8 p-3 rounded-2xl bg-blue-600 text-white">
-                    ${userMsg.replace(/</g, "&lt;")}
-                </div>`;
+            chatBox.innerHTML += `<div class="ml-8 p-3 rounded-2xl bg-blue-600 text-white">${userMsg.replace(/</g, "&lt;")}</div>`;
 
-            // Append Typing Indicator
             const typingId = "ai-typing-" + Date.now();
-            chatBox.innerHTML += `
-                <div id="${typingId}" class="mr-8 p-3 rounded-2xl bg-[var(--muted-bg)] text-blue-400 italic">
-                    <i class="fa-solid fa-circle-notch fa-spin mr-1"></i> Thinking...
-                </div>`;
+            chatBox.innerHTML += `<div id="${typingId}" class="mr-8 p-3 rounded-2xl bg-[var(--muted-bg)] text-blue-400 italic"><i class="fa-solid fa-circle-notch fa-spin mr-1"></i> Thinking...</div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // Build Dynamic Course + Lecture + Assignment Context
             const activeLecture = track.lectures[lessonIdx] || {};
             const assignmentsSummary = (track.assignments || []).map(a => `- ${a.title}: ${a.instructions}`).join("\n");
             const systemContext = `You are the Openbox AI Teacher, a supportive, sharp engineering and analytics mentor on Openbox Growth Partner.
@@ -317,21 +515,18 @@ Course Assignments:\n${assignmentsSummary || "None"}
 
 Rules:
 1. Keep explanations clear, practical, and concise.
-2. If the student asks about an assignment or problem set, guide them step-by-step and give hints or small examples rather than dumping the entire finished solution.
-3. Encourage them to complete all lectures and submit their GitHub link to earn their verified Openbox certificate.`;
+2. Guide step-by-step with hints rather than dumping full assignment solutions.
+3. Encourage completing all lectures till the end and passing the proctored assessment.`;
 
             chatHistory.push({ role: "user", parts: [{ text: userMsg }] });
 
             try {
                 const res = await fetch(GEMINI_ENDPOINT, {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "X-goog-api-key": GEMINI_API_KEY
-                    },
+                    headers: { "Content-Type": "application/json", "X-goog-api-key": GEMINI_API_KEY },
                     body: JSON.stringify({
                         systemInstruction: { parts: [{ text: systemContext }] },
-                        contents: chatHistory.slice(-8) // Keep last 8 turns for fast context
+                        contents: chatHistory.slice(-8)
                     })
                 });
 
@@ -341,11 +536,7 @@ Rules:
                 if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
                     const reply = data.candidates[0].content.parts[0].text;
                     chatHistory.push({ role: "model", parts: [{ text: reply }] });
-
-                    chatBox.innerHTML += `
-                        <div class="ai-msg mr-4 p-3.5 rounded-2xl bg-[var(--muted-bg)] text-[var(--foreground)] border border-slate-200 dark:border-white/5">
-                            ${formatAiText(reply)}
-                        </div>`;
+                    chatBox.innerHTML += `<div class="ai-msg mr-4 p-3.5 rounded-2xl bg-[var(--muted-bg)] text-[var(--foreground)] border border-slate-200 dark:border-white/5">${formatAiText(reply)}</div>`;
                 } else {
                     const errMsg = data.error?.message || "No response from Gemini API.";
                     chatBox.innerHTML += `<div class="p-3 rounded-xl bg-red-500/10 text-red-400">⚠️ ${errMsg}</div>`;
@@ -360,17 +551,18 @@ Rules:
         }
 
         // ====================================================================
-        // COURSE PLAYER, DOCS, ASSIGNMENTS & CERTIFICATE LOGIC
+        // SYLLABUS, INTERACTIVE STEP TASKS, PROCTORED EXAM & CERTIFICATE
         // ====================================================================
         function renderSidebar() {
             const ul = document.getElementById("lesson-list");
             ul.innerHTML = "";
             track.lectures.forEach((l, i) => {
                 const done = !!completedLessons[l.id];
+                const watchInfo = videoWatchMap[l.id];
                 const li = document.createElement("li");
                 li.onclick = () => loadLesson(i);
                 li.className = `p-3 rounded-xl text-xs flex justify-between gap-2 cursor-pointer ${i === lessonIdx ? "bg-blue-600/15 font-bold text-[var(--foreground)] border border-blue-500/30" : "bg-[var(--muted-bg)]"}`;
-                li.innerHTML = `<span>${l.title}</span><span class="shrink-0">${done ? "✅" : "▶"}</span>`;
+                li.innerHTML = `<span>${l.title}</span><span class="shrink-0 font-bold ${done ? 'text-emerald-500' : watchInfo?.percent ? 'text-blue-400' : ''}">${done ? "✅" : watchInfo?.percent ? `${watchInfo.percent}%` : "▶"}</span>`;
                 ul.appendChild(li);
             });
             const pct = track.lectures.length ? Math.round((track.lectures.filter(l => completedLessons[l.id]).length / track.lectures.length) * 100) : 0;
@@ -379,24 +571,27 @@ Rules:
         }
 
         function loadLesson(i) {
+            if (track && track.lectures[lessonIdx]) flushWatch(track.lectures[lessonIdx], true);
             lessonIdx = i;
             const l = track.lectures[i];
-            document.getElementById("video-box").innerHTML = `<iframe class="w-full h-full" src="https://www.youtube.com/embed/${l.videoId}" allowfullscreen></iframe>`;
+            mountYouTubePlayer(l);
+
             document.getElementById("lesson-title").textContent = l.title;
             document.getElementById("lesson-desc").textContent = l.description;
             document.getElementById("ai-context-badge").textContent = `Context: ${l.title}`;
 
             const res = document.getElementById("resource-box");
-            if (l.documentUrl) {
+            const docUrl = l.documentUrl || l.resourceLink;
+            if (docUrl) {
                 res.classList.remove("hidden");
-                res.innerHTML = `<i class="fa-solid fa-file-code mr-1.5"></i> <strong>${l.documentLabel || "Lecture Resource"}:</strong> <a href="${l.documentUrl}" target="_blank" class="underline font-bold">Open Document / Slides →</a>`;
+                res.innerHTML = `<i class="fa-solid fa-file-code mr-1.5"></i> <strong>${l.documentLabel || "Lecture Resource"}:</strong> <a href="${docUrl}" target="_blank" class="underline font-bold">Open Document / Slides →</a>`;
             } else {
                 res.classList.add("hidden");
             }
 
-            const btn = document.getElementById("complete-btn");
-            btn.textContent = completedLessons[l.id] ? "Completed ✓" : "Mark Complete";
-            btn.className = completedLessons[l.id] ? "px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600 text-white cursor-pointer shrink-0" : "px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white cursor-pointer shrink-0";
+            const savedPct = completedLessons[l.id] ? 100 : (videoWatchMap[l.id]?.percent || 0);
+            updateWatchBarUI(savedPct, Boolean(completedLessons[l.id] || savedPct >= 96));
+            refreshCompleteButton(l);
             renderSidebar();
             checkCert();
         }
@@ -404,13 +599,26 @@ Rules:
         function toggleComplete() {
             const l = track.lectures[lessonIdx];
             if (!l) return;
+            const isWatched = Boolean(completedLessons[l.id] || (videoWatchMap[l.id]?.percent >= 96));
+            if (!isWatched) {
+                alert("Please watch the entire video until the end before marking this lecture complete.");
+                return;
+            }
             const state = !completedLessons[l.id];
             if (state) completedLessons[l.id] = true; else delete completedLessons[l.id];
             localStorage.setItem("openbox_progress", JSON.stringify(completedLessons));
-            loadLesson(lessonIdx);
-            fetch(APPS_SCRIPT_URL, {
-                method: "POST",
-                body: JSON.stringify({ action: "progress", email: currentUser.email, courseId: track.id, lessonId: l.id, status: state ? "Completed" : "Incomplete" })
+            refreshCompleteButton(l);
+            renderSidebar();
+            checkCert();
+            postToOpenboxApi({
+                action: "progress",
+                email: currentUser.email,
+                courseId: track.id,
+                lessonId: l.id,
+                status: state ? "Completed" : "Incomplete",
+                watchedSec: Math.round(currentDurationSec || maxWatchedSec),
+                durationSec: Math.round(currentDurationSec || maxWatchedSec),
+                percent: 100
             }).catch(() => {});
         }
 
@@ -431,16 +639,69 @@ Rules:
             });
         }
 
+        function getTaskSteps(t) {
+            if (Array.isArray(t.steps) && t.steps.length) return t.steps;
+            const parts = (t.instructions || "").split(/\.\s+/).map(s => s.replace(/\.$/, "").trim()).filter(Boolean);
+            return parts.length >= 2 ? parts : [`Review requirements for "${t.title}"`, t.instructions, "Push clean deliverables and verify public link access"];
+        }
+
+        function toggleStep(tIdx, sIdx) {
+            const key = `${track.id}__${tIdx}`;
+            if (!taskStepsState[key]) taskStepsState[key] = [];
+            const pos = taskStepsState[key].indexOf(sIdx);
+            if (pos === -1) taskStepsState[key].push(sIdx);
+            else taskStepsState[key].splice(pos, 1);
+            localStorage.setItem("openbox_task_steps", JSON.stringify(taskStepsState));
+            renderAssignments();
+        }
+
         function renderAssignments() {
             if (!track.assignments || !track.assignments.length) return;
             document.getElementById("tasks-box").classList.remove("hidden");
             const list = document.getElementById("tasks-list");
             const sel = document.getElementById("task-select");
             list.innerHTML = ""; sel.innerHTML = "";
-            track.assignments.forEach(t => {
-                list.innerHTML += `<div class="p-4 rounded-xl bg-[var(--muted-bg)] border-l-4 border-blue-500 text-xs"><div class="flex justify-between font-bold text-[var(--foreground)] mb-1"><span>${t.title}</span><span class="text-blue-500 font-mono">${t.deadline}</span></div><p class="leading-relaxed">${t.instructions}</p></div>`;
+            let allStepsDone = true;
+
+            track.assignments.forEach((t, tIdx) => {
+                const steps = getTaskSteps(t);
+                const doneArr = taskStepsState[`${track.id}__${tIdx}`] || [];
+                if (doneArr.length < steps.length) allStepsDone = false;
+
+                const stepsHtml = steps.map((st, sIdx) => {
+                    const checked = doneArr.includes(sIdx);
+                    return `
+                        <button type="button" onclick="toggleStep(${tIdx}, ${sIdx})" class="w-full text-left p-2.5 rounded-xl border text-xs flex items-start gap-2.5 transition cursor-pointer ${checked ? 'bg-emerald-500/10 border-emerald-500/30 text-[var(--foreground)]' : 'bg-[var(--card)] border-slate-200 dark:border-white/10 hover:border-blue-500'}">
+                            <span class="w-5 h-5 rounded flex items-center justify-center text-[10px] font-extrabold shrink-0 ${checked ? 'bg-emerald-600 text-white' : 'bg-[var(--muted-bg)]'}">${checked ? '✓' : sIdx + 1}</span>
+                            <span class="${checked ? 'line-through opacity-75' : ''}">${st}</span>
+                        </button>`;
+                }).join("");
+
+                list.innerHTML += `
+                    <div class="p-4 rounded-2xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 space-y-3">
+                        <div class="flex justify-between font-bold text-xs text-[var(--foreground)]">
+                            <span>${t.title}</span>
+                            <span class="text-blue-500 font-mono">${t.deadline} (${doneArr.length}/${steps.length})</span>
+                        </div>
+                        <div class="space-y-2">${stepsHtml}</div>
+                    </div>`;
                 sel.innerHTML += `<option value="${t.title}">${t.title}</option>`;
             });
+
+            const lockBanner = document.getElementById("task-form-lock-banner");
+            const form = document.getElementById("task-submit-form");
+            const btn = document.getElementById("task-btn");
+            if (allStepsDone) {
+                lockBanner.className = "p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xs font-bold";
+                lockBanner.innerHTML = `<i class="fa-solid fa-lock-open mr-1.5"></i> All task steps completed! Deliverable submission unlocked.`;
+                form.classList.remove("opacity-50", "pointer-events-none");
+                btn.disabled = false;
+            } else {
+                lockBanner.className = "p-3 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-bold";
+                lockBanner.innerHTML = `<i class="fa-solid fa-lock mr-1.5"></i> Complete all interactive task steps above to unlock final deliverable submission.`;
+                form.classList.add("opacity-50", "pointer-events-none");
+                btn.disabled = true;
+            }
         }
 
         function renderRemarks() {
@@ -462,9 +723,14 @@ Rules:
             const link = document.getElementById("task-link").value.trim();
             const notes = document.getElementById("task-notes").value.trim();
 
-            await fetch(APPS_SCRIPT_URL, {
-                method: "POST",
-                body: JSON.stringify({ action: "submit_task", name: currentUser.name, email: currentUser.email, courseId: track.id, taskTitle, link, notes })
+            await postToOpenboxApi({
+                action: "submit_task",
+                name: currentUser.name,
+                email: currentUser.email,
+                courseId: track.id,
+                taskTitle,
+                link,
+                notes
             });
             mySubmissions.push({ courseId: track.id, taskTitle, link, status: "Pending Review", remark: "" });
             localStorage.setItem("openbox_submissions", JSON.stringify(mySubmissions));
@@ -473,23 +739,16 @@ Rules:
             e.target.reset();
         }
 
-        function renderQuiz() {
+        function renderQuizGateway() {
             if (!track.quiz || !track.quiz.length) return;
             document.getElementById("quiz-box").classList.remove("hidden");
-            const list = document.getElementById("quiz-list");
-            list.innerHTML = "";
-            track.quiz.forEach((q, i) => {
-                list.innerHTML += `<div class="text-xs space-y-1"><p class="font-bold text-[var(--foreground)]">${i + 1}. ${q.question}</p>${q.options.map((o, oi) => `<label class="block cursor-pointer"><input type="radio" name="q${i}" value="${oi}"> ${o}</label>`).join("")}</div>`;
-            });
-        }
+            document.getElementById("launch-exam-link").href = `exam.html?course=${encodeURIComponent(track.id)}`;
 
-        function gradeQuiz() {
-            let s = 0;
-            track.quiz.forEach((q, i) => {
-                const c = document.querySelector(`input[name="q${i}"]:checked`);
-                if (c && parseInt(c.value) === q.answer) s++;
-            });
-            document.getElementById("quiz-msg").textContent = `Score: ${s}/${track.quiz.length}`;
+            const quizMap = JSON.parse(localStorage.getItem("openbox_quiz_results") || "{}");
+            const res = quizMap[track.id];
+            if (res) {
+                document.getElementById("quiz-msg").textContent = `Best Score: ${res.percent}% (${res.passed ? "PASSED" : "NEED 75%"})`;
+            }
         }
 
         function getCredentialId() {
@@ -498,15 +757,19 @@ Rules:
 
         function buildShareCaption() {
             const certId = getCredentialId();
-            const portalUrl = "https://aviral-hub.github.io/openboxgrowthpartner/course.html";
-            const techTags = track.techStack.map(t => "#" + t.replace(/[^a-zA-Z0-9]/g, "")).join(" ");
+            const portalUrl = `https://openboxgrowth.vercel.app/course.html?course=${encodeURIComponent(track.id)}`;
+            const techTags = (track.techStack || []).map(t => "#" + t.replace(/[^a-zA-Z0-9]/g, "")).join(" ");
             return `Thrilled to share that I have successfully completed "${track.title}" with Openbox Growth Partner!\n\nCredential ID: ${certId}\nEarn your verified certificate & explore hands-on courses and internships here: ${portalUrl}\n\n#OpenboxGrowthPartner #ProofOfWork #SoftwareEngineering #Internship #LearningInPublic ${techTags}`;
         }
 
         function checkCert() {
             const allDone = track.lectures.length > 0 && track.lectures.every(l => completedLessons[l.id]);
+            const hasQuiz = track.quiz && track.quiz.length > 0;
+            const quizMap = JSON.parse(localStorage.getItem("openbox_quiz_results") || "{}");
+            const quizPassed = !hasQuiz || (quizMap[track.id]?.passed === true);
+
             const box = document.getElementById("cert-box");
-            if (allDone) {
+            if (allDone && quizPassed) {
                 box.classList.remove("hidden");
                 document.getElementById("share-caption-text").value = buildShareCaption();
             } else {
@@ -545,7 +808,7 @@ Rules:
             ctx.fillText(currentUser.name.toUpperCase(), 600, 365);
 
             ctx.fillStyle = "#cbd5e1"; ctx.font = "22px sans-serif";
-            ctx.fillText("has successfully completed all modules and practical assessments for", 600, 440);
+            ctx.fillText("has successfully completed all modules and proctored assessments for", 600, 440);
 
             ctx.fillStyle = "#ffffff"; ctx.font = "bold 30px sans-serif";
             if (track.title.length > 48) {
@@ -560,7 +823,7 @@ Rules:
             ctx.fillStyle = "#94a3b8"; ctx.font = "17px monospace";
             ctx.fillText(`ISSUED: ${new Date().toLocaleDateString("en-IN", { day: "numeric", month: "long", year: "numeric" })}`, 110, 695);
             ctx.fillText(`CREDENTIAL ID: ${certId}`, 110, 725);
-            ctx.fillText(`VERIFY AT: aviral-hub.github.io/openboxgrowthpartner/course.html`, 110, 755);
+            ctx.fillText(`VERIFY AT: openboxgrowth.vercel.app`, 110, 755);
 
             ctx.textAlign = "right";
             ctx.fillStyle = "#ffffff"; ctx.font = "bold 22px sans-serif";
