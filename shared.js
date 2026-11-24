@@ -1,6 +1,7 @@
 // ============================================================================
 // OPENBOX GROWTH PARTNER — SHARED CONTROLLER & LIVE GOOGLE SHEETS CONNECTION
 // ============================================================================
+// Ensure this URL matches the exact v4.0-google-oauth-proctored /exec URL you just tested:
 const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzuF_hLOONhYsg0YsCUevyFGpJRuE1FJoSz8nWl6bLsI2ALnTwk49tP1B7bvbfS4ZjzDQ/exec";
 const UNLOCK_ALL_FOR_TESTING = true;
 
@@ -92,7 +93,7 @@ function logoutUser() {
   window.location.href = "index.html";
 }
 
-// Unified POST Helper for Google Apps Script (handles 302 redirect cleanly)
+// Unified POST Helper for Google Apps Script (handles 302 redirect & JSON parsing)
 async function postToOpenboxApi(payload) {
   const res = await fetch(APPS_SCRIPT_URL, {
     method: "POST",
@@ -105,7 +106,7 @@ async function postToOpenboxApi(payload) {
   try {
     return JSON.parse(text);
   } catch (e) {
-    throw new Error("Apps Script returned HTML instead of JSON. Ensure deployment 'Who has access' is set to 'Anyone' and redeployed as a New version.");
+    throw new Error("Apps Script returned non-JSON response. Verify deployment access is 'Anyone'.");
   }
 }
 
