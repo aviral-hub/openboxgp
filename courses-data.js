@@ -33,6 +33,7 @@
  *        * deadline: Milestone label (e.g., "Week 1 Milestone").
  *        * deliverable: Expected submission format (e.g., "GitHub Repository URL").
  *        * instructions: Clear step-by-step requirements & acceptance criteria.
+ *        * steps: Optional array of interactive step-by-step milestones.
  *    - quiz: Verification quiz questions (`answer` is 0-indexed, includes `explanation`).
  * ============================================================================
  */
@@ -1640,6 +1641,196 @@ const OPENBOX_COURSES = [
         ],
         answer: 1,
         explanation: "A Football Field chart summarizes low-to-high implied valuation ranges from different valuation methods on a single horizontal bar chart for executive decision-making."
+      }
+    ]
+  },
+
+  // ==========================================================================
+  // 9. JAVA DEVELOPMENT – TASK-BASED INTERNSHIP (TRACKIT PROJECT)
+  // ==========================================================================
+  {
+    id: "java-trackit-internship",
+    title: "Java Development – Task-Based Internship (TrackIt Project)",
+    category: "Internship",
+    typeBadge: "30-Day Task Internship • TrackIt Capstone",
+    isInternship: true,
+    duration: "30 Days • 1–2 hrs/day",
+    level: "Beginner to Intermediate",
+    techStack: ["Core Java", "OOP", "Collections", "JDBC", "MySQL / SQLite", "Git & GitHub"],
+    description:
+      "Learn Java by building TrackIt — a real-world Smart Task & Progress Management System. Convert every concept into weekly GitHub deliverables, connect Java to MySQL/SQLite via JDBC, pass the proctored assessment (≥75%), and earn your verified Openbox Internship Certificate.",
+
+    lectures: [
+      {
+        id: "java-w1",
+        title: "Week 1 (Days 1–7): Java Foundations, Control Flow, Arrays & Methods",
+        videoId: "eIrMbAQSU34",
+        duration: "45 mins",
+        description:
+          "Install JDK and IntelliJ IDEA / VS Code, configure your environment, and master variables, data types, operators, conditionals, loops, arrays, Strings, and modular methods.",
+        documentUrl: "https://github.com/aviral-hub/openboxgrowthpartner",
+        documentLabel: "Week 1 Setup & GitHub Guide"
+      },
+      {
+        id: "java-w2",
+        title: "Week 2 (Days 8–14): Object-Oriented Programming & Exception Handling",
+        videoId: "6T_HgnjoYwM",
+        duration: "50 mins",
+        description:
+          "Design classes, objects, constructors, inheritance, polymorphism, encapsulation, abstraction, and custom exceptions for TrackIt's User and Task domain models.",
+        documentUrl: "https://github.com/aviral-hub/openboxgrowthpartner",
+        documentLabel: "OOP Class Diagram & Spec"
+      },
+      {
+        id: "java-w3",
+        title: "Week 3 (Days 15–21): Collections, File Handling, SQL, JDBC & Git",
+        videoId: "2i4t-SL1VsU",
+        duration: "55 mins",
+        description:
+          "Manage in-memory task lists with ArrayList and HashMap, persist records via File I/O and JDBC (MySQL/SQLite), and follow clean Git commit & README standards.",
+        documentUrl: "https://github.com/aviral-hub/openboxgrowthpartner",
+        documentLabel: "JDBC & schema.sql Template"
+      },
+      {
+        id: "java-w4",
+        title: "Week 4 (Days 22–30): Building & Shipping TrackIt – Final Project",
+        videoId: "grEKMHGYyns",
+        duration: "60 mins",
+        description:
+          "Assemble the complete TrackIt system: user registration/login, task priorities & deadlines, status workflows (Pending, In Progress, Completed), search filters, dashboard statistics, and final demo.",
+        documentUrl: "https://github.com/aviral-hub/openboxgrowthpartner",
+        documentLabel: "TrackIt Capstone Rubric"
+      }
+    ],
+
+    documents: [
+      {
+        title: "TrackIt Repository Architecture & schema.sql Blueprint",
+        type: "Syllabus",
+        url: "https://github.com/aviral-hub/openboxgrowthpartner"
+      },
+      {
+        title: "30-Day Daily Task Tracker & 100-Mark Evaluation Rubric",
+        type: "Worksheet",
+        url: "https://github.com/aviral-hub/openboxgrowthpartner"
+      },
+      {
+        title: "Official Oracle Dev.java Core Language & Collections Guide",
+        type: "Cheat Sheet",
+        url: "https://dev.java/learn/"
+      }
+    ],
+
+    assignments: [
+      {
+        title: "Week 1 Submission: Java Foundations Suite (Days 1–7)",
+        deadline: "Day 7 Milestone",
+        deliverable: "Public GitHub Repository URL (4 Java Programs)",
+        instructions:
+          "Build and upload four Core Java console programs: Basic Calculator, Student Marks Calculator, Number Guessing Game, and Daily Task List using arrays.",
+        steps: [
+          "Day 1–3: Install Java JDK + IntelliJ IDEA / VS Code and verify `java -version` in your terminal.",
+          "Day 4–5: Build `BasicCalculator.java` supporting +, -, *, / with zero-division checks and `MarksCalculator.java` computing totals, percentages, and letter grades.",
+          "Day 6: Build `NumberGuessingGame.java` using loops and `Random`, plus `DailyTaskArray.java` to add, view, and remove tasks using arrays.",
+          "Day 7: Push all 4 `.java` programs to a public GitHub repository with clean commit messages and submit the repo link."
+        ]
+      },
+      {
+        title: "Week 2 Submission: Object-Oriented Task Manager (Days 8–14)",
+        deadline: "Day 14 Milestone",
+        deliverable: "Public GitHub Repository URL (OOP Architecture)",
+        instructions:
+          "Build an OOP Task Management module featuring User and Task classes, status transitions (Pending, In Progress, Completed), and custom exception handling for invalid task IDs.",
+        steps: [
+          "Day 8–9: Create an Employee Management System exercise practicing inheritance, polymorphism, and encapsulation.",
+          "Day 10: Create `User.java` and `Task.java` inside `src/model/` with fields for `taskId`, `title`, `description`, `priority`, `deadline`, and `status`.",
+          "Day 11–12: Implement `TaskService.java` with methods to transition task status across `Pending`, `In Progress`, and `Completed`.",
+          "Day 13–14: Create a custom `InvalidTaskIdException`, handle invalid lookups gracefully, and push the Week 2 OOP module to GitHub."
+        ]
+      },
+      {
+        title: "Week 3 Submission: Database-Connected Java App via JDBC (Days 15–21)",
+        deadline: "Day 21 Milestone",
+        deliverable: "GitHub Repository URL with schema.sql & JDBC CRUD",
+        instructions:
+          "Upgrade your task engine with ArrayList/HashMap collections, file export backup, and MySQL/SQLite JDBC connectivity supporting full INSERT, SELECT, UPDATE, and DELETE operations.",
+        steps: [
+          "Day 15: Refactor task storage using `ArrayList<Task>` and `HashMap<Integer, Task>` plus a `.txt`/`.csv` file backup export.",
+          "Day 16–17: Create `database/schema.sql` defining `users` and `tasks` tables and configure `DatabaseConnection.java` using JDBC `PreparedStatement`.",
+          "Day 18–19: Implement full CRUD operations (insert task, fetch all tasks, update status/deadline, delete task) connected to MySQL or SQLite.",
+          "Day 20–21: Push the JDBC-connected codebase to GitHub with atomic commits and initial setup notes."
+        ]
+      },
+      {
+        title: "Week 4 Final Capstone: TrackIt – Smart Task & Progress Tracker (Days 22–30)",
+        deadline: "Day 30 Final Submission",
+        deliverable: "Complete TrackIt GitHub Repo + README + Demo Video Link",
+        instructions:
+          "Deliver the complete TrackIt application with user registration/login, task priorities & deadlines, status filtering, dashboard statistics, 15+ meaningful commits, README with screenshots, and a short demo walkthrough.",
+        steps: [
+          "Day 21–24: Implement User Registration & Login alongside Task Creation with Priority (`Low`, `Medium`, `High`), Deadlines, and Status updates.",
+          "Day 25–26: Build the Productivity Dashboard displaying total, completed, pending, and overdue task statistics plus keyword search & status filters.",
+          "Day 27–28: Test all edge cases, capture screenshots inside `docs/screenshots/`, and write a complete `README.md` with installation and SQL setup instructions.",
+          "Day 29–30: Ensure at least 15 meaningful Git commits exist on GitHub, record a short video demonstration, and submit your final TrackIt repository link."
+        ]
+      }
+    ],
+
+    quiz: [
+      {
+        question: "Which JDBC interface should you use to execute parameterized SQL queries safely and prevent SQL injection in TrackIt?",
+        options: [
+          "Statement",
+          "PreparedStatement",
+          "ResultSetMetaData",
+          "DriverManager"
+        ],
+        answer: 1,
+        explanation: "PreparedStatement precompiles SQL queries and safely binds parameters, preventing SQL injection attacks."
+      },
+      {
+        question: "In TrackIt's `Task` model, which OOP principle protects private fields (`taskId`, `status`, `deadline`) by exposing controlled getters and status-update methods?",
+        options: [
+          "Encapsulation",
+          "Method Overloading",
+          "Static Binding",
+          "Multiple Inheritance"
+        ],
+        answer: 0,
+        explanation: "Encapsulation bundles data and validation methods inside a class while restricting direct external mutation of private fields."
+      },
+      {
+        question: "Which Java Collection provides O(1) average-time lookup when retrieving a `Task` object directly by its integer `taskId`?",
+        options: [
+          "LinkedList<Task>",
+          "HashMap<Integer, Task>",
+          "ArrayDeque<Task>",
+          "PriorityQueue<Task>"
+        ],
+        answer: 1,
+        explanation: "HashMap stores key-value pairs using hashing, enabling constant-time O(1) average lookups by taskId."
+      },
+      {
+        question: "What happens when `TaskService` throws a custom `InvalidTaskIdException` that extends `Exception` (a checked exception)?",
+        options: [
+          "The JVM ignores it silently at runtime",
+          "Calling methods must either handle it with a `try-catch` block or declare `throws InvalidTaskIdException`",
+          "It automatically deletes the database table",
+          "It converts all task statuses to Completed"
+        ],
+        answer: 1,
+        explanation: "Checked exceptions in Java are enforced at compile time, requiring explicit try-catch handling or a throws declaration."
+      },
+      {
+        question: "Which Git & GitHub workflow practice is required to pass the TrackIt internship evaluation?",
+        options: [
+          "Uploading a single ZIP file on Day 30 with 1 commit",
+          "Maintaining at least 15 meaningful, incremental commits with a structured `src/` package layout and setup `README.md`",
+          "Committing compiled `.class` binaries without `.java` source files",
+          "Hardcoding database passwords in public repositories"
+        ],
+        answer: 1,
+        explanation: "Incremental commits, clean package organization (`model`, `service`, `database`), and clear README setup docs demonstrate authentic engineering progress."
       }
     ]
   }
