@@ -3,91 +3,238 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning & Internship Hub — Openbox</title>
+    <title>Learning &amp; Internship Hub — Openbox Growth Partner</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <script src="shared.js"></script>
     <style>
-        :root { --background: #f8fafc; --foreground: #0f172a; --muted-bg: #f1f5f9; --muted-text: #475569; --card: #ffffff; }
-        .dark { --background: #0a0a0c; --foreground: #f8fafc; --muted-bg: #111115; --muted-text: #94a3b8; --card: #111115; }
+        :root { --background: #f4f6fa; --foreground: #0f172a; --muted-bg: #f1f5f9; --muted-text: #475569; --card: #ffffff; --border: #e2e8f0; }
+        .dark { --background: #070b14; --foreground: #f8fafc; --muted-bg: #111827; --muted-text: #94a3b8; --card: #0f172a; --border: rgba(255,255,255,0.08); }
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--background); color: var(--muted-text); }
         .heading-font { font-family: 'Space Grotesk', sans-serif; }
     </style>
 </head>
-<body class="min-h-screen pb-16">
+<body class="min-h-screen pb-16 antialiased">
 
-    <!-- Subpage Navbar -->
+    <!-- Subpage Executive Navbar -->
     <header class="max-w-6xl mx-auto mt-4 px-4">
-        <div class="h-16 px-5 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 flex items-center justify-between">
+        <div class="h-16 px-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] flex items-center justify-between shadow-sm">
             <div class="flex items-center gap-4">
                 <a href="index.html" class="heading-font font-bold text-[var(--foreground)] text-lg">Openbox<span class="text-blue-500">.</span></a>
                 <span class="text-xs text-slate-500">/</span>
-                <span class="text-xs font-bold text-blue-500">Learning Hub</span>
+                <span class="text-xs font-bold text-blue-500">Learning &amp; Internship Hub</span>
             </div>
             <div class="flex items-center gap-2.5">
-                <a id="nav-studio-link" href="studio.html" class="hidden text-xs font-bold text-amber-500 px-3 py-2 rounded-xl bg-amber-500/10">Studio</a>
-                <button id="theme-toggle" class="p-2 rounded-xl bg-[var(--muted-bg)] text-xs cursor-pointer"><i class="fa-solid fa-circle-half-stroke"></i></button>
-                <div id="user-pill" class="hidden flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-500/10 text-xs font-bold text-blue-500">
+                <a id="nav-studio-link" href="studio.html" class="hidden text-xs font-bold text-amber-500 px-3 py-2 rounded-xl bg-amber-500/10 border border-amber-500/20">Studio</a>
+                <button id="theme-toggle" class="p-2 rounded-xl bg-[var(--muted-bg)] border border-[var(--border)] text-xs cursor-pointer" title="Toggle Theme">
+                    <i class="fa-solid fa-circle-half-stroke"></i>
+                </button>
+                <div id="user-pill" class="hidden flex items-center gap-2 px-3 py-1.5 rounded-xl bg-blue-500/10 border border-blue-500/20 text-xs font-bold text-blue-500">
                     <span id="user-role-badge" class="px-1.5 py-0.5 rounded text-[10px] bg-blue-600 text-white">Student</span>
                     <span id="user-name-display">User</span>
-                    <button onclick="logoutUser()" class="text-red-400 ml-1 cursor-pointer"><i class="fa-solid fa-right-from-bracket"></i></button>
+                    <button onclick="logoutUser()" class="text-red-400 ml-1 cursor-pointer" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
                 </div>
-                <a id="header-login-btn" href="login.html" class="px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 text-white">Login</a>
+                <a id="header-login-btn" href="login.html" class="px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white transition">Login</a>
             </div>
         </div>
     </header>
 
     <main class="max-w-6xl mx-auto px-4 pt-10">
-        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 pb-6 border-b border-slate-200 dark:border-white/10">
+        <!-- Hero Header -->
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-8 pb-6 border-b border-[var(--border)]">
             <div>
-                <h1 class="heading-font text-3xl font-bold text-[var(--foreground)]">Courses & Task-Based Internships</h1>
-                <p class="text-xs text-emerald-500 font-semibold mt-1">✓ All tracks unlocked for open testing • Select any track to enter player.html</p>
+                <span class="text-[11px] font-extrabold uppercase tracking-widest text-blue-500 block mb-1">Openbox Growth Partner</span>
+                <h1 class="heading-font text-2xl sm:text-3xl font-bold text-[var(--foreground)]">Courses &amp; Task-Based Internships</h1>
+                <p id="hub-subtitle" class="text-xs text-emerald-500 font-semibold mt-1">
+                    ✓ Watch-to-end video tracking, interactive step tasks &amp; proctored assessments active
+                </p>
             </div>
-            <input type="text" id="search-box" oninput="render()" placeholder="Search tracks..." class="w-full md:w-64 px-4 py-2 text-sm rounded-xl bg-[var(--card)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]" />
+            <div class="relative w-full md:w-72">
+                <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3 text-xs text-slate-400"></i>
+                <input
+                    type="text"
+                    id="search-box"
+                    oninput="render()"
+                    placeholder="Search tracks or skills..."
+                    class="w-full pl-9 pr-4 py-2 text-sm rounded-xl bg-[var(--card)] border border-[var(--border)] text-[var(--foreground)] focus:outline-none focus:border-blue-500"
+                />
+            </div>
         </div>
 
-        <div id="loader" class="text-center py-12 text-xs text-blue-500 font-bold"><i class="fa-solid fa-spinner fa-spin mr-1"></i> Fetching live tracks from Google Sheet...</div>
+        <!-- Loader / Error Alert -->
+        <div id="loader" class="text-center py-12 text-xs text-blue-500 font-bold">
+            <i class="fa-solid fa-spinner fa-spin mr-1.5"></i> Syncing live tracks &amp; saved progress...
+        </div>
+        <div id="error-banner" class="hidden mb-6 p-4 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-400 text-xs font-semibold"></div>
+
+        <!-- DEDICATED SECTION: MY ENROLLED TRACKS -->
+        <section id="enrolled-section" class="hidden mb-10">
+            <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                <div class="flex items-center gap-2.5">
+                    <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+                    <h2 class="heading-font text-xl font-bold text-[var(--foreground)]">My Enrolled Tracks</h2>
+                    <span id="enrolled-badge" class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-emerald-500/15 text-emerald-400"></span>
+                </div>
+                <span class="text-xs font-medium text-[var(--muted-text)]">Resume right where you left off</span>
+            </div>
+            <div id="enrolled-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+        </section>
+
+        <!-- CATEGORY FILTERS -->
+        <div class="flex flex-wrap items-center justify-between gap-3 mb-6">
+            <div class="flex flex-wrap gap-2">
+                <button onclick="setCategory('All')" id="cat-All" class="cat-pill px-4 py-1.5 rounded-xl text-xs font-bold bg-blue-600 text-white cursor-pointer">All Tracks</button>
+                <button onclick="setCategory('Internship')" id="cat-Internship" class="cat-pill px-4 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-[var(--border)] cursor-pointer">Internships</button>
+                <button onclick="setCategory('Development')" id="cat-Development" class="cat-pill px-4 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-[var(--border)] cursor-pointer">Development</button>
+                <button onclick="setCategory('Analytics')" id="cat-Analytics" class="cat-pill px-4 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-[var(--border)] cursor-pointer">Analytics</button>
+                <button onclick="setCategory('Marketing')" id="cat-Marketing" class="cat-pill px-4 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-[var(--border)] cursor-pointer">Marketing</button>
+            </div>
+            <span id="catalog-count" class="text-xs font-bold text-[var(--muted-text)]"></span>
+        </div>
+
+        <!-- ALL TRACKS GRID -->
         <div id="grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
     </main>
 
     <script>
         let tracks = [];
+        let activeCat = "All";
+
         document.addEventListener("DOMContentLoaded", async () => {
-            tracks = await fetchLiveTracks();
-            document.getElementById("loader").classList.add("hidden");
-            render();
+            try {
+                tracks = await fetchLiveTracks();
+            } catch (err) {
+                const cached = JSON.parse(localStorage.getItem("openbox_cached_tracks") || "[]");
+                tracks = cached;
+                const errEl = document.getElementById("error-banner");
+                errEl.classList.remove("hidden");
+                errEl.innerHTML = `<i class="fa-solid fa-triangle-exclamation mr-1.5"></i> Live sync note: ${err.message} ${cached.length ? "(Showing cached catalog)" : ""}`;
+            } finally {
+                document.getElementById("loader").classList.add("hidden");
+                render();
+            }
         });
+
+        function setCategory(cat) {
+            activeCat = cat;
+            document.querySelectorAll(".cat-pill").forEach(btn => {
+                btn.className = "cat-pill px-4 py-1.5 rounded-xl text-xs font-bold bg-[var(--card)] border border-[var(--border)] cursor-pointer";
+            });
+            const activeBtn = document.getElementById("cat-" + cat);
+            if (activeBtn) {
+                activeBtn.className = "cat-pill px-4 py-1.5 rounded-xl text-xs font-bold bg-blue-600 text-white cursor-pointer";
+            }
+            render();
+        }
+
+        function formatMMSS(sec) {
+            const s = Math.max(0, Math.floor(sec || 0));
+            return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, "0")}`;
+        }
+
+        function getTrackStats(t) {
+            const lessons = t.lessons || [];
+            const total = lessons.length;
+            let doneCount = 0;
+            let fractional = 0;
+            let resumeInfo = "";
+
+            lessons.forEach((l, idx) => {
+                if (completedLessons[l.id]) {
+                    doneCount++;
+                    fractional += 1;
+                } else {
+                    const w = videoWatchMap[l.id];
+                    if (w && w.percent > 0) {
+                        fractional += (w.percent / 100);
+                        if (!resumeInfo && w.watchedSec > 5) {
+                            resumeInfo = `Resume Lec ${idx + 1} (${formatMMSS(w.watchedSec)})`;
+                        }
+                    }
+                }
+            });
+
+            const pct = total > 0 ? Math.min(100, Math.round((fractional / total) * 100)) : 0;
+            const isEnrolled = enrolledCourses.includes(t.id) || doneCount > 0 || fractional > 0;
+            return { total, doneCount, pct, isEnrolled, resumeInfo };
+        }
+
+        function createTrackCard(t, stats, highlightEnrolled = false) {
+            const card = document.createElement("div");
+            card.className = `flex flex-col justify-between p-6 rounded-2xl bg-[var(--card)] border ${highlightEnrolled ? 'border-emerald-500/40' : 'border-[var(--border)]'} hover:border-blue-500/50 transition-all shadow-sm`;
+            card.innerHTML = `
+                <div>
+                    <div class="flex items-center justify-between gap-2 mb-3">
+                        <span class="text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-md bg-blue-500/10 text-blue-500">
+                            ${t.category} • ${t.isInternship ? 'Internship' : 'Course'}
+                        </span>
+                        <span class="text-xs font-extrabold ${stats.pct === 100 ? 'text-emerald-400' : 'text-blue-400'}">
+                            ${stats.pct}% Done
+                        </span>
+                    </div>
+
+                    <h3 class="heading-font text-lg font-bold text-[var(--foreground)] mb-2 leading-snug">${t.title}</h3>
+                    <p class="text-xs text-[var(--muted-text)] leading-relaxed mb-4">${t.description}</p>
+
+                    <div class="flex flex-wrap gap-1.5 mb-5">
+                        ${(t.techStack || []).map(s => `<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-[var(--muted-bg)] border border-[var(--border)]">${s}</span>`).join("")}
+                    </div>
+                </div>
+
+                <div class="space-y-3 pt-3 border-t border-[var(--border)]">
+                    <div>
+                        <div class="flex items-center justify-between text-[10px] font-bold mb-1">
+                            <span>${stats.resumeInfo || `${stats.doneCount}/${stats.total} Modules Completed`}</span>
+                            <span>${stats.pct}%</span>
+                        </div>
+                        <div class="w-full h-1.5 rounded-full bg-[var(--muted-bg)] overflow-hidden">
+                            <div class="h-full ${stats.pct === 100 ? 'bg-emerald-500' : 'bg-blue-600'} transition-all" style="width: ${stats.pct}%"></div>
+                        </div>
+                    </div>
+
+                    <a href="course.html?course=${encodeURIComponent(t.id)}" class="w-full py-2.5 rounded-xl text-xs font-extrabold ${highlightEnrolled ? 'bg-emerald-600 hover:bg-emerald-500' : 'bg-blue-600 hover:bg-blue-500'} text-white text-center block transition">
+                        ${stats.isEnrolled ? (stats.pct === 100 ? "Review & Certificate →" : "Resume Track →") : (t.isInternship ? "Enroll in Internship →" : "Start Course →")}
+                    </a>
+                </div>
+            `;
+            return card;
+        }
 
         function render() {
             const q = document.getElementById("search-box").value.toLowerCase();
+
+            // 1. Render My Enrolled Tracks Section
+            const enrolledTracks = tracks.filter(t => getTrackStats(t).isEnrolled);
+            const enrolledSec = document.getElementById("enrolled-section");
+            const enrolledGrid = document.getElementById("enrolled-grid");
+            enrolledGrid.innerHTML = "";
+
+            if (enrolledTracks.length > 0) {
+                enrolledSec.classList.remove("hidden");
+                document.getElementById("enrolled-badge").textContent = `${enrolledTracks.length} Active`;
+                enrolledTracks.forEach(t => {
+                    enrolledGrid.appendChild(createTrackCard(t, getTrackStats(t), true));
+                });
+            } else {
+                enrolledSec.classList.add("hidden");
+            }
+
+            // 2. Render Filtered Catalog
             const grid = document.getElementById("grid");
             grid.innerHTML = "";
 
-            tracks.filter(t => t.title.toLowerCase().includes(q) || t.description.toLowerCase().includes(q)).forEach(t => {
-                const total = t.lessons.length;
-                const done = t.lessons.filter(l => completedLessons[l.id]).length;
-                const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+            const filtered = tracks.filter(t => {
+                const matchCat = activeCat === "All" || (activeCat === "Internship" ? t.isInternship : t.category === activeCat);
+                const matchQuery = t.title.toLowerCase().includes(q) || t.description.toLowerCase().includes(q) || (t.techStack || []).some(s => s.toLowerCase().includes(q));
+                return matchCat && matchQuery;
+            });
 
-                const card = document.createElement("div");
-                card.className = "flex flex-col justify-between p-6 rounded-2xl bg-[var(--card)] border border-slate-200 dark:border-white/10 hover:border-blue-500/40 transition-all";
-                card.innerHTML = `
-                    <div>
-                        <div class="flex items-center justify-between mb-3">
-                            <span class="text-[10px] font-bold uppercase px-2.5 py-1 rounded bg-blue-500/10 text-blue-500">${t.category} • Open</span>
-                            <span class="text-xs font-bold text-emerald-500">${pct}% Done</span>
-                        </div>
-                        <h3 class="heading-font text-lg font-bold text-[var(--foreground)] mb-2">${t.title}</h3>
-                        <p class="text-xs text-[var(--muted-text)] mb-4">${t.description}</p>
-                        <div class="flex flex-wrap gap-1.5 mb-6">
-                            ${t.techStack.map(s => `<span class="text-[11px] font-mono px-2 py-0.5 rounded bg-[var(--muted-bg)]">${s}</span>`).join("")}
-                        </div>
-                    </div>
-                    <a href="player.html?id=${encodeURIComponent(t.id)}" class="w-full py-2.5 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white text-center block">
-                        ${t.isInternship ? "Enter Internship Sprint →" : "Start Course →"}
-                    </a>
-                `;
-                grid.appendChild(card);
+            document.getElementById("catalog-count").textContent = `Showing ${filtered.length} track${filtered.length === 1 ? "" : "s"}`;
+
+            filtered.forEach(t => {
+                const stats = getTrackStats(t);
+                grid.appendChild(createTrackCard(t, stats, stats.isEnrolled));
             });
         }
     </script>
