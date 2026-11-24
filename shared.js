@@ -92,6 +92,23 @@ function logoutUser() {
   window.location.href = "index.html";
 }
 
+// Unified POST Helper for Google Apps Script (handles 302 redirect cleanly)
+async function postToOpenboxApi(payload) {
+  const res = await fetch(APPS_SCRIPT_URL, {
+    method: "POST",
+    redirect: "follow",
+    headers: { "Content-Type": "text/plain;charset=utf-8" },
+    body: JSON.stringify(payload)
+  });
+
+  const text = await res.text();
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    throw new Error("Apps Script returned HTML instead of JSON. Ensure deployment 'Who has access' is set to 'Anyone' and redeployed as a New version.");
+  }
+}
+
 // Live Catalog Fetcher with Timeout & Local Cache
 async function fetchLiveTracks() {
   const controller = new AbortController();
