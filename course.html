@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="shared.js"></script>
   <style>
     :root {
       --bg: #f4f6fa;
@@ -98,11 +99,19 @@
         />
         <button
           id="nav-sync-btn"
-          onclick="document.getElementById('sheet-auth-modal').classList.remove('hidden')"
+          onclick="openQuickSyncModal()"
           class="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-blue-600/10 text-blue-600 dark:text-blue-400 border border-blue-600/20 hover:bg-blue-600 hover:text-white transition cursor-pointer flex items-center gap-1.5"
         >
           <i class="fa-solid fa-cloud-arrow-up"></i>
           <span id="nav-sync-label">Sync Account</span>
+        </button>
+        <button
+          id="nav-logout-btn"
+          onclick="logoutUser()"
+          class="hidden px-3 py-1.5 rounded-xl text-xs font-bold border border-[var(--border)] hover:bg-rose-600 hover:text-white hover:border-rose-600 transition cursor-pointer"
+          title="Sign Out"
+        >
+          Logout
         </button>
         <button
           onclick="toggleTheme()"
@@ -150,7 +159,7 @@
           Master Industry Workflows. Earn Verified Credentials.
         </h1>
         <p class="text-xs sm:text-sm text-[var(--muted)] leading-relaxed">
-          Complete 100% of video lectures till the end, finish interactive step-by-step practical tasks, and pass the proctored assessment (≥75%) to unlock your official Openbox Growth Partner credential.
+          Your watch progress auto-saves every second so you can resume right where you left off across logins. Complete 100% of video lectures till the end, finish interactive step-by-step tasks, and pass the proctored assessment (≥75%) to unlock your official Openbox Growth Partner credential.
         </p>
       </div>
 
@@ -172,19 +181,37 @@
       </div>
     </div>
 
-    <!-- CATEGORY FILTERS -->
+    <!-- =================================================================== -->
+    <!-- DEDICATED SECTION: MY ENROLLED TRACKS & LIVE SAVED PROGRESS         -->
+    <!-- =================================================================== -->
+    <section id="enrolled-section" class="hidden mb-10">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+        <div class="flex items-center gap-2.5">
+          <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+          <h2 class="text-lg sm:text-xl font-extrabold tracking-tight">My Enrolled Tracks</h2>
+          <span id="enrolled-count-pill" class="px-2.5 py-0.5 rounded-full text-[11px] font-extrabold bg-emerald-500/15 text-emerald-700 dark:text-emerald-400"></span>
+        </div>
+        <span class="text-xs font-semibold text-[var(--muted)]">Synced with your Openbox student record</span>
+      </div>
+      <div id="enrolled-courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+
+    <!-- ALL AVAILABLE TRACKS HEADER & CATEGORY FILTERS -->
     <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
-      <div class="flex flex-wrap gap-2">
-        <button onclick="setCat('All')" id="cat-All" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 dark:bg-blue-600 text-white cursor-pointer shadow-sm">All Tracks</button>
-        <button onclick="setCat('Internship')" id="cat-Internship" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-[var(--card)] border border-[var(--border)] cursor-pointer">Task-Based Internships</button>
-        <button onclick="setCat('Development')" id="cat-Development" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-[var(--card)] border border-[var(--border)] cursor-pointer">Computer Science &amp; Dev</button>
-        <button onclick="setCat('Analytics')" id="cat-Analytics" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-[var(--card)] border border-[var(--border)] cursor-pointer">Finance &amp; Analytics</button>
-        <button onclick="setCat('Marketing')" id="cat-Marketing" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-[var(--card)] border border-[var(--border)] cursor-pointer">Growth &amp; Marketing</button>
+      <div>
+        <h2 class="text-lg font-extrabold tracking-tight mb-2">Explore All Tracks &amp; Internships</h2>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="setCat('All')" id="cat-All" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-slate-900 dark:bg-blue-600 text-white cursor-pointer shadow-sm">All Tracks</button>
+          <button onclick="setCat('Internship')" id="cat-Internship" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-[var(--card)] border border-[var(--border)] cursor-pointer">Task-Based Internships</button>
+          <button onclick="setCat('Development')" id="cat-Development" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-[var(--card)] border border-[var(--border)] cursor-pointer">Computer Science &amp; Dev</button>
+          <button onclick="setCat('Analytics')" id="cat-Analytics" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-[var(--card)] border border-[var(--border)] cursor-pointer">Finance &amp; Analytics</button>
+          <button onclick="setCat('Marketing')" id="cat-Marketing" class="cat-btn px-4 py-2 rounded-xl text-xs font-bold bg-[var(--card)] border border-[var(--border)] cursor-pointer">Growth &amp; Marketing</button>
+        </div>
       </div>
       <span id="track-count-indicator" class="text-xs font-bold text-[var(--muted)]"></span>
     </div>
 
-    <!-- COURSE CARDS GRID -->
+    <!-- ALL COURSE CARDS GRID -->
     <div id="courses-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
   </main>
 
@@ -198,7 +225,7 @@
         onclick="closeCourse()"
         class="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-bold bg-[var(--card)] border border-[var(--border)] hover:border-blue-600 cursor-pointer transition"
       >
-        <i class="fa-solid fa-arrow-left"></i> Back to Catalog
+        <i class="fa-solid fa-arrow-left"></i> Back to Catalog &amp; Enrolled Tracks
       </button>
 
       <div class="flex items-center gap-2">
@@ -266,7 +293,7 @@
     <!-- STAGE 1: WATCH-TO-END VIDEO PLAYER & CURRICULUM PLAYLIST            -->
     <!-- =================================================================== -->
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-      <!-- Left 2 Cols: Enforced Watch-to-End Video Player -->
+      <!-- Left 2 Cols: Enforced Watch-to-End Video Player with Auto-Resume -->
       <div class="lg:col-span-2 space-y-4">
         <div class="relative aspect-video w-full rounded-2xl overflow-hidden bg-slate-950 border border-[var(--border)] shadow-lg">
           <div id="yt-player-container" class="w-full h-full"></div>
@@ -275,11 +302,12 @@
         <!-- Live Watch Progress Bar & Enforcement Status -->
         <div class="p-5 rounded-2xl bg-[var(--card)] border border-[var(--border)] space-y-4">
           <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--border)]">
-            <div class="flex items-center gap-2.5">
+            <div class="flex flex-wrap items-center gap-2.5">
               <span id="video-lock-pill" class="px-2.5 py-1 rounded-lg text-[10px] font-extrabold uppercase tracking-wider bg-amber-500/15 text-amber-700 dark:text-amber-400">
                 <i class="fa-solid fa-lock mr-1"></i> Watch Full Video to Unlock
               </span>
               <span id="video-watch-pct-text" class="text-xs font-bold text-[var(--muted)]">Watched: 0%</span>
+              <span id="video-resume-badge" class="hidden px-2 py-0.5 rounded text-[10px] font-bold bg-blue-600/10 text-blue-600 dark:text-blue-400"></span>
             </div>
             <div class="w-full sm:w-48 h-2 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden">
               <div id="video-watch-bar" class="h-full bg-amber-500 transition-all duration-300" style="width: 0%"></div>
@@ -363,7 +391,7 @@
 
           <h3 class="text-lg font-extrabold mb-2">Final Verification Assessment</h3>
           <p class="text-xs text-slate-300 leading-relaxed mb-4">
-            This assessment redirects to a dedicated anti-cheat testing environment. Switching tabs, minimizing the browser, or copying text is strictly monitored and will auto-submit your exam after 2 warnings.
+            This assessment launches a dedicated anti-cheat testing environment. Switching tabs, minimizing the browser, or copying text is strictly monitored and will auto-submit your exam after 2 warnings.
           </p>
 
           <ul class="space-y-1.5 text-[11px] text-slate-300 mb-5">
@@ -389,7 +417,6 @@
   <!-- VIEW 3: DEDICATED ANTI-CHEAT PROCTORED ASSESSMENT PAGE                -->
   <!-- ===================================================================== -->
   <section id="proctored-quiz-view" class="hidden fixed inset-0 z-50 bg-slate-950 text-white overflow-y-auto exam-locked-surface">
-    <!-- Top Proctoring Telemetry Bar -->
     <div class="sticky top-0 z-20 bg-slate-900 border-b border-white/10 px-4 sm:px-8 h-16 flex items-center justify-between gap-4">
       <div class="flex items-center gap-3">
         <div class="w-8 h-8 rounded-lg bg-red-600/20 border border-red-500/40 text-red-400 flex items-center justify-center text-xs">
@@ -402,13 +429,11 @@
       </div>
 
       <div class="flex items-center gap-3 sm:gap-5">
-        <!-- Violation Counter -->
         <div class="px-3 py-1.5 rounded-xl bg-white/5 border border-white/10 text-xs font-bold flex items-center gap-2">
           <span class="text-slate-400 hidden sm:inline">Tab Warnings:</span>
           <span id="pq-warnings-badge" class="text-emerald-400 font-extrabold">0 / 2</span>
         </div>
 
-        <!-- Countdown Timer -->
         <div class="px-3.5 py-1.5 rounded-xl bg-amber-500/15 border border-amber-500/30 text-amber-400 text-xs font-mono font-extrabold flex items-center gap-2">
           <i class="fa-solid fa-stopwatch"></i>
           <span id="pq-timer">00:00</span>
@@ -423,15 +448,12 @@
       </div>
     </div>
 
-    <!-- Violation Warning Alert Banner -->
     <div id="pq-warning-banner" class="hidden bg-red-600 text-white text-xs font-extrabold py-3 px-6 text-center">
       <i class="fa-solid fa-triangle-exclamation mr-2"></i>
       <span id="pq-warning-text">WARNING: Tab switch or focus loss detected! One more violation will automatically terminate and grade your exam.</span>
     </div>
 
-    <!-- Exam Main Content Container -->
     <div class="max-w-3xl mx-auto px-4 sm:px-6 py-10">
-      <!-- Active Question Card -->
       <div id="pq-exam-body">
         <div class="flex items-center justify-between text-xs font-bold text-slate-400 mb-3">
           <span id="pq-progress-label">Question 1 of 5</span>
@@ -441,9 +463,7 @@
           <div id="pq-progress-bar" class="h-full bg-blue-500 transition-all duration-300" style="width: 20%"></div>
         </div>
 
-        <div id="pq-question-card" class="p-6 sm:p-8 rounded-2xl bg-slate-900 border border-white/10 shadow-2xl mb-6">
-          <!-- Injected dynamically -->
-        </div>
+        <div id="pq-question-card" class="p-6 sm:p-8 rounded-2xl bg-slate-900 border border-white/10 shadow-2xl mb-6"></div>
 
         <div class="flex items-center justify-between gap-4">
           <button
@@ -473,7 +493,6 @@
         </div>
       </div>
 
-      <!-- Exam Result Summary Screen -->
       <div id="pq-result-screen" class="hidden p-8 rounded-2xl bg-slate-900 border border-white/10 text-center space-y-5">
         <div id="pq-result-icon" class="w-16 h-16 rounded-2xl mx-auto flex items-center justify-center text-2xl"></div>
         <h3 id="pq-result-title" class="text-2xl font-extrabold"></h3>
@@ -574,41 +593,36 @@
     </div>
   </div>
 
-  <!-- STUDENT SHEET SYNC MODAL -->
+  <!-- PASSWORD-FREE STUDENT SHEET SYNC MODAL -->
   <div id="sheet-auth-modal" class="hidden fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm flex items-center justify-center p-4">
     <div class="bg-[var(--card)] text-[var(--text)] max-w-md w-full rounded-2xl shadow-2xl p-6 border border-[var(--border)]">
       <div class="flex items-center justify-between mb-4 pb-3 border-b border-[var(--border)]">
         <div>
-          <span class="text-[10px] font-extrabold uppercase tracking-widest text-blue-600 dark:text-blue-400">Openbox Student Record</span>
-          <h3 class="text-lg font-extrabold">Register / Sync with Google Sheet</h3>
+          <span class="text-[10px] font-extrabold uppercase tracking-widest text-blue-600 dark:text-blue-400">Cloud Progress Sync</span>
+          <h3 class="text-lg font-extrabold">Sync Enrolled Tracks &amp; Watch Progress</h3>
         </div>
         <button onclick="document.getElementById('sheet-auth-modal').classList.add('hidden')" class="w-8 h-8 rounded-xl bg-[var(--surface)] text-xs font-bold cursor-pointer">✕</button>
       </div>
 
-      <div class="grid grid-cols-2 gap-2 p-1 rounded-xl bg-[var(--surface)] mb-4">
-        <button id="sa-tab-reg" onclick="setSheetAuthMode('register')" class="py-1.5 rounded-lg text-xs font-extrabold bg-[var(--card)] shadow-sm cursor-pointer">New Student</button>
-        <button id="sa-tab-log" onclick="setSheetAuthMode('login')" class="py-1.5 rounded-lg text-xs font-bold text-[var(--muted)] cursor-pointer">Existing Login</button>
-      </div>
+      <p class="text-xs text-[var(--muted)] mb-4">
+        Enter your student details below (or use <a href="login.html" class="text-blue-600 underline font-bold">Google Sign-In</a>) to load your saved watch timestamps and enrolled courses.
+      </p>
 
-      <form onsubmit="submitSheetAuth(event)" class="space-y-3">
-        <div id="sa-name-wrap">
+      <form onsubmit="submitQuickSync(event)" class="space-y-3">
+        <div>
           <label class="block text-[11px] font-bold mb-1">Full Name (Printed on Certificate)</label>
-          <input id="sa-name" type="text" placeholder="Aviral Pathak" class="w-full px-3 py-2 rounded-xl text-xs bg-[var(--surface)] border border-[var(--border)]" />
+          <input id="sa-name" type="text" required placeholder="Aviral Pathak" class="w-full px-3 py-2 rounded-xl text-xs bg-[var(--surface)] border border-[var(--border)]" />
         </div>
         <div>
           <label class="block text-[11px] font-bold mb-1">Email Address</label>
-          <input id="sa-email" type="email" required placeholder="you@example.com" class="w-full px-3 py-2 rounded-xl text-xs bg-[var(--surface)] border border-[var(--border)]" />
+          <input id="sa-email" type="email" required placeholder="20261076@dmims.edu.in" class="w-full px-3 py-2 rounded-xl text-xs bg-[var(--surface)] border border-[var(--border)]" />
         </div>
         <div>
-          <label class="block text-[11px] font-bold mb-1">Password</label>
-          <input id="sa-pass" type="password" required placeholder="••••••••" class="w-full px-3 py-2 rounded-xl text-xs bg-[var(--surface)] border border-[var(--border)]" />
-        </div>
-        <div id="sa-gh-wrap">
           <label class="block text-[11px] font-bold mb-1">GitHub URL (Optional)</label>
           <input id="sa-gh" type="url" placeholder="https://github.com/username" class="w-full px-3 py-2 rounded-xl text-xs bg-[var(--surface)] border border-[var(--border)]" />
         </div>
         <button type="submit" id="sa-btn" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-extrabold cursor-pointer">
-          Save &amp; Sync Account
+          Load &amp; Sync My Progress
         </button>
         <p id="sa-msg" class="text-xs font-bold text-center"></p>
       </form>
@@ -618,22 +632,34 @@
   <!-- LOAD YOUTUBE IFRAME API & COURSE DATA -->
   <script src="https://www.youtube.com/iframe_api"></script>
   <script src="courses-data.js"></script>
+  <script src="data.js"></script>
 
   <script>
     const STORAGE_KEY = "openbox_portal_progress_v2";
     const PASS_THRESHOLD = 75;
-    const SHEET_API_URL = "https://script.google.com/macros/s/AKfycbysQBHvivlSzoEYU57dsaauDItp-7fBJhqp7STBU933-9wjZ56JpiP6je9LkzLeyjyQ2w/exec";
+
+    // Normalize dataset whether loaded from courses-data.js (OPENBOX_COURSES) or data.js (OPENBOX_TRACKS)
+    const PORTAL_TRACKS = (
+      typeof OPENBOX_COURSES !== "undefined" ? OPENBOX_COURSES :
+      typeof OPENBOX_TRACKS !== "undefined" ? OPENBOX_TRACKS : []
+    ).map(item => ({
+      ...item,
+      typeBadge: item.typeBadge || item.tier || (item.isInternship ? "Internship Sprint" : "Verified Track"),
+      lectures: item.lectures || item.lessons || [],
+      assignments: item.assignments || item.tasks || [],
+      documents: item.documents || []
+    }));
 
     let currentCategory = "All";
     let activeCourse = null;
     let activeLectureIndex = 0;
 
-    // YouTube Watch-to-End Enforcement State
+    // YouTube Watch-to-End & Resume Enforcement State
     let ytPlayer = null;
-    let ytApiReady = false;
     let watchPollInterval = null;
     let maxWatchedSeconds = 0;
     let videoDurationSeconds = 0;
+    let pendingSeekSeconds = 0;
 
     // Proctored Anti-Cheat Quiz State
     let examActive = false;
@@ -644,14 +670,47 @@
     let examTimerInterval = null;
     let examSecondsLeft = 0;
 
-    // Load persisted learner progress
+    // Load local UI state & merge with shared.js session state
     let appState = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
     if (!appState.courses) appState.courses = {};
-    if (appState.studentName) {
-      document.getElementById("student-name-input").value = appState.studentName;
-    }
-    if (appState.studentEmail) {
-      document.getElementById("nav-sync-label").textContent = appState.studentEmail.split("@")[0];
+
+    function hydrateLocalFromCloudSession() {
+      if (currentUser) {
+        appState.studentName = currentUser.name;
+        appState.studentEmail = currentUser.email;
+        document.getElementById("student-name-input").value = currentUser.name;
+        document.getElementById("nav-sync-label").textContent = currentUser.name.split(" ")[0];
+        document.getElementById("nav-logout-btn").classList.remove("hidden");
+      } else if (appState.studentName) {
+        document.getElementById("student-name-input").value = appState.studentName;
+      }
+
+      const savedQuizMap = JSON.parse(localStorage.getItem("openbox_quiz_results") || "{}");
+
+      PORTAL_TRACKS.forEach(course => {
+        const prog = getCourseProgress(course.id);
+        (course.lectures || []).forEach(lec => {
+          const watchInfo = videoWatchMap[lec.id];
+          if (watchInfo && watchInfo.watchedSec > 0) {
+            prog.partialSeconds[lec.id] = Math.max(prog.partialSeconds[lec.id] || 0, watchInfo.watchedSec);
+            if (watchInfo.percent >= 96) {
+              prog.watchedVideos[lec.id] = true;
+            }
+          }
+          if (completedLessons[lec.id]) {
+            prog.watchedVideos[lec.id] = true;
+            if (!prog.completedLectures.includes(lec.id)) {
+              prog.completedLectures.push(lec.id);
+            }
+          }
+        });
+
+        if (savedQuizMap[course.id]) {
+          prog.quizPercent = Math.max(prog.quizPercent, savedQuizMap[course.id].percent || 0);
+          prog.quizPassed = prog.quizPassed || Boolean(savedQuizMap[course.id].passed);
+        }
+      });
+      saveState();
     }
 
     function saveState() {
@@ -666,9 +725,11 @@
     function getCourseProgress(courseId) {
       if (!appState.courses[courseId]) {
         appState.courses[courseId] = {
+          enrolled: false,
           completedLectures: [],
-          watchedVideos: {},        // { [lectureId]: true } unlocked only after full watch
-          taskStepsCompleted: {},   // { [taskIdx]: [stepIdx, ...] }
+          watchedVideos: {},
+          partialSeconds: {},       // { [lectureId]: secondsWatched }
+          taskStepsCompleted: {},
           submittedAssignments: {},
           quizPercent: 0,
           quizPassed: false,
@@ -680,8 +741,50 @@
         };
       }
       if (!appState.courses[courseId].watchedVideos) appState.courses[courseId].watchedVideos = {};
+      if (!appState.courses[courseId].partialSeconds) appState.courses[courseId].partialSeconds = {};
       if (!appState.courses[courseId].taskStepsCompleted) appState.courses[courseId].taskStepsCompleted = {};
       return appState.courses[courseId];
+    }
+
+    function formatSecondsMMSS(sec) {
+      const s = Math.max(0, Math.floor(sec || 0));
+      const m = Math.floor(s / 60);
+      const rem = String(s % 60).padStart(2, "0");
+      return `${m}:${rem}`;
+    }
+
+    function isCourseEnrolled(course) {
+      const prog = getCourseProgress(course.id);
+      const hasWatchActivity = Object.keys(prog.partialSeconds).some(k => prog.partialSeconds[k] > 0);
+      const hasCompletedLecs = prog.completedLectures.length > 0;
+      const hasSubmissions = Object.keys(prog.submittedAssignments).some(k => prog.submittedAssignments[k]);
+      return Boolean(
+        prog.enrolled ||
+        enrolledCourses.includes(course.id) ||
+        hasWatchActivity ||
+        hasCompletedLecs ||
+        hasSubmissions ||
+        prog.quizPercent > 0
+      );
+    }
+
+    function markCourseEnrolled(courseId) {
+      const prog = getCourseProgress(courseId);
+      if (!prog.enrolled) {
+        prog.enrolled = true;
+        saveState();
+      }
+      if (!enrolledCourses.includes(courseId)) {
+        enrolledCourses.push(courseId);
+        localStorage.setItem("openbox_enrolled", JSON.stringify(enrolledCourses));
+      }
+      if (currentUser && typeof postToOpenboxApi === "function") {
+        postToOpenboxApi({
+          action: "enroll_course",
+          email: currentUser.email,
+          courseId: courseId
+        }).catch(() => {});
+      }
     }
 
     function getBannerTheme(course) {
@@ -691,6 +794,28 @@
       if (course.category === "Marketing") return { cls: "banner-marketing", icon: "fa-solid fa-bullhorn" };
       if (course.category === "Development") return { cls: "banner-development", icon: "fa-solid fa-code" };
       return { cls: "banner-default", icon: "fa-solid fa-graduation-cap" };
+    }
+
+    function computeOverallPercent(course) {
+      const status = checkEligibility(course);
+      const prog = getCourseProgress(course.id);
+
+      // Include fractional progress from half-watched videos
+      let fractionalLecs = 0;
+      (course.lectures || []).forEach(lec => {
+        if (prog.completedLectures.includes(lec.id)) {
+          fractionalLecs += 1;
+        } else if (videoWatchMap[lec.id]?.percent) {
+          fractionalLecs += (videoWatchMap[lec.id].percent / 100);
+        } else if (prog.partialSeconds[lec.id] > 0) {
+          fractionalLecs += 0.25;
+        }
+      });
+
+      const lecRatio = status.totalLecs ? Math.min(1, fractionalLecs / status.totalLecs) : 1;
+      const assignRatio = status.totalAssigns ? status.doneAssigns / status.totalAssigns : 1;
+      const quizRatio = status.quizDone ? 1 : Math.min(status.quizPercent / PASS_THRESHOLD, 0.9);
+      return Math.round(((lecRatio + assignRatio + quizRatio) / 3) * 100);
     }
 
     function checkEligibility(course) {
@@ -721,10 +846,6 @@
       };
     }
 
-    function toggleTheme() {
-      document.documentElement.classList.toggle("dark");
-    }
-
     function setCat(cat) {
       currentCategory = cat;
       document.querySelectorAll(".cat-btn").forEach(btn => {
@@ -737,22 +858,29 @@
       renderCatalog();
     }
 
-    function renderCatalog() {
-      const grid = document.getElementById("courses-grid");
-      const filtered = OPENBOX_COURSES.filter(c => {
-        if (currentCategory === "All") return true;
-        if (currentCategory === "Internship") return Boolean(c.isInternship);
-        return c.category === currentCategory;
-      });
+    function buildCourseCardHtml(course, isEnrolledCard = false) {
+      const status = checkEligibility(course);
+      const prog = getCourseProgress(course.id);
+      const theme = getBannerTheme(course);
+      const overallPct = computeOverallPercent(course);
 
-      document.getElementById("track-count-indicator").textContent = `Showing ${filtered.length} verified track${filtered.length === 1 ? "" : "s"}`;
+      // Find first incomplete lecture & its saved resume timestamp
+      let resumeLecIdx = 0;
+      let resumeLabel = "";
+      for (let i = 0; i < (course.lectures || []).length; i++) {
+        const l = course.lectures[i];
+        if (!prog.completedLectures.includes(l.id)) {
+          resumeLecIdx = i;
+          const savedSec = prog.partialSeconds[l.id] || videoWatchMap[l.id]?.watchedSec || 0;
+          if (savedSec > 5) {
+            resumeLabel = `Resume Lec ${i + 1} (${formatSecondsMMSS(savedSec)})`;
+          }
+          break;
+        }
+      }
 
-      grid.innerHTML = filtered
-        .map(course => {
-          const status = checkEligibility(course);
-          const theme = getBannerTheme(course);
-          return `
-        <article class="rounded-2xl bg-[var(--card)] border border-[var(--border)] flex flex-col justify-between overflow-hidden hover:border-blue-600 transition shadow-sm group">
+      return `
+        <article class="rounded-2xl bg-[var(--card)] border ${isEnrolledCard ? 'border-emerald-500/40 ring-1 ring-emerald-500/10' : 'border-[var(--border)]'} flex flex-col justify-between overflow-hidden hover:border-blue-600 transition shadow-sm group">
           <div>
             <div class="course-banner ${theme.cls} p-5 text-white">
               <div class="flex items-center justify-between gap-2 mb-4">
@@ -760,7 +888,13 @@
                   ${course.typeBadge}
                 </span>
                 <div class="flex items-center gap-1.5">
-                  ${status.unlocked ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-500 text-white">✓ Certified</span>` : ""}
+                  ${
+                    status.unlocked
+                      ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-emerald-500 text-white">✓ Certified</span>`
+                      : isEnrolledCard
+                      ? `<span class="px-2 py-0.5 rounded-md text-[10px] font-extrabold bg-blue-500 text-white">${overallPct}% Progress</span>`
+                      : ""
+                  }
                   <button
                     onclick="event.stopPropagation(); openShareModal('${course.id}')"
                     class="w-7 h-7 rounded-lg bg-white/15 hover:bg-white/30 text-white flex items-center justify-center text-xs cursor-pointer transition"
@@ -792,26 +926,69 @@
             </div>
           </div>
 
-          <div class="px-6 py-4 border-t border-[var(--border)] flex items-center justify-between gap-2 bg-[var(--surface)]/50">
-            <span class="text-[11px] font-bold text-[var(--muted)]">
-              ${status.doneLecs}/${status.totalLecs} Videos • ${status.doneAssigns}/${status.totalAssigns} Tasks
-            </span>
-            <button
-              onclick="openCourse('${course.id}')"
-              class="px-4 py-2 rounded-xl bg-slate-900 dark:bg-blue-600 hover:opacity-90 text-white text-xs font-extrabold cursor-pointer transition"
-            >
-              ${status.unlocked ? "View Credential →" : "Enter Workspace →"}
-            </button>
+          <div class="px-6 py-4 border-t border-[var(--border)] bg-[var(--surface)]/50 space-y-3">
+            ${
+              isEnrolledCard
+                ? `
+              <div>
+                <div class="flex items-center justify-between text-[10px] font-extrabold uppercase tracking-wider mb-1">
+                  <span class="text-[var(--muted)]">${resumeLabel || 'Saved Progress'}</span>
+                  <span class="text-emerald-600 dark:text-emerald-400">${overallPct}%</span>
+                </div>
+                <div class="w-full h-1.5 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden">
+                  <div class="h-full bg-emerald-500 transition-all duration-300" style="width: ${overallPct}%"></div>
+                </div>
+              </div>
+            `
+                : ""
+            }
+            <div class="flex items-center justify-between gap-2">
+              <span class="text-[11px] font-bold text-[var(--muted)]">
+                ${status.doneLecs}/${status.totalLecs} Videos • ${status.doneAssigns}/${status.totalAssigns} Tasks
+              </span>
+              <button
+                onclick="openCourse('${course.id}', true, ${resumeLecIdx})"
+                class="px-4 py-2 rounded-xl ${isEnrolledCard ? 'bg-emerald-600 hover:bg-emerald-700' : 'bg-slate-900 dark:bg-blue-600 hover:opacity-90'} text-white text-xs font-extrabold cursor-pointer transition"
+              >
+                ${status.unlocked ? "View Credential →" : isEnrolledCard ? "Resume →" : "Enroll & Start →"}
+              </button>
+            </div>
           </div>
         </article>
       `;
-        })
-        .join("");
     }
 
-    function openCourse(courseId, updateUrl = true) {
-      activeCourse = OPENBOX_COURSES.find(c => c.id === courseId);
+    function renderCatalog() {
+      // 1. Render "My Enrolled Tracks" section
+      const enrolledList = PORTAL_TRACKS.filter(c => isCourseEnrolled(c));
+      const enrolledSec = document.getElementById("enrolled-section");
+      const enrolledGrid = document.getElementById("enrolled-courses-grid");
+
+      if (enrolledList.length > 0) {
+        enrolledSec.classList.remove("hidden");
+        document.getElementById("enrolled-count-pill").textContent = `${enrolledList.length} Enrolled`;
+        enrolledGrid.innerHTML = enrolledList.map(c => buildCourseCardHtml(c, true)).join("");
+      } else {
+        enrolledSec.classList.add("hidden");
+      }
+
+      // 2. Render All Filtered Tracks
+      const grid = document.getElementById("courses-grid");
+      const filtered = PORTAL_TRACKS.filter(c => {
+        if (currentCategory === "All") return true;
+        if (currentCategory === "Internship") return Boolean(c.isInternship);
+        return c.category === currentCategory;
+      });
+
+      document.getElementById("track-count-indicator").textContent = `Showing ${filtered.length} verified track${filtered.length === 1 ? "" : "s"}`;
+      grid.innerHTML = filtered.map(c => buildCourseCardHtml(c, isCourseEnrolled(c))).join("");
+    }
+
+    function openCourse(courseId, updateUrl = true, startLecIdx = 0) {
+      activeCourse = PORTAL_TRACKS.find(c => c.id === courseId);
       if (!activeCourse) return;
+
+      markCourseEnrolled(courseId);
 
       if (updateUrl) {
         const url = new URL(window.location.href);
@@ -838,7 +1015,7 @@
         .map(s => `<span class="px-2.5 py-0.5 rounded-md text-[10px] font-bold bg-[var(--surface)] border border-[var(--border)] text-[var(--muted)]">${s}</span>`)
         .join("");
 
-      selectLecture(0);
+      selectLecture(startLecIdx);
       renderDocs();
       renderAssignments();
       updateQuizGatewayBadge();
@@ -846,6 +1023,7 @@
     }
 
     function closeCourse() {
+      flushCurrentVideoWatch(true);
       stopWatchPolling();
       if (ytPlayer && typeof ytPlayer.stopVideo === "function") {
         ytPlayer.stopVideo();
@@ -860,28 +1038,44 @@
     }
 
     // =========================================================================
-    // 1. STRICT WATCH-TO-END YOUTUBE VIDEO ENFORCEMENT
+    // 1. WATCH-TO-END YOUTUBE ENFORCEMENT + HALF-WATCHED TIMESTAMP RESUME
     // =========================================================================
     function onYouTubeIframeAPIReady() {
-      ytApiReady = true;
       if (activeCourse && activeCourse.lectures[activeLectureIndex]) {
-        loadYouTubeVideo(activeCourse.lectures[activeLectureIndex].videoId);
+        const lec = activeCourse.lectures[activeLectureIndex];
+        loadYouTubeVideo(lec.videoId, getSavedResumeSeconds(lec.id));
       }
     }
 
-    function loadYouTubeVideo(videoId) {
+    function getSavedResumeSeconds(lessonId) {
+      if (!activeCourse) return 0;
+      const prog = getCourseProgress(activeCourse.id);
+      const localSec = prog.partialSeconds[lessonId] || 0;
+      const cloudSec = videoWatchMap[lessonId]?.watchedSec || 0;
+      return Math.max(localSec, cloudSec);
+    }
+
+    function loadYouTubeVideo(videoId, resumeFromSec = 0) {
       stopWatchPolling();
-      maxWatchedSeconds = 0;
+      maxWatchedSeconds = resumeFromSec;
       videoDurationSeconds = 0;
+      pendingSeekSeconds = resumeFromSec;
+
+      const resumeBadge = document.getElementById("video-resume-badge");
+      if (resumeFromSec > 5) {
+        resumeBadge.textContent = `Resumed at ${formatSecondsMMSS(resumeFromSec)}`;
+        resumeBadge.classList.remove("hidden");
+      } else {
+        resumeBadge.classList.add("hidden");
+      }
 
       if (!window.YT || !window.YT.Player) {
-        // Fallback if YT script hasn't finished loading yet
-        setTimeout(() => loadYouTubeVideo(videoId), 300);
+        setTimeout(() => loadYouTubeVideo(videoId, resumeFromSec), 300);
         return;
       }
 
       if (ytPlayer && typeof ytPlayer.loadVideoById === "function") {
-        ytPlayer.loadVideoById(videoId);
+        ytPlayer.loadVideoById({ videoId: videoId, startSeconds: Math.floor(resumeFromSec) });
         startWatchPolling();
         return;
       }
@@ -891,10 +1085,14 @@
         playerVars: {
           rel: 0,
           modestbranding: 1,
-          playsinline: 1
+          playsinline: 1,
+          start: Math.floor(resumeFromSec)
         },
         events: {
-          onReady: () => {
+          onReady: (e) => {
+            if (pendingSeekSeconds > 3) {
+              e.target.seekTo(Math.floor(pendingSeekSeconds), true);
+            }
             startWatchPolling();
           },
           onStateChange: onPlayerStateChange
@@ -905,21 +1103,43 @@
     function onPlayerStateChange(event) {
       if (event.data === YT.PlayerState.PLAYING) {
         startWatchPolling();
+      } else if (event.data === YT.PlayerState.PAUSED) {
+        flushCurrentVideoWatch(true);
       } else if (event.data === YT.PlayerState.ENDED) {
+        flushCurrentVideoWatch(true);
         unlockCurrentVideoCompletion();
+      }
+    }
+
+    function flushCurrentVideoWatch(forceCloudSync = false) {
+      if (!activeCourse || !ytPlayer || typeof ytPlayer.getCurrentTime !== "function") return;
+      const lec = activeCourse.lectures[activeLectureIndex];
+      if (!lec) return;
+      const dur = ytPlayer.getDuration() || videoDurationSeconds || 0;
+      const cur = Math.max(maxWatchedSeconds, ytPlayer.getCurrentTime() || 0);
+      if (dur <= 0 || cur <= 0) return;
+
+      const prog = getCourseProgress(activeCourse.id);
+      prog.partialSeconds[lec.id] = Math.max(prog.partialSeconds[lec.id] || 0, Math.round(cur));
+      saveState();
+
+      if (typeof saveVideoWatchProgress === "function") {
+        saveVideoWatchProgress(activeCourse.id, lec.id, cur, dur, forceCloudSync);
       }
     }
 
     function startWatchPolling() {
       stopWatchPolling();
       watchPollInterval = setInterval(() => {
-        if (!ytPlayer || typeof ytPlayer.getCurrentTime !== "function") return;
+        if (!ytPlayer || typeof ytPlayer.getCurrentTime !== "function" || !activeCourse) return;
+        const lec = activeCourse.lectures[activeLectureIndex];
         const dur = ytPlayer.getDuration() || 0;
         const cur = ytPlayer.getCurrentTime() || 0;
 
         if (dur > 0) {
           videoDurationSeconds = dur;
-          // Prevent skipping ahead more than 3 seconds beyond furthest watched timestamp
+
+          // Prevent fast-forwarding past furthest watched timestamp
           if (cur > maxWatchedSeconds + 3) {
             ytPlayer.seekTo(maxWatchedSeconds, true);
             return;
@@ -930,13 +1150,14 @@
 
           const pct = Math.min(100, Math.round((maxWatchedSeconds / dur) * 100));
           updateVideoWatchUI(pct);
+          flushCurrentVideoWatch(false);
+          renderLecturePlaylist();
 
-          // Unlock when 96%+ of the video has been legitimately watched
           if (pct >= 96) {
             unlockCurrentVideoCompletion();
           }
         }
-      }, 800);
+      }, 1000);
     }
 
     function stopWatchPolling() {
@@ -946,11 +1167,15 @@
       }
     }
 
+    // Save watch progress if user closes tab or navigates away
+    window.addEventListener("beforeunload", () => flushCurrentVideoWatch(true));
+
     function updateVideoWatchUI(pct) {
       const lec = activeCourse.lectures[activeLectureIndex];
       const prog = getCourseProgress(activeCourse.id);
       const alreadyUnlocked = prog.watchedVideos[lec.id] || prog.completedLectures.includes(lec.id);
-      const effectivePct = alreadyUnlocked ? 100 : pct;
+      const savedPct = videoWatchMap[lec.id]?.percent || 0;
+      const effectivePct = alreadyUnlocked ? 100 : Math.max(pct, savedPct);
 
       document.getElementById("video-watch-pct-text").textContent = `Watched: ${effectivePct}%`;
       const bar = document.getElementById("video-watch-bar");
@@ -976,6 +1201,8 @@
         prog.watchedVideos[lec.id] = true;
         if (!prog.completedLectures.includes(lec.id)) {
           prog.completedLectures.push(lec.id);
+          completedLessons[lec.id] = true;
+          localStorage.setItem("openbox_progress", JSON.stringify(completedLessons));
           syncLectureToSheet(lec.id, "Completed");
         }
         saveState();
@@ -1009,25 +1236,31 @@
     }
 
     function selectLecture(idx) {
+      if (activeCourse && activeCourse.lectures[activeLectureIndex]) {
+        flushCurrentVideoWatch(true);
+      }
       activeLectureIndex = idx;
       const lec = activeCourse.lectures[idx];
       if (!lec) return;
 
-      loadYouTubeVideo(lec.videoId);
+      const resumeSec = getSavedResumeSeconds(lec.id);
+      loadYouTubeVideo(lec.videoId, resumeSec);
 
       document.getElementById("active-lec-title").textContent = lec.title;
       document.getElementById("active-lec-desc").textContent = lec.description;
 
       const docBtn = document.getElementById("active-lec-doc");
-      if (lec.documentUrl) {
-        docBtn.href = lec.documentUrl;
-        docBtn.textContent = (lec.documentLabel || "Slides") + " ↗";
+      const docUrl = lec.documentUrl || lec.resourceLink;
+      if (docUrl) {
+        docBtn.href = docUrl;
+        docBtn.textContent = (lec.documentLabel || "Resources") + " ↗";
         docBtn.classList.remove("hidden");
       } else {
         docBtn.classList.add("hidden");
       }
 
-      updateVideoWatchUI(0);
+      const initialPct = videoWatchMap[lec.id]?.percent || 0;
+      updateVideoWatchUI(initialPct);
       refreshLectureCompleteButton();
       renderLecturePlaylist();
     }
@@ -1038,6 +1271,8 @@
       list.innerHTML = activeCourse.lectures
         .map((item, i) => {
           const itemDone = prog.completedLectures.includes(item.id);
+          const partialSec = prog.partialSeconds[item.id] || videoWatchMap[item.id]?.watchedSec || 0;
+          const partialPct = videoWatchMap[item.id]?.percent || 0;
           return `
         <button
           onclick="selectLecture(${i})"
@@ -1054,7 +1289,9 @@
               </span>
               ${item.title}
             </span>
-            <span class="text-[10px] text-[var(--muted)] shrink-0">${item.duration || ""}</span>
+            <span class="text-[10px] font-bold ${itemDone ? 'text-emerald-600' : partialSec > 5 ? 'text-blue-500' : 'text-[var(--muted)]'} shrink-0">
+              ${itemDone ? "100%" : partialSec > 5 ? `${formatSecondsMMSS(partialSec)} (${partialPct}%)` : (item.duration || "")}
+            </span>
           </div>
         </button>
       `;
@@ -1067,7 +1304,6 @@
       if (!lec) return;
       const prog = getCourseProgress(activeCourse.id);
 
-      // Enforce full video watch requirement
       if (!prog.watchedVideos[lec.id] && !prog.completedLectures.includes(lec.id)) {
         alert("Please watch the full video till the end before marking this module complete.");
         return;
@@ -1076,11 +1312,14 @@
       const pos = prog.completedLectures.indexOf(lec.id);
       if (pos === -1) {
         prog.completedLectures.push(lec.id);
+        completedLessons[lec.id] = true;
         syncLectureToSheet(lec.id, "Completed");
       } else {
         prog.completedLectures.splice(pos, 1);
+        delete completedLessons[lec.id];
         syncLectureToSheet(lec.id, "Incomplete");
       }
+      localStorage.setItem("openbox_progress", JSON.stringify(completedLessons));
       saveState();
       refreshLectureCompleteButton();
       renderLecturePlaylist();
@@ -1092,8 +1331,7 @@
     // =========================================================================
     function getTaskSteps(task) {
       if (Array.isArray(task.steps) && task.steps.length > 0) return task.steps;
-      // Auto-decompose instructions into crisp interactive milestones if steps array isn't explicitly defined
-      const parts = task.instructions
+      const parts = (task.instructions || "")
         .split(/\.\s+/)
         .map(s => s.replace(/\.$/, "").trim())
         .filter(Boolean);
@@ -1149,7 +1387,6 @@
 
           <h4 class="text-sm font-extrabold mb-3">${task.title}</h4>
 
-          <!-- Interactive Step-by-Step Checklist -->
           <div class="space-y-2 mb-4">
             ${steps
               .map((stepText, sIdx) => {
@@ -1176,7 +1413,6 @@
               .join("")}
           </div>
 
-          <!-- Submission Gate (Unlocks when all interactive steps are checked) -->
           <div class="pt-3 border-t border-[var(--border)]">
             ${
               allStepsDone || isSubmitted
@@ -1224,15 +1460,15 @@
       renderAssignments();
       updateCompletionUI();
 
-      if (!appState.studentEmail) {
-        document.getElementById("sheet-auth-modal").classList.remove("hidden");
+      if (!currentUser) {
+        openQuickSyncModal();
         return;
       }
       const task = activeCourse.assignments[idx];
-      postToSheet({
+      postToOpenboxApi({
         action: "submit_task",
-        name: appState.studentName || "Student",
-        email: appState.studentEmail,
+        name: currentUser.name,
+        email: currentUser.email,
         courseId: activeCourse.id,
         taskTitle: task.title,
         link: cleanUrl,
@@ -1260,13 +1496,12 @@
       const questions = activeCourse.quiz || [];
       if (!questions.length) return;
 
-      // Shuffle questions order for anti-cheat integrity
       examQuestions = questions.map((q, idx) => ({ ...q, _origIdx: idx })).sort(() => Math.random() - 0.5);
       examAnswers = {};
       examCurrentIdx = 0;
       examWarnings = 0;
       examActive = true;
-      examSecondsLeft = examQuestions.length * 90; // 90 seconds per question
+      examSecondsLeft = examQuestions.length * 90;
 
       document.getElementById("pq-course-title").textContent = activeCourse.title;
       document.getElementById("pq-warnings-badge").textContent = "0 / 2";
@@ -1275,11 +1510,9 @@
       document.getElementById("pq-exam-body").classList.remove("hidden");
       document.getElementById("pq-result-screen").classList.add("hidden");
 
-      // Show dedicated full-screen exam page
       document.getElementById("proctored-quiz-view").classList.remove("hidden");
       document.body.style.overflow = "hidden";
 
-      // Request fullscreen if supported
       if (document.documentElement.requestFullscreen) {
         document.documentElement.requestFullscreen().catch(() => {});
       }
@@ -1363,32 +1596,17 @@
       }
     }
 
-    // Anti-Cheat Listeners: Tab Visibility, Window Blur, Copy/Paste/Right-Click
     document.addEventListener("visibilitychange", () => {
-      if (examActive && document.hidden) {
-        registerAntiCheatViolation("Tab switch or browser minimization detected.");
-      }
+      if (examActive && document.hidden) registerAntiCheatViolation("Tab switch or browser minimization detected.");
     });
-
     window.addEventListener("blur", () => {
-      if (examActive) {
-        registerAntiCheatViolation("Window focus lost during active proctored exam.");
-      }
+      if (examActive) registerAntiCheatViolation("Window focus lost during active proctored exam.");
     });
-
-    document.addEventListener("contextmenu", e => {
-      if (examActive) e.preventDefault();
-    });
-
-    document.addEventListener("copy", e => {
-      if (examActive) e.preventDefault();
-    });
-
+    document.addEventListener("contextmenu", e => { if (examActive) e.preventDefault(); });
+    document.addEventListener("copy", e => { if (examActive) e.preventDefault(); });
     document.addEventListener("keydown", e => {
       if (!examActive) return;
-      if ((e.ctrlKey || e.metaKey) && ["c", "v", "x", "u", "p", "s"].includes(e.key.toLowerCase())) {
-        e.preventDefault();
-      }
+      if ((e.ctrlKey || e.metaKey) && ["c", "v", "x", "u", "p", "s"].includes(e.key.toLowerCase())) e.preventDefault();
       if (e.key === "F12") e.preventDefault();
     });
 
@@ -1445,9 +1663,27 @@
       const passed = pct >= PASS_THRESHOLD;
 
       const prog = getCourseProgress(activeCourse.id);
-      prog.quizPercent = pct;
-      prog.quizPassed = passed;
+      prog.quizPercent = Math.max(prog.quizPercent, pct);
+      prog.quizPassed = prog.quizPassed || passed;
       saveState();
+
+      // Persist quiz score locally & sync to Google Sheets
+      const savedQuizMap = JSON.parse(localStorage.getItem("openbox_quiz_results") || "{}");
+      savedQuizMap[activeCourse.id] = { percent: prog.quizPercent, passed: prog.quizPassed };
+      localStorage.setItem("openbox_quiz_results", JSON.stringify(savedQuizMap));
+
+      if (currentUser) {
+        postToOpenboxApi({
+          action: "save_quiz_result",
+          name: currentUser.name,
+          email: currentUser.email,
+          courseId: activeCourse.id,
+          courseTitle: activeCourse.title,
+          percent: pct,
+          passed: passed,
+          warnings: examWarnings
+        }).catch(() => {});
+      }
 
       document.getElementById("pq-exam-body").classList.add("hidden");
       const resScreen = document.getElementById("pq-result-screen");
@@ -1481,7 +1717,7 @@
     }
 
     // =========================================================================
-    // DOCS, COMPLETION UI, REFERRALS, CERTIFICATE & SHEET SYNC
+    // DOCS, COMPLETION UI, REFERRALS, CERTIFICATE & CLOUD SYNC
     // =========================================================================
     function renderDocs() {
       const container = document.getElementById("docs-list");
@@ -1508,11 +1744,7 @@
     function updateCompletionUI() {
       if (!activeCourse) return;
       const status = checkEligibility(activeCourse);
-
-      const lecRatio = status.totalLecs ? status.doneLecs / status.totalLecs : 1;
-      const assignRatio = status.totalAssigns ? status.doneAssigns / status.totalAssigns : 1;
-      const quizRatio = status.quizDone ? 1 : Math.min(status.quizPercent / PASS_THRESHOLD, 0.9);
-      const overallPct = Math.round(((lecRatio + assignRatio + quizRatio) / 3) * 100);
+      const overallPct = computeOverallPercent(activeCourse);
 
       document.getElementById("overall-pct-label").textContent = `${overallPct}%`;
       document.getElementById("overall-progress-bar").style.width = `${overallPct}%`;
@@ -1558,7 +1790,7 @@
 
     function openShareModal(preselectedCourseId) {
       const select = document.getElementById("share-course-select");
-      select.innerHTML = OPENBOX_COURSES.map(c => `<option value="${c.id}">${c.title} (${c.typeBadge})</option>`).join("");
+      select.innerHTML = PORTAL_TRACKS.map(c => `<option value="${c.id}">${c.title} (${c.typeBadge})</option>`).join("");
       if (preselectedCourseId) select.value = preselectedCourseId;
       else if (activeCourse) select.value = activeCourse.id;
       updateShareLink();
@@ -1567,7 +1799,7 @@
 
     function updateShareLink() {
       const courseId = document.getElementById("share-course-select").value;
-      const course = OPENBOX_COURSES.find(c => c.id === courseId) || OPENBOX_COURSES[0];
+      const course = PORTAL_TRACKS.find(c => c.id === courseId) || PORTAL_TRACKS[0];
       const directUrl = buildCourseReferralUrl(course.id);
 
       document.getElementById("share-direct-link").value = directUrl;
@@ -1595,7 +1827,7 @@
           `Referred by ${referrer} • Welcome to Openbox Growth Partner! Complete this track to claim your verified certificate.`;
         document.getElementById("referral-welcome-bar").classList.remove("hidden");
       }
-      if (sharedCourseId && OPENBOX_COURSES.some(c => c.id === sharedCourseId)) {
+      if (sharedCourseId && PORTAL_TRACKS.some(c => c.id === sharedCourseId)) {
         openCourse(sharedCourseId, false);
       }
     }
@@ -1749,66 +1981,68 @@
       alert("LinkedIn share caption copied to clipboard!");
     }
 
-    // Google Sheet Backend Sync
-    let sheetAuthMode = "register";
-    function postToSheet(payload) {
-      return fetch(SHEET_API_URL, { method: "POST", body: JSON.stringify(payload) }).then(r => r.json());
-    }
-
+    // Google Sheet Backend Sync (Passwordless Instant Sync)
     function syncLectureToSheet(lessonId, status) {
-      if (!appState.studentEmail) return;
-      postToSheet({
+      if (!currentUser) return;
+      const dur = videoDurationSeconds || 100;
+      const watched = status === "Completed" ? dur : (getCourseProgress(activeCourse.id).partialSeconds[lessonId] || 0);
+      postToOpenboxApi({
         action: "progress",
-        email: appState.studentEmail,
+        email: currentUser.email,
         courseId: activeCourse.id,
-        lessonId,
-        status
+        lessonId: lessonId,
+        status: status,
+        watchedSec: Math.round(watched),
+        durationSec: Math.round(dur),
+        percent: status === "Completed" ? 100 : Math.round((watched / dur) * 100)
       }).catch(() => {});
     }
 
-    function setSheetAuthMode(mode) {
-      sheetAuthMode = mode;
-      document.getElementById("sa-name-wrap").classList.toggle("hidden", mode === "login");
-      document.getElementById("sa-gh-wrap").classList.toggle("hidden", mode === "login");
-      document.getElementById("sa-btn").textContent = mode === "register" ? "Save & Sync Account" : "Login & Sync Progress";
-      document.getElementById("sa-tab-reg").className = mode === "register" ? "py-1.5 rounded-lg text-xs font-extrabold bg-[var(--card)] shadow-sm cursor-pointer" : "py-1.5 rounded-lg text-xs font-bold text-[var(--muted)] cursor-pointer";
-      document.getElementById("sa-tab-log").className = mode === "login" ? "py-1.5 rounded-lg text-xs font-extrabold bg-[var(--card)] shadow-sm cursor-pointer" : "py-1.5 rounded-lg text-xs font-bold text-[var(--muted)] cursor-pointer";
+    function openQuickSyncModal() {
+      if (currentUser) {
+        document.getElementById("sa-name").value = currentUser.name || "";
+        document.getElementById("sa-email").value = currentUser.email || "";
+      }
+      document.getElementById("sheet-auth-modal").classList.remove("hidden");
     }
 
-    async function submitSheetAuth(e) {
+    async function submitQuickSync(e) {
       e.preventDefault();
       const btn = document.getElementById("sa-btn");
       const msg = document.getElementById("sa-msg");
       btn.disabled = true;
-      btn.textContent = "Syncing with Google Sheet...";
+      btn.textContent = "Syncing Enrolled Tracks...";
 
       const name = document.getElementById("sa-name").value.trim();
       const email = document.getElementById("sa-email").value.trim();
-      const password = document.getElementById("sa-pass").value.trim();
       const github = document.getElementById("sa-gh").value.trim();
 
       try {
-        const res = await postToSheet({ action: sheetAuthMode, name, email, password, github });
+        const res = await postToOpenboxApi({ action: "instant_signin", name, email, github });
         if (res.status === "success") {
-          appState.studentName = res.user.name;
-          appState.studentEmail = res.user.email;
-          saveState();
-          document.getElementById("student-name-input").value = res.user.name;
-          document.getElementById("nav-sync-label").textContent = res.user.email.split("@")[0];
+          hydrateUserSession(res);
+          hydrateLocalFromCloudSession();
           document.getElementById("sheet-auth-modal").classList.add("hidden");
+          renderCatalog();
+          if (activeCourse) {
+            renderLecturePlaylist();
+            updateCompletionUI();
+          }
         } else {
           msg.textContent = res.message || "Error syncing account.";
           msg.className = "text-xs font-bold text-center text-rose-500";
         }
       } catch (err) {
-        msg.textContent = "Network error reaching Google Sheet.";
+        msg.textContent = err.message || "Network error reaching Google Sheet.";
         msg.className = "text-xs font-bold text-center text-rose-500";
       } finally {
         btn.disabled = false;
-        btn.textContent = sheetAuthMode === "register" ? "Save & Sync Account" : "Login & Sync Progress";
+        btn.textContent = "Load & Sync My Progress";
       }
     }
 
+    // Boot Sequence
+    hydrateLocalFromCloudSession();
     renderCatalog();
     handleIncomingDeepLink();
   </script>
