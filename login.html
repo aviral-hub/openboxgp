@@ -6,7 +6,7 @@
     <title>Portal Login — Openbox Growth Partner</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <script src="shared.js"></script>
     <style>
         :root { --background: #f8fafc; --foreground: #0f172a; --muted-bg: #f1f5f9; --muted-text: #475569; --card: #ffffff; }
@@ -15,13 +15,13 @@
         .heading-font { font-family: 'Space Grotesk', sans-serif; }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-center items-center p-4">
+<body class="min-h-screen flex flex-col justify-center items-center p-4 antialiased">
 
     <div class="w-full max-w-md mb-6 flex items-center justify-between">
         <a href="index.html" class="text-xs font-bold text-blue-500 hover:underline flex items-center gap-1.5">
             <i class="fa-solid fa-arrow-left"></i> Back to Home
         </a>
-        <button id="theme-toggle" type="button" class="p-2 rounded-xl bg-[var(--muted-bg)] text-xs cursor-pointer">
+        <button id="theme-toggle" type="button" class="p-2 rounded-xl bg-[var(--muted-bg)] text-xs cursor-pointer" title="Toggle Theme">
             <i class="fa-solid fa-circle-half-stroke"></i>
         </button>
     </div>
@@ -32,21 +32,28 @@
                 <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
                 <span class="text-xs font-bold uppercase tracking-widest text-blue-500">Openbox Unified Auth</span>
             </div>
-            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                <i class="fa-solid fa-lock mr-1"></i> SHA-256 Encrypted
+            <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <i class="fa-solid fa-shield-check mr-1"></i> Passwordless OTP
             </span>
         </div>
 
         <h1 class="heading-font text-2xl font-bold text-[var(--foreground)] mb-1">Welcome to Openbox</h1>
-        <p class="text-xs text-[var(--muted-text)] mb-6">Log in as Student, Mentor, or Admin—your role is automatically detected.</p>
+        <p class="text-xs text-[var(--muted-text)] mb-6">
+            Enter your email to receive a 6-digit verification code. Student, Mentor, and Admin roles are detected automatically.
+        </p>
 
-        <!-- Tabs -->
+        <!-- Mode Tabs -->
         <div class="grid grid-cols-2 gap-2 p-1 rounded-xl bg-[var(--muted-bg)] mb-6">
-            <button id="tab-login" type="button" onclick="setMode('login')" class="py-2 rounded-lg text-xs font-bold bg-[var(--card)] text-[var(--foreground)] shadow-sm cursor-pointer">Login</button>
-            <button id="tab-register" type="button" onclick="setMode('register')" class="py-2 rounded-lg text-xs font-bold text-[var(--muted-text)] cursor-pointer">Student Sign Up</button>
+            <button id="tab-login" type="button" onclick="setMode('login')" class="py-2 rounded-lg text-xs font-bold bg-[var(--card)] text-[var(--foreground)] shadow-sm cursor-pointer">
+                Quick Login
+            </button>
+            <button id="tab-register" type="button" onclick="setMode('register')" class="py-2 rounded-lg text-xs font-bold text-[var(--muted-text)] cursor-pointer">
+                New Student Setup
+            </button>
         </div>
 
-        <form id="auth-form" method="post" onsubmit="submitAuth(event)" class="space-y-4">
+        <!-- STEP 1: EMAIL & OPTIONAL PROFILE DETAILS -->
+        <form id="step-email-form" onsubmit="requestOtp(event)" class="space-y-4">
             <div id="wrap-name" class="hidden">
                 <label for="inp-name" class="block text-xs font-semibold mb-1">Full Name (Printed on Certificate)</label>
                 <input
@@ -55,7 +62,7 @@
                     name="name"
                     autocomplete="name"
                     placeholder="Aviral Pathak"
-                    class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]"
+                    class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)] focus:outline-none focus:border-blue-500"
                 />
             </div>
 
@@ -65,43 +72,11 @@
                     type="email"
                     id="inp-email"
                     name="email"
-                    autocomplete="username"
+                    autocomplete="email"
                     placeholder="you@example.com"
                     required
-                    class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]"
+                    class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)] focus:outline-none focus:border-blue-500"
                 />
-            </div>
-
-            <div>
-                <div class="flex items-center justify-between mb-1">
-                    <label for="inp-pass" class="block text-xs font-semibold">Password</label>
-                    <span id="pass-strength-label" class="hidden text-[10px] font-bold"></span>
-                </div>
-                <div class="relative">
-                    <input
-                        type="password"
-                        id="inp-pass"
-                        name="password"
-                        autocomplete="current-password"
-                        minlength="8"
-                        placeholder="Min. 8 characters (letters + numbers)"
-                        oninput="evaluatePasswordStrength(this.value)"
-                        required
-                        class="w-full px-3.5 py-2.5 pr-10 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]"
-                    />
-                    <button
-                        type="button"
-                        onclick="togglePasswordVisibility()"
-                        aria-label="Toggle password visibility"
-                        class="absolute inset-y-0 right-3 flex items-center text-xs text-[var(--muted-text)] hover:text-[var(--foreground)] cursor-pointer"
-                    >
-                        <i id="pass-eye-icon" class="fa-solid fa-eye"></i>
-                    </button>
-                </div>
-                <!-- Strength Bar (Shown in Sign Up mode) -->
-                <div id="pass-strength-bar-wrap" class="hidden w-full h-1 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden mt-2">
-                    <div id="pass-strength-bar" class="h-full transition-all duration-200" style="width: 0%"></div>
-                </div>
             </div>
 
             <div id="wrap-gh" class="hidden">
@@ -112,143 +87,208 @@
                     name="github"
                     autocomplete="url"
                     placeholder="https://github.com/username"
-                    class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]"
+                    class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)] focus:outline-none focus:border-blue-500"
                 />
             </div>
 
-            <button type="submit" id="btn-submit" class="w-full py-3 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white shadow-lg cursor-pointer transition">
-                Login &amp; Enter Workspace
+            <button type="submit" id="btn-send-otp" class="w-full py-3 rounded-xl text-xs font-extrabold bg-blue-600 hover:bg-blue-500 text-white shadow-lg cursor-pointer transition flex items-center justify-center gap-2">
+                <span>Send 6-Digit Login Code</span>
+                <i class="fa-solid fa-paper-plane"></i>
             </button>
-            <p id="auth-msg" class="text-xs font-semibold text-center"></p>
         </form>
 
+        <!-- STEP 2: 6-DIGIT OTP VERIFICATION -->
+        <form id="step-otp-form" onsubmit="verifyOtp(event)" class="hidden space-y-4">
+            <div class="p-3.5 rounded-xl bg-blue-500/10 border border-blue-500/20 flex items-center justify-between gap-2">
+                <div class="text-xs">
+                    <span class="text-[var(--muted-text)] block">Code sent to:</span>
+                    <strong id="sent-email-display" class="text-[var(--foreground)]"></strong>
+                </div>
+                <button type="button" onclick="resetToEmailStep()" class="text-[11px] font-bold text-blue-500 hover:underline cursor-pointer shrink-0">
+                    Change Email
+                </button>
+            </div>
+
+            <div>
+                <div class="flex items-center justify-between mb-1">
+                    <label for="inp-otp" class="block text-xs font-semibold">Enter 6-Digit Verification Code</label>
+                    <span id="otp-timer" class="text-[11px] font-mono font-bold text-amber-400">10:00</span>
+                </div>
+                <input
+                    type="text"
+                    id="inp-otp"
+                    inputmode="numeric"
+                    pattern="[0-9]{6}"
+                    maxlength="6"
+                    autocomplete="one-time-code"
+                    placeholder="••••••"
+                    required
+                    class="w-full px-4 py-3 text-center text-xl font-mono font-extrabold tracking-[0.5em] rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)] focus:outline-none focus:border-blue-500"
+                />
+            </div>
+
+            <button type="submit" id="btn-verify-otp" class="w-full py-3 rounded-xl text-xs font-extrabold bg-emerald-600 hover:bg-emerald-500 text-white shadow-lg cursor-pointer transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-circle-check"></i>
+                <span>Verify &amp; Enter Workspace</span>
+            </button>
+
+            <div class="text-center">
+                <button type="button" id="btn-resend-otp" onclick="requestOtp(event)" class="text-xs font-bold text-blue-500 hover:underline cursor-pointer">
+                    Didn't receive it? Resend Code
+                </button>
+            </div>
+        </form>
+
+        <p id="auth-msg" class="mt-4 text-xs font-semibold text-center"></p>
+
         <div class="mt-6 pt-4 border-t border-slate-200 dark:border-white/10 text-[11px] text-[var(--muted-text)] flex items-center justify-between">
-            <span><i class="fa-solid fa-shield-halved text-blue-500 mr-1"></i> Zero-plaintext password policy</span>
-            <a href="https://wa.me/917020729200?text=Hi%20Aviral,%20I%20need%20help%20resetting%20my%20Openbox%20portal%20password." target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline font-semibold">Reset Password</a>
+            <span><i class="fa-solid fa-lock text-emerald-500 mr-1"></i> Zero-password email verification</span>
+            <a href="https://wa.me/917020729200?text=Hi%20Aviral,%20I%20am%20not%20receiving%20my%20Openbox%20OTP%20code." target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline font-semibold">Need Help?</a>
         </div>
     </div>
 
     <script>
         let mode = "login";
+        let otpCountdown = null;
 
         function setMode(m) {
             mode = m;
             const isSignup = m === "register";
             document.getElementById("wrap-name").classList.toggle("hidden", !isSignup);
             document.getElementById("wrap-gh").classList.toggle("hidden", !isSignup);
-            document.getElementById("pass-strength-label").classList.toggle("hidden", !isSignup);
-            document.getElementById("pass-strength-bar-wrap").classList.toggle("hidden", !isSignup);
 
-            // Update autocomplete attribute so Google Password Manager distinguishes Login vs Sign Up
-            const passInput = document.getElementById("inp-pass");
-            passInput.setAttribute("autocomplete", isSignup ? "new-password" : "current-password");
-
-            document.getElementById("btn-submit").textContent = isSignup ? "Create Student Account" : "Login & Enter Workspace";
             document.getElementById("tab-login").className = !isSignup
                 ? "py-2 rounded-lg text-xs font-bold bg-[var(--card)] text-[var(--foreground)] shadow-sm cursor-pointer"
                 : "py-2 rounded-lg text-xs font-bold text-[var(--muted-text)] cursor-pointer";
             document.getElementById("tab-register").className = isSignup
                 ? "py-2 rounded-lg text-xs font-bold bg-[var(--card)] text-[var(--foreground)] shadow-sm cursor-pointer"
                 : "py-2 rounded-lg text-xs font-bold text-[var(--muted-text)] cursor-pointer";
-
-            if (isSignup) evaluatePasswordStrength(passInput.value);
         }
 
-        function togglePasswordVisibility() {
-            const input = document.getElementById("inp-pass");
-            const icon = document.getElementById("pass-eye-icon");
-            const show = input.type === "password";
-            input.type = show ? "text" : "password";
-            icon.className = show ? "fa-solid fa-eye-slash" : "fa-solid fa-eye";
+        function startOtpCountdown(seconds = 600) {
+            clearInterval(otpCountdown);
+            let remaining = seconds;
+            const timerEl = document.getElementById("otp-timer");
+            otpCountdown = setInterval(() => {
+                remaining--;
+                if (remaining <= 0) {
+                    clearInterval(otpCountdown);
+                    timerEl.textContent = "Expired";
+                    return;
+                }
+                const m = String(Math.floor(remaining / 60)).padStart(2, "0");
+                const s = String(remaining % 60).padStart(2, "0");
+                timerEl.textContent = `${m}:${s}`;
+            }, 1000);
         }
 
-        function evaluatePasswordStrength(pwd) {
-            if (mode !== "register") return;
-            const label = document.getElementById("pass-strength-label");
-            const bar = document.getElementById("pass-strength-bar");
-
-            let score = 0;
-            if (pwd.length >= 8) score++;
-            if (/[A-Z]/.test(pwd) && /[a-z]/.test(pwd)) score++;
-            if (/\d/.test(pwd)) score++;
-            if (/[^A-Za-z0-9]/.test(pwd)) score++;
-
-            const levels = [
-                { text: "Too Short (Min 8 chars)", color: "text-red-400", bg: "bg-red-500", w: "20%" },
-                { text: "Weak — Add numbers & caps", color: "text-amber-400", bg: "bg-amber-500", w: "45%" },
-                { text: "Good", color: "text-blue-400", bg: "bg-blue-500", w: "75%" },
-                { text: "Strong", color: "text-emerald-400", bg: "bg-emerald-500", w: "100%" }
-            ];
-            const lvl = pwd.length < 8 ? levels[0] : levels[Math.min(score, 3)];
-            label.textContent = lvl.text;
-            label.className = `text-[10px] font-bold ${lvl.color}`;
-            bar.className = `h-full transition-all duration-200 ${lvl.bg}`;
-            bar.style.width = pwd.length === 0 ? "0%" : lvl.w;
+        function resetToEmailStep() {
+            clearInterval(otpCountdown);
+            document.getElementById("step-otp-form").classList.add("hidden");
+            document.getElementById("step-email-form").classList.remove("hidden");
+            document.getElementById("auth-msg").textContent = "";
         }
 
-        // Client-side salted SHA-256 hash so plaintext passwords never leave the browser
-        async function hashPassword(email, rawPassword) {
-            const normalized = `${email.toLowerCase().trim()}::OPENBOX_SALT_2026::${rawPassword}`;
-            const encoder = new TextEncoder();
-            const hashBuffer = await crypto.subtle.digest("SHA-256", encoder.encode(normalized));
-            return Array.from(new Uint8Array(hashBuffer))
-                .map(b => b.toString(16).padStart(2, "0"))
-                .join("");
-        }
-
-        async function submitAuth(e) {
-            e.preventDefault();
-            const btn = document.getElementById("btn-submit");
-            const msg = document.getElementById("auth-msg");
-
-            const name = document.getElementById("inp-name").value.trim();
+        async function requestOtp(e) {
+            if (e) e.preventDefault();
             const email = document.getElementById("inp-email").value.trim();
-            const rawPass = document.getElementById("inp-pass").value;
-            const github = document.getElementById("inp-gh").value.trim();
+            const msg = document.getElementById("auth-msg");
+            const sendBtn = document.getElementById("btn-send-otp");
+            const resendBtn = document.getElementById("btn-resend-otp");
 
-            if (mode === "register" && rawPass.length < 8) {
-                msg.textContent = "Please choose a stronger password (at least 8 characters).";
-                msg.className = "text-xs font-semibold text-center text-red-400";
+            if (!email) {
+                msg.textContent = "Please enter your email address first.";
+                msg.className = "mt-4 text-xs font-semibold text-center text-red-400";
                 return;
             }
 
-            btn.disabled = true;
-            btn.textContent = "Encrypting & Authenticating...";
+            sendBtn.disabled = true;
+            sendBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Sending Code...</span>`;
+            if (resendBtn) resendBtn.disabled = true;
+            msg.textContent = "";
 
             try {
-                const hashedPassword = await hashPassword(email, rawPass);
-
                 const res = await fetch(APPS_SCRIPT_URL, {
                     method: "POST",
                     body: JSON.stringify({
-                        action: mode,
-                        name,
-                        email,
-                        password: hashedPassword,
-                        github
+                        action: "send_otp",
+                        email: email
                     })
                 });
                 const data = await res.json();
 
                 if (data.status === "success") {
+                    document.getElementById("sent-email-display").textContent = email;
+                    document.getElementById("step-email-form").classList.add("hidden");
+                    document.getElementById("step-otp-form").classList.remove("hidden");
+                    document.getElementById("inp-otp").value = "";
+                    document.getElementById("inp-otp").focus();
+
+                    msg.textContent = "✓ 6-digit verification code sent! Check your Inbox or Spam folder.";
+                    msg.className = "mt-4 text-xs font-semibold text-center text-emerald-400";
+                    startOtpCountdown(600);
+                } else {
+                    msg.textContent = data.message || "Could not send verification code.";
+                    msg.className = "mt-4 text-xs font-semibold text-center text-red-400";
+                }
+            } catch (err) {
+                msg.textContent = "Network error. Verify APPS_SCRIPT_URL in shared.js.";
+                msg.className = "mt-4 text-xs font-semibold text-center text-red-400";
+            } finally {
+                sendBtn.disabled = false;
+                sendBtn.innerHTML = `<span>Send 6-Digit Login Code</span> <i class="fa-solid fa-paper-plane"></i>`;
+                if (resendBtn) resendBtn.disabled = false;
+            }
+        }
+
+        async function verifyOtp(e) {
+            e.preventDefault();
+            const btn = document.getElementById("btn-verify-otp");
+            const msg = document.getElementById("auth-msg");
+
+            const email = document.getElementById("inp-email").value.trim();
+            const otp = document.getElementById("inp-otp").value.trim();
+            const name = document.getElementById("inp-name").value.trim();
+            const github = document.getElementById("inp-gh").value.trim();
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> <span>Verifying Code...</span>`;
+            msg.textContent = "";
+
+            try {
+                const res = await fetch(APPS_SCRIPT_URL, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        action: "verify_otp",
+                        email: email,
+                        otp: otp,
+                        name: name,
+                        github: github
+                    })
+                });
+                const data = await res.json();
+
+                if (data.status === "success") {
+                    clearInterval(otpCountdown);
                     currentUser = data.user;
                     localStorage.setItem("openbox_user", JSON.stringify(data.user));
                     localStorage.setItem("openbox_progress", JSON.stringify(data.completedLessons || {}));
                     localStorage.setItem("openbox_approved", JSON.stringify(data.approvedCourses || []));
                     localStorage.setItem("openbox_submissions", JSON.stringify(data.mySubmissions || []));
 
+                    // Redirect based on role
                     if (isStaff()) window.location.href = "studio.html";
                     else window.location.href = "course.html";
                 } else {
-                    msg.textContent = data.message || "Invalid credentials.";
-                    msg.className = "text-xs font-semibold text-center text-red-400";
+                    msg.textContent = data.message || "Invalid or expired OTP code.";
+                    msg.className = "mt-4 text-xs font-semibold text-center text-red-400";
                 }
             } catch (err) {
                 msg.textContent = "Network error. Check APPS_SCRIPT_URL in shared.js.";
-                msg.className = "text-xs font-semibold text-center text-red-400";
+                msg.className = "mt-4 text-xs font-semibold text-center text-red-400";
             } finally {
                 btn.disabled = false;
-                btn.textContent = mode === "login" ? "Login & Enter Workspace" : "Create Student Account";
+                btn.innerHTML = `<i class="fa-solid fa-circle-check"></i> <span>Verify &amp; Enter Workspace</span>`;
             }
         }
     </script>
