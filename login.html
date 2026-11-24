@@ -21,77 +21,211 @@
         <a href="index.html" class="text-xs font-bold text-blue-500 hover:underline flex items-center gap-1.5">
             <i class="fa-solid fa-arrow-left"></i> Back to Home
         </a>
-        <button id="theme-toggle" class="p-2 rounded-xl bg-[var(--muted-bg)] text-xs cursor-pointer">
+        <button id="theme-toggle" type="button" class="p-2 rounded-xl bg-[var(--muted-bg)] text-xs cursor-pointer">
             <i class="fa-solid fa-circle-half-stroke"></i>
         </button>
     </div>
 
     <div class="w-full max-w-md bg-[var(--card)] border border-slate-200 dark:border-white/10 rounded-2xl p-6 sm:p-8 shadow-2xl">
-        <div class="flex items-center gap-2 mb-4">
-            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-            <span class="text-xs font-bold uppercase tracking-widest text-blue-500">Openbox Unified Authentication</span>
+        <div class="flex items-center justify-between gap-2 mb-4">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span class="text-xs font-bold uppercase tracking-widest text-blue-500">Openbox Unified Auth</span>
+            </div>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <i class="fa-solid fa-lock mr-1"></i> SHA-256 Encrypted
+            </span>
         </div>
+
         <h1 class="heading-font text-2xl font-bold text-[var(--foreground)] mb-1">Welcome to Openbox</h1>
         <p class="text-xs text-[var(--muted-text)] mb-6">Log in as Student, Mentor, or Admin—your role is automatically detected.</p>
 
         <!-- Tabs -->
         <div class="grid grid-cols-2 gap-2 p-1 rounded-xl bg-[var(--muted-bg)] mb-6">
-            <button id="tab-login" onclick="setMode('login')" class="py-2 rounded-lg text-xs font-bold bg-[var(--card)] text-[var(--foreground)] shadow-sm cursor-pointer">Login</button>
-            <button id="tab-register" onclick="setMode('register')" class="py-2 rounded-lg text-xs font-bold text-[var(--muted-text)] cursor-pointer">Student Sign Up</button>
+            <button id="tab-login" type="button" onclick="setMode('login')" class="py-2 rounded-lg text-xs font-bold bg-[var(--card)] text-[var(--foreground)] shadow-sm cursor-pointer">Login</button>
+            <button id="tab-register" type="button" onclick="setMode('register')" class="py-2 rounded-lg text-xs font-bold text-[var(--muted-text)] cursor-pointer">Student Sign Up</button>
         </div>
 
-        <form onsubmit="submitAuth(event)" class="space-y-4">
+        <form id="auth-form" method="post" onsubmit="submitAuth(event)" class="space-y-4">
             <div id="wrap-name" class="hidden">
-                <label class="block text-xs font-semibold mb-1">Full Name (Printed on Certificate)</label>
-                <input type="text" id="inp-name" placeholder="Aviral Sharma" class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]" />
-            </div>
-            <div>
-                <label class="block text-xs font-semibold mb-1">Email Address</label>
-                <input type="email" id="inp-email" placeholder="aviral@openbox.in" required class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]" />
-            </div>
-            <div>
-                <label class="block text-xs font-semibold mb-1">Password</label>
-                <input type="password" id="inp-pass" placeholder="••••••••" required class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]" />
-            </div>
-            <div id="wrap-gh" class="hidden">
-                <label class="block text-xs font-semibold mb-1">GitHub Profile URL (Optional)</label>
-                <input type="url" id="inp-gh" placeholder="https://github.com/username" class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]" />
+                <label for="inp-name" class="block text-xs font-semibold mb-1">Full Name (Printed on Certificate)</label>
+                <input
+                    type="text"
+                    id="inp-name"
+                    name="name"
+                    autocomplete="name"
+                    placeholder="Aviral Pathak"
+                    class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]"
+                />
             </div>
 
-            <button type="submit" id="btn-submit" class="w-full py-3 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white shadow-lg cursor-pointer">
-                Login & Enter Workspace
+            <div>
+                <label for="inp-email" class="block text-xs font-semibold mb-1">Email Address</label>
+                <input
+                    type="email"
+                    id="inp-email"
+                    name="email"
+                    autocomplete="username"
+                    placeholder="you@example.com"
+                    required
+                    class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]"
+                />
+            </div>
+
+            <div>
+                <div class="flex items-center justify-between mb-1">
+                    <label for="inp-pass" class="block text-xs font-semibold">Password</label>
+                    <span id="pass-strength-label" class="hidden text-[10px] font-bold"></span>
+                </div>
+                <div class="relative">
+                    <input
+                        type="password"
+                        id="inp-pass"
+                        name="password"
+                        autocomplete="current-password"
+                        minlength="8"
+                        placeholder="Min. 8 characters (letters + numbers)"
+                        oninput="evaluatePasswordStrength(this.value)"
+                        required
+                        class="w-full px-3.5 py-2.5 pr-10 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]"
+                    />
+                    <button
+                        type="button"
+                        onclick="togglePasswordVisibility()"
+                        aria-label="Toggle password visibility"
+                        class="absolute inset-y-0 right-3 flex items-center text-xs text-[var(--muted-text)] hover:text-[var(--foreground)] cursor-pointer"
+                    >
+                        <i id="pass-eye-icon" class="fa-solid fa-eye"></i>
+                    </button>
+                </div>
+                <!-- Strength Bar (Shown in Sign Up mode) -->
+                <div id="pass-strength-bar-wrap" class="hidden w-full h-1 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden mt-2">
+                    <div id="pass-strength-bar" class="h-full transition-all duration-200" style="width: 0%"></div>
+                </div>
+            </div>
+
+            <div id="wrap-gh" class="hidden">
+                <label for="inp-gh" class="block text-xs font-semibold mb-1">GitHub Profile URL (Optional)</label>
+                <input
+                    type="url"
+                    id="inp-gh"
+                    name="github"
+                    autocomplete="url"
+                    placeholder="https://github.com/username"
+                    class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)]"
+                />
+            </div>
+
+            <button type="submit" id="btn-submit" class="w-full py-3 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white shadow-lg cursor-pointer transition">
+                Login &amp; Enter Workspace
             </button>
             <p id="auth-msg" class="text-xs font-semibold text-center"></p>
         </form>
+
+        <div class="mt-6 pt-4 border-t border-slate-200 dark:border-white/10 text-[11px] text-[var(--muted-text)] flex items-center justify-between">
+            <span><i class="fa-solid fa-shield-halved text-blue-500 mr-1"></i> Zero-plaintext password policy</span>
+            <a href="https://wa.me/917020729200?text=Hi%20Aviral,%20I%20need%20help%20resetting%20my%20Openbox%20portal%20password." target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline font-semibold">Reset Password</a>
+        </div>
     </div>
 
     <script>
         let mode = "login";
+
         function setMode(m) {
             mode = m;
-            document.getElementById("wrap-name").classList.toggle("hidden", m === "login");
-            document.getElementById("wrap-gh").classList.toggle("hidden", m === "login");
-            document.getElementById("btn-submit").textContent = m === "login" ? "Login & Enter Workspace" : "Create Student Account";
-            document.getElementById("tab-login").className = m === "login" ? "py-2 rounded-lg text-xs font-bold bg-[var(--card)] text-[var(--foreground)] shadow-sm cursor-pointer" : "py-2 rounded-lg text-xs font-bold text-[var(--muted-text)] cursor-pointer";
-            document.getElementById("tab-register").className = m === "register" ? "py-2 rounded-lg text-xs font-bold bg-[var(--card)] text-[var(--foreground)] shadow-sm cursor-pointer" : "py-2 rounded-lg text-xs font-bold text-[var(--muted-text)] cursor-pointer";
+            const isSignup = m === "register";
+            document.getElementById("wrap-name").classList.toggle("hidden", !isSignup);
+            document.getElementById("wrap-gh").classList.toggle("hidden", !isSignup);
+            document.getElementById("pass-strength-label").classList.toggle("hidden", !isSignup);
+            document.getElementById("pass-strength-bar-wrap").classList.toggle("hidden", !isSignup);
+
+            // Update autocomplete attribute so Google Password Manager distinguishes Login vs Sign Up
+            const passInput = document.getElementById("inp-pass");
+            passInput.setAttribute("autocomplete", isSignup ? "new-password" : "current-password");
+
+            document.getElementById("btn-submit").textContent = isSignup ? "Create Student Account" : "Login & Enter Workspace";
+            document.getElementById("tab-login").className = !isSignup
+                ? "py-2 rounded-lg text-xs font-bold bg-[var(--card)] text-[var(--foreground)] shadow-sm cursor-pointer"
+                : "py-2 rounded-lg text-xs font-bold text-[var(--muted-text)] cursor-pointer";
+            document.getElementById("tab-register").className = isSignup
+                ? "py-2 rounded-lg text-xs font-bold bg-[var(--card)] text-[var(--foreground)] shadow-sm cursor-pointer"
+                : "py-2 rounded-lg text-xs font-bold text-[var(--muted-text)] cursor-pointer";
+
+            if (isSignup) evaluatePasswordStrength(passInput.value);
+        }
+
+        function togglePasswordVisibility() {
+            const input = document.getElementById("inp-pass");
+            const icon = document.getElementById("pass-eye-icon");
+            const show = input.type === "password";
+            input.type = show ? "text" : "password";
+            icon.className = show ? "fa-solid fa-eye-slash" : "fa-solid fa-eye";
+        }
+
+        function evaluatePasswordStrength(pwd) {
+            if (mode !== "register") return;
+            const label = document.getElementById("pass-strength-label");
+            const bar = document.getElementById("pass-strength-bar");
+
+            let score = 0;
+            if (pwd.length >= 8) score++;
+            if (/[A-Z]/.test(pwd) && /[a-z]/.test(pwd)) score++;
+            if (/\d/.test(pwd)) score++;
+            if (/[^A-Za-z0-9]/.test(pwd)) score++;
+
+            const levels = [
+                { text: "Too Short (Min 8 chars)", color: "text-red-400", bg: "bg-red-500", w: "20%" },
+                { text: "Weak — Add numbers & caps", color: "text-amber-400", bg: "bg-amber-500", w: "45%" },
+                { text: "Good", color: "text-blue-400", bg: "bg-blue-500", w: "75%" },
+                { text: "Strong", color: "text-emerald-400", bg: "bg-emerald-500", w: "100%" }
+            ];
+            const lvl = pwd.length < 8 ? levels[0] : levels[Math.min(score, 3)];
+            label.textContent = lvl.text;
+            label.className = `text-[10px] font-bold ${lvl.color}`;
+            bar.className = `h-full transition-all duration-200 ${lvl.bg}`;
+            bar.style.width = pwd.length === 0 ? "0%" : lvl.w;
+        }
+
+        // Client-side salted SHA-256 hash so plaintext passwords never leave the browser
+        async function hashPassword(email, rawPassword) {
+            const normalized = `${email.toLowerCase().trim()}::OPENBOX_SALT_2026::${rawPassword}`;
+            const encoder = new TextEncoder();
+            const hashBuffer = await crypto.subtle.digest("SHA-256", encoder.encode(normalized));
+            return Array.from(new Uint8Array(hashBuffer))
+                .map(b => b.toString(16).padStart(2, "0"))
+                .join("");
         }
 
         async function submitAuth(e) {
             e.preventDefault();
             const btn = document.getElementById("btn-submit");
             const msg = document.getElementById("auth-msg");
+
+            const name = document.getElementById("inp-name").value.trim();
+            const email = document.getElementById("inp-email").value.trim();
+            const rawPass = document.getElementById("inp-pass").value;
+            const github = document.getElementById("inp-gh").value.trim();
+
+            if (mode === "register" && rawPass.length < 8) {
+                msg.textContent = "Please choose a stronger password (at least 8 characters).";
+                msg.className = "text-xs font-semibold text-center text-red-400";
+                return;
+            }
+
             btn.disabled = true;
-            btn.textContent = "Authenticating...";
+            btn.textContent = "Encrypting & Authenticating...";
 
             try {
+                const hashedPassword = await hashPassword(email, rawPass);
+
                 const res = await fetch(APPS_SCRIPT_URL, {
                     method: "POST",
                     body: JSON.stringify({
                         action: mode,
-                        name: document.getElementById("inp-name").value.trim(),
-                        email: document.getElementById("inp-email").value.trim(),
-                        password: document.getElementById("inp-pass").value.trim(),
-                        github: document.getElementById("inp-gh").value.trim()
+                        name,
+                        email,
+                        password: hashedPassword,
+                        github
                     })
                 });
                 const data = await res.json();
@@ -103,7 +237,6 @@
                     localStorage.setItem("openbox_approved", JSON.stringify(data.approvedCourses || []));
                     localStorage.setItem("openbox_submissions", JSON.stringify(data.mySubmissions || []));
 
-                    // Redirect based on role
                     if (isStaff()) window.location.href = "studio.html";
                     else window.location.href = "course.html";
                 } else {
