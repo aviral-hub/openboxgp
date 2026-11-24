@@ -1,4 +1,142 @@
-<script>
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Login — Openbox Growth Partner</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <script src="shared.js"></script>
+    <style>
+        :root { --background: #f8fafc; --foreground: #0f172a; --muted-bg: #f1f5f9; --muted-text: #475569; --card: #ffffff; }
+        .dark { --background: #0a0a0c; --foreground: #f8fafc; --muted-bg: #111115; --muted-text: #94a3b8; --card: #111115; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--background); color: var(--muted-text); }
+        .heading-font { font-family: 'Space Grotesk', sans-serif; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-center items-center p-4 antialiased">
+
+    <div class="w-full max-w-md mb-6 flex items-center justify-between">
+        <a href="index.html" class="text-xs font-bold text-blue-500 hover:underline flex items-center gap-1.5">
+            <i class="fa-solid fa-arrow-left"></i> Back to Home
+        </a>
+        <button id="theme-toggle" type="button" class="p-2 rounded-xl bg-[var(--muted-bg)] text-xs cursor-pointer" title="Toggle Theme">
+            <i class="fa-solid fa-circle-half-stroke"></i>
+        </button>
+    </div>
+
+    <!-- In-App Browser Warning (WhatsApp / Instagram / LinkedIn WebView) -->
+    <div id="webview-warning" class="hidden w-full max-w-md mb-4 p-4 rounded-2xl bg-amber-500/15 border border-amber-500/40 text-amber-300 text-xs leading-relaxed">
+        <p class="font-extrabold mb-1"><i class="fa-solid fa-triangle-exclamation mr-1"></i> Opened Inside an App Browser</p>
+        <p>Google blocks Sign-In inside WhatsApp/Instagram browsers. Tap the <strong>⋮</strong> or <strong>Share</strong> menu and choose <strong>"Open in Chrome / Safari"</strong>, or use <strong>Student Quick Access</strong> below.</p>
+    </div>
+
+    <div class="w-full max-w-md bg-[var(--card)] border border-slate-200 dark:border-white/10 rounded-2xl p-6 sm:p-8 shadow-2xl">
+        <div class="flex items-center justify-between gap-2 mb-4">
+            <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+                <span class="text-xs font-bold uppercase tracking-widest text-blue-500">Openbox Unified Auth</span>
+            </div>
+            <span class="text-[10px] font-extrabold px-2.5 py-0.5 rounded-md bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                <i class="fa-solid fa-shield-check mr-1"></i> Password-Free
+            </span>
+        </div>
+
+        <h1 class="heading-font text-2xl font-bold text-[var(--foreground)] mb-1">Welcome to Openbox</h1>
+        <p class="text-xs text-[var(--muted-text)] mb-6">
+            Sign in instantly with your Google account or enter your student details below—zero passwords required.
+        </p>
+
+        <!-- METHOD 1: MOBILE-SAFE FULL-PAGE REDIRECT SIGN IN WITH GOOGLE -->
+        <div class="mb-6">
+            <button
+                type="button"
+                id="btn-google-redirect"
+                onclick="startMobileSafeGoogleLogin()"
+                class="w-full py-3 px-4 rounded-full bg-white hover:bg-slate-100 active:scale-[0.99] text-slate-900 border border-slate-300 text-xs sm:text-sm font-bold shadow-sm transition flex items-center justify-center gap-3 cursor-pointer"
+            >
+                <svg class="w-4 h-4 shrink-0" viewBox="0 0 24 24">
+                    <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.665-5.17 3.665-9.17Z"/>
+                    <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.11-6.72-4.96H1.29v3.14C3.26 21.3 7.31 24 12 24Z"/>
+                    <path fill="#FBBC05" d="M5.28 14.24c-.24-.72-.38-1.49-.38-2.24s.14-1.52.38-2.24V6.62H1.29C.47 8.24 0 10.06 0 12s.47 3.76 1.29 5.38l3.99-3.14Z"/>
+                    <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.31 0 3.26 2.7 1.29 6.62l3.99 3.14c.95-2.85 3.6-4.96 6.72-4.96Z"/>
+                </svg>
+                <span>Continue with Google</span>
+            </button>
+        </div>
+
+        <div class="relative flex py-2 items-center mb-6">
+            <div class="flex-grow border-t border-slate-200 dark:border-white/10"></div>
+            <span class="flex-shrink mx-3 text-[11px] font-bold uppercase tracking-wider text-[var(--muted-text)]">Or Student Quick Access</span>
+            <div class="flex-grow border-t border-slate-200 dark:border-white/10"></div>
+        </div>
+
+        <!-- METHOD 2: INSTANT STUDENT QUICK ACCESS -->
+        <form onsubmit="handleInstantStudentLogin(event)" class="space-y-4">
+            <div>
+                <label for="inp-name" class="block text-xs font-semibold mb-1">Full Name (Printed on Certificate)</label>
+                <input
+                    type="text"
+                    id="inp-name"
+                    name="name"
+                    autocomplete="name"
+                    placeholder="Aviral Pathak"
+                    required
+                    class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)] focus:outline-none focus:border-blue-500"
+                />
+            </div>
+
+            <div>
+                <label for="inp-email" class="block text-xs font-semibold mb-1">College or Personal Email</label>
+                <input
+                    type="email"
+                    id="inp-email"
+                    name="email"
+                    autocomplete="email"
+                    placeholder="20261076@dmims.edu.in"
+                    required
+                    class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)] focus:outline-none focus:border-blue-500"
+                />
+            </div>
+
+            <div>
+                <label for="inp-gh" class="block text-xs font-semibold mb-1">GitHub / LinkedIn URL (Optional)</label>
+                <input
+                    type="url"
+                    id="inp-gh"
+                    name="github"
+                    autocomplete="url"
+                    placeholder="https://github.com/username"
+                    class="w-full px-3.5 py-2.5 text-sm rounded-xl bg-[var(--muted-bg)] border border-slate-200 dark:border-white/10 text-[var(--foreground)] focus:outline-none focus:border-blue-500"
+                />
+            </div>
+
+            <button type="submit" id="btn-instant-login" class="w-full py-3 rounded-xl text-xs font-extrabold bg-blue-600 hover:bg-blue-500 text-white shadow-lg cursor-pointer transition flex items-center justify-center gap-2">
+                <span>Enter Learning Workspace</span>
+                <i class="fa-solid fa-arrow-right"></i>
+            </button>
+        </form>
+
+        <p id="auth-msg" class="mt-4 text-xs font-semibold text-center"></p>
+
+        <div class="mt-6 pt-4 border-t border-slate-200 dark:border-white/10 text-[11px] text-[var(--muted-text)] flex items-center justify-between">
+            <span><i class="fa-solid fa-lock text-emerald-500 mr-1"></i> Zero-password authentication</span>
+            <a href="https://wa.me/917020729200?text=Hi%20Aviral,%20I%20need%20help%20accessing%20the%20Openbox%20portal." target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:underline font-semibold">WhatsApp Help</a>
+        </div>
+    </div>
+
+    <script>
+        const GOOGLE_CLIENT_ID = "346521465461-cmjnljpddr5b128v9jheh3dl0t9dv0fu.apps.googleusercontent.com";
+
+        // Detect WhatsApp / Instagram / LinkedIn in-app WebViews where Google blocks OAuth
+        (function detectInAppBrowser() {
+            const ua = navigator.userAgent || "";
+            if (/FBAN|FBAV|Instagram|WhatsApp|LinkedInApp|wv\)/i.test(ua)) {
+                document.getElementById("webview-warning").classList.remove("hidden");
+            }
+        })();
+
         function completeSessionAndRedirect(data) {
             if (typeof hydrateUserSession === "function") {
                 hydrateUserSession(data);
@@ -19,24 +157,54 @@
             if (isStaff()) {
                 window.location.href = "studio.html";
             } else {
-                const params = new URLSearchParams(window.location.search);
-                const nextCourse = params.get("course");
+                const nextCourse = sessionStorage.getItem("openbox_next_course") || new URLSearchParams(window.location.search).get("course");
+                sessionStorage.removeItem("openbox_next_course");
                 window.location.href = nextCourse
                     ? `course.html?course=${encodeURIComponent(nextCourse)}`
                     : "course.html";
             }
         }
 
-        // Handler 1: Google Identity Services Callback
-        async function handleGoogleCredential(response) {
+        // Mobile-Safe Full-Page Redirect OAuth (Zero popups, works on iOS Safari & Android Chrome)
+        function startMobileSafeGoogleLogin() {
+            const params = new URLSearchParams(window.location.search);
+            const nextCourse = params.get("course");
+            if (nextCourse) sessionStorage.setItem("openbox_next_course", nextCourse);
+
+            const redirectUri = window.location.origin + window.location.pathname;
+            const nonce = Math.random().toString(36).substring(2) + Date.now();
+            const oauthUrl = new URL("https://accounts.google.com/o/oauth2/v2/auth");
+            oauthUrl.searchParams.set("client_id", GOOGLE_CLIENT_ID);
+            oauthUrl.searchParams.set("redirect_uri", redirectUri);
+            oauthUrl.searchParams.set("response_type", "id_token");
+            oauthUrl.searchParams.set("scope", "openid email profile");
+            oauthUrl.searchParams.set("nonce", nonce);
+            oauthUrl.searchParams.set("prompt", "select_account");
+
+            window.location.href = oauthUrl.toString();
+        }
+
+        // Automatically process #id_token=... when Google redirects back to login.html
+        async function processGoogleRedirectCallback() {
+            if (!window.location.hash || !window.location.hash.includes("id_token=")) return;
+
+            const hashParams = new URLSearchParams(window.location.hash.substring(1));
+            const idToken = hashParams.get("id_token");
+            // Clean token from address bar immediately
+            window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
+
+            if (!idToken) return;
+
             const msg = document.getElementById("auth-msg");
+            const gBtn = document.getElementById("btn-google-redirect");
+            if (gBtn) gBtn.disabled = true;
             msg.textContent = "Verifying Google account & restoring progress...";
             msg.className = "mt-4 text-xs font-semibold text-center text-blue-400";
 
             try {
                 const data = await postToOpenboxApi({
                     action: "google_signin",
-                    credential: response.credential
+                    credential: idToken
                 });
 
                 if (data.status === "success") {
@@ -48,6 +216,8 @@
             } catch (err) {
                 msg.textContent = err.message || "Connection error.";
                 msg.className = "mt-4 text-xs font-semibold text-center text-red-400";
+            } finally {
+                if (gBtn) gBtn.disabled = false;
             }
         }
 
@@ -87,4 +257,8 @@
                 btn.innerHTML = `<span>Enter Learning Workspace</span> <i class="fa-solid fa-arrow-right"></i>`;
             }
         }
+
+        document.addEventListener("DOMContentLoaded", processGoogleRedirectCallback);
     </script>
+</body>
+</html>
